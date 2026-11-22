@@ -1497,7 +1497,8 @@ class ProviderStoreTest {
 
         s.connect(
             "Gemini Invalid", ProviderConfig.Kind.Gemini, "https://generativelanguage.googleapis.com",
-            "bad\nkey", listOf(ListedModel("gemini-2.5-flash")),
+            // 换行现在是密钥池的分隔符("bad\nkey" 是两把合法的 Key),所以这里用一个放不进请求头的控制字符
+            "bad\u0007key", listOf(ListedModel("gemini-2.5-flash")),
         )
         s.connect(
             "Gemini Whitespace", ProviderConfig.Kind.Gemini, "https://generativelanguage.googleapis.com",

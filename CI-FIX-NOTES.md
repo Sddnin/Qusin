@@ -25,3 +25,19 @@ UPDATE_GOLDEN=1 ./gradlew :core:test --tests '*SystemPromptAssemblyTest.goldenPe
 ## Verification limitation
 
 `./gradlew :core:test` was attempted locally but the wrapper could not download Gradle 8.11.1 because DNS lookup for `services.gradle.org` failed (`UnknownHostException`). Consequently neither AAPT2 `:app:mergeDebugResources` nor Kotlin snapshot regeneration/full `:core:test` could be verified here.
+
+## Round 2 — run on commit `cde0155` (job logs `logs_121797241437`)
+
+Result: `cli` and `relay` pass. `app` (7 failures) and `core` (20 failures) fail.
+
+Fixed (statically verified against the sources; not run, no Gradle/network here):
+
+- `StringResourcesTest.everyAppLanguageHasItsTexts`: `AppLanguage` lists Vietnamese but the test's `others` list had no `values-vi`. Added it. `values-vi` has all 3679 translatable strings and every plural, with matching placeholders and no leftover CJK.
+- `ProviderStoreTest.geminiDeveloperApiKeyOnlyUsesValidGeminiProviderAndPrefersMain`: the key pool splits keys on `[,;\n\r]`, so `"bad\nkey"` is two valid keys and `geminiDeveloperApiKey()` returns `"bad"`. The test now uses a control character (`\u0007`) as the illegal key. Pool behaviour unchanged.
+- `ProviderStoreTest.probeGoesThroughTheRealAdapterWithHeaders`, `probeLeavesRoomForAToolCall`, `ModelSetupNetworkTest.customResponsesListsThenProbesTheResponsesEndpoint` — a real product bug, not a test bug. The key-pool change made `ProviderStore.buildModel` pass `keySupplier = { activeApiKey(cfg.providerId) }` to every adapter, and the adapters use the supplier instead of the `apiKey` argument whenever it exists (`resolveKey()`; `ResponsesModel` throws `ModelError.Auth` on a blank pooled key). The connection probe builds a throw-away provider (`"probe"`) with no stored key, so the key the user had just typed was never sent. `buildModel` now uses `currentKey`: the pool key, and only when the provider has no stored key at all, the `apiKey` passed in. Saved providers behave as before (cooldowns and rejections still apply). Each key is still tried once per request, so no retry loop.
+- CI: new step `Check bundled runtime asset` in the `app` job prints size / sha256 / magic bytes / git eol of `rootfs.tar.xz` next to the constants in `BundledRuntime.kt`, and fails early.
+
+Not fixed — need the real runner or more data:
+
+- `BundledRuntimeTest` x2 (`XZFormatException`, size mismatch): the asset in the uploaded source is valid (57,957,216 bytes, sha256 matches, `xz -t` ok). The checked-out file in CI is not. Compare `git cat-file -s HEAD:app/src/main/assets/runtime/rootfs.tar.xz` with 57957216; the new CI step will show it too.
+- `core`: 16 `LoopScenarioTest`, 3 `PromptSurfaceTest`, 1 `SystemPromptAssemblyTest` snapshot mismatches — regenerate with the commands in the first section.

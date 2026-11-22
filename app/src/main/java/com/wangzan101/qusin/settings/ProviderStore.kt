@@ -1301,6 +1301,9 @@ class ProviderStore(
         val baseUrl = if (cfg.kind == ProviderConfig.Kind.Xai) {
             provider(cfg.providerId)?.baseUrl?.takeIf { it.isNotBlank() } ?: adapterBase
         } else adapterBase
+        // 从密钥池取当前这把;服务商还没存下任何 Key(「测试并保存」的试调用,服务商是临时的)时,用调用方传进来的这把,
+        // 否则适配器只认 keySupplier,刚填的 Key 一次也发不出去。存过 Key 的服务商不回退:池里的冷却、拒绝照常生效。
+        val currentKey: () -> String? = { activeApiKey(cfg.providerId) ?: apiKey?.takeIf { providerKey(cfg.providerId) == null } }
         val defaultHttp = http
         val http = setup.readTimeoutSeconds
             ?.takeIf { it in MODEL_READ_TIMEOUT_SECONDS }
@@ -1311,7 +1314,7 @@ class ProviderStore(
                 OpenAiCompatModel(
                     baseUrl, apiKey, cfg.model, cfg.capabilities, http, endpoint?.reasoningField, setup.headers,
                     reasoningEffort = setup.reasoningEffort,
-                    keySupplier = { activeApiKey(cfg.providerId) },
+                    keySupplier = currentKey,
                     onKeyRejected = { key, retryMs, status ->
                         KeyPoolManager.shared.markRejected(cfg.providerId, key, status, retryMs)
                     }
@@ -1320,21 +1323,21 @@ class ProviderStore(
                 baseUrl, apiKey.orEmpty(), cfg.model, cfg.capabilities, http,
                 maxTokens = setup.maxOutputTokens,
                 headers = setup.headers, reasoningEffort = setup.reasoningEffort, thinkingTypes = setup.thinkingTypes,
-                keySupplier = { activeApiKey(cfg.providerId) },
+                keySupplier = currentKey,
                 onKeyRejected = { key, retryMs, status -> KeyPoolManager.shared.markRejected(cfg.providerId, key, status, retryMs) },
             )
             ProviderConfig.Kind.Gemini ->
                 GeminiModel(
                     baseUrl, apiKey.orEmpty(), cfg.model, cfg.capabilities, http, setup.headers, setup.maxOutputTokens,
                     reasoningEffort = setup.reasoningEffort,
-                    keySupplier = { activeApiKey(cfg.providerId) },
+                    keySupplier = currentKey,
                     onKeyRejected = { key, retryMs, status ->
                         KeyPoolManager.shared.markRejected(cfg.providerId, key, status, retryMs)
                     }
                 )
             ProviderConfig.Kind.OpenAiResponses ->
                 ResponsesModel(baseUrl, BearerToken.pool(
-                    nextKey = { activeApiKey(cfg.providerId) },
+                    nextKey = currentKey,
                     onRejected = { key, retryMs, status -> KeyPoolManager.shared.markRejected(cfg.providerId, key, status, retryMs) },
                 ), cfg.model, cfg.capabilities, http, headers = setup.headers, reasoningEffort = setup.reasoningEffort)
             ProviderConfig.Kind.ChatGpt ->
