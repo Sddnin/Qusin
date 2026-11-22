@@ -6,6 +6,7 @@ import com.wangzan101.qusin.core.cap.mcp.McpConnection
 import com.wangzan101.qusin.core.cap.mcp.McpEndpoint
 import com.wangzan101.qusin.core.cap.mcp.McpResult
 import com.wangzan101.qusin.core.cap.mcp.McpToolDescriptor
+import com.wangzan101.qusin.core.cap.mcp.McpTrust
 import com.wangzan101.qusin.core.record.RunEvent
 import com.wangzan101.qusin.core.record.RunSink
 import com.wangzan101.qusin.core.run.Attendance
@@ -35,23 +36,28 @@ class McpServerTest {
         override suspend fun call(name: String, arguments: JsonObject): McpResult { calls++; return McpResult(name) }
     }
 
-    @Test fun lowLevelToolCallsRunAutonomouslyAndEmitEvents() = runBlocking {
+    @Test fun lowLevelToolCallsRespectTrustAndEmitEvents() = runBlocking {
         val endpoint = Endpoint()
         val store = MemoryRunStore()
         val server = McpServer({ spec -> toolDispatcher(FakeScreen(), runSpec = spec,
-            mcpServers = listOf(McpConnection(endpoint))) }, McpTaskHost { error("not used") }, store)
+            mcpServers = listOf(McpConnection(endpoint, trust = McpTrust.TrustAnnotations))) }, McpTaskHost { error("not used") }, store)
         val session = server.openToolSession("external-thread")
         val events = mutableListOf<RunEvent>()
         session.events.subscribe(object : RunSink { override fun event(e: RunEvent) { events += e } })
         assertEquals(RunOrigin.Mcp, session.spec.provenance.origin)
         assertEquals(Attendance.Unattended, session.spec.provenance.attendance)
+        // Explicitly trusted read-only annotations permit reads in an unattended MCP session.
         val read = session.call("mcp_fake__read", "{}")
         assertEquals("true", read["ok"].toString())
+        assertEquals(1, endpoint.calls)
+
+        // openWorldHint means an external side effect: it must be denied before the endpoint runs.
         val send = session.call("mcp_fake__send", "{}")
-        assertEquals("true", send["ok"].toString())
-        assertEquals(2, endpoint.calls)
+        assertEquals("false", send["ok"].toString())
+        assertEquals("approval_unavailable", send["error"]?.toString()?.trim('"'))
+        assertEquals(1, endpoint.calls)
+        assertTrue(events.any { it is RunEvent.ToolResult && it.tool == "mcp_fake__send" && "approval_unavailable" in it.resultJson })
         assertFalse(events.any { it is RunEvent.Approval && it.tool == "mcp_fake__send" })
-        assertTrue(events.any { it is RunEvent.ToolResult })
         session.close()
         assertEquals(RunPhase.Ended, store.get(session.spec.id)?.phase)
         assertFalse(store.get(session.spec.id)?.roundInProgress == true)
