@@ -39,5 +39,17 @@ Fixed (statically verified against the sources; not run, no Gradle/network here)
 
 Not fixed — need the real runner or more data:
 
-- `BundledRuntimeTest` x2 (`XZFormatException`, size mismatch): the asset in the uploaded source is valid (57,957,216 bytes, sha256 matches, `xz -t` ok). The checked-out file in CI is not. Compare `git cat-file -s HEAD:app/src/main/assets/runtime/rootfs.tar.xz` with 57957216; the new CI step will show it too.
+- `BundledRuntimeTest` x2: **root cause found in run `08a23f6`.** `app/src/main/assets/runtime/rootfs.tar.xz` in the commit is a 133-byte Git LFS pointer (`version https://git-lfs.github.com/spec/v1`, `oid sha256:250e9fbe…`, `size 57957216`), not the 57,957,216-byte file. Its sha256 on CI (`9537748d…`) is exactly the sha256 of that pointer text. The repo has no LFS config and checkout uses `lfs: false`, so the pointer is what tests see. The real file in the uploaded source is fine. Fix on the repo side: commit the real binary instead of the pointer (see "Recommit the runtime" below). The CI step now says so explicitly, and no longer blocks the other tests (`continue-on-error`).
 - `core`: 16 `LoopScenarioTest`, 3 `PromptSurfaceTest`, 1 `SystemPromptAssemblyTest` snapshot mismatches — regenerate with the commands in the first section.
+
+### Recommit the runtime (bypass any LFS filter on the machine that pushes)
+
+```bash
+git show HEAD:app/src/main/assets/runtime/rootfs.tar.xz        # should print the pointer text
+git -c filter.lfs.clean=cat -c filter.lfs.smudge=cat -c filter.lfs.process= -c filter.lfs.required=false \
+    add --renormalize app/src/main/assets/runtime/rootfs.tar.xz
+git cat-file -s :app/src/main/assets/runtime/rootfs.tar.xz     # must print 57957216
+git commit -m "Store the bundled runtime as a regular file, not an LFS pointer"
+```
+
+If that size is still 133, the filter comes from `.git/info/attributes`, which beats `.gitattributes`: remove the lfs line there. The 58 MB file is under GitHub's 100 MB limit (it warns above 50 MB).

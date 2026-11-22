@@ -4,3 +4,6 @@ app/src/main/assets/sandbox/qusin text eol=lf
 # text=auto 不碰二进制文件;gradlew.bat 保持 CRLF(Windows 批处理对纯 LF 兼容性不稳)。
 * text=auto eol=lf
 *.bat text eol=crlf
+
+# 运行环境包是真文件,不要被任何 LFS 过滤器(用户或系统级的 gitattributes)换成指针:CI 检出时不拉 LFS。
+app/src/main/assets/runtime/rootfs.tar.xz binary -filter -diff -merge
