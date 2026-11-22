@@ -157,8 +157,8 @@ class ConfirmationGate {
     }
 
     /**
-     * 金额是否参与这次核对,和风险分类使用同一个应付上下文。明确下单始终要金额;
-     * 普通提交、删除和未知高影响动作只有屏上有合计或付款面板时才要,避免把页面里的区间或待遇当成付款并反复要权。
+     * 金额是否参与这次核对,和风险分类使用同一个应付上下文。明确付款、下单始终要金额;
+     * 删除或其他动作只有被判定为涉及应付金额时才核对,发送和普通提交不作为花钱动作。
      */
     private fun amountBinds(hit: Irreversible, s: ScreenSnapshot): Boolean = when (hit.action) {
         IrrevAction.order, IrrevAction.pay -> true

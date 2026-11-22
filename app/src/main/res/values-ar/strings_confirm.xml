@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="confirm_note">تتطلب الإجراءات عالية التأثير، مثل الإرسال والنشر وتقديم النماذج والحذف، موافقتك في كل مرة.</string>
+    <string name="confirm_note">الخطوات التي تنفق المال فقط، مثل تقديم طلب شراء، تتطلب موافقتك في كل مرة.</string>
     <string name="confirm_pay">الدفع</string>
     <string name="confirm_delete">حذف</string>
     <string name="confirm_order">إتمام الطلب</string>

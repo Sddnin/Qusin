@@ -86,15 +86,24 @@ class ActionExecutorOriginsTest(private val label: String, private val action: I
         assertTrue(events.none { it is RunEvent.Confirmation })
     }
 
-    @Test fun autonomousActionRunsWithoutApproval() = runTest {
+    @Test fun autonomousModeHandsOffPaymentButRunsOrderWithoutApproval() = runTest {
         val screen = OneButton(label)
         val tools = toolDispatcher(screen)
         tools.execute(Part.ToolCall("o", "phone_observe", "{}"))
         val executor = ActionExecutor(tools, OperationGuards(), null, gate = {}, recorder = ActionRecorder(sink), autonomous = true)
         val out = executor.run(Part.ToolCall("c3", "phone_tap", """{"ref":"@e1","snapshotId":"s1"}"""), origin)
-        assertTrue("$out", out is ActionOutcome.Ran)
-        assertEquals(listOf("@e1"), screen.taps)
-        assertTrue(events.none { it is RunEvent.Confirmation || it is RunEvent.Approval })
+        if (action == IrrevAction.pay) {
+            val refused = out as ActionOutcome.Refused
+            assertEquals("confirmation_required", refused.code)
+            assertTrue("payment must remain in the user's hands", screen.taps.isEmpty())
+            val confirmations = events.filterIsInstance<RunEvent.Confirmation>().map { it.copy(atMs = 0) }
+            assertEquals(listOf(RunEvent.Confirmation(0, action.name, label, null, null, "required")), confirmations)
+            assertTrue(events.none { it is RunEvent.Approval })
+        } else {
+            assertTrue("$out", out is ActionOutcome.Ran)
+            assertEquals(listOf("@e1"), screen.taps)
+            assertTrue(events.none { it is RunEvent.Confirmation || it is RunEvent.Approval })
+        }
     }
 
     companion object {

@@ -168,7 +168,7 @@
     <string name="phone_root_commands_on">已開啟。唯讀指令可直接執行;會修改或刪除內容的指令仍按目前確認模式處理。</string>
     <string name="phone_root_commands_denied">root 授權被拒絕了,這一項保持關閉。</string>
     <string name="phone_root_commands_title">允許執行 root 指令?</string>
-    <string name="phone_root_commands_warning">root 指令能修改或刪除手機上的任何東西,包括其他 App 的資料,甚至可能讓手機無法正常使用。詢問模式下,每條會修改或刪除東西的 root 指令都會先問你;自主模式下不問。明白風險再開啟。</string>
+    <string name="phone_root_commands_warning">root 指令可以修改或刪除手機上的任何內容，包括其他 App 的資料，甚至可能讓手機無法使用。在詢問模式下，啟用此選項即代表授權 Qusin 直接執行你要求的 root 指令，不會逐條詢問；自主模式也不會逐條確認。只有了解風險後才開啟。</string>
     <string name="phone_root_commands_confirm">允許</string>
     <string name="phone_root_commands_note">這與啟動助手相互獨立。開啟後,助手仍以受限身分執行,只是任務中會增加 root 指令工具。</string>
     <string name="phone_root_note">偵測到這台手機上有 su。用 root 啟動的手機助手仍以同樣的受限身分執行,權限和經無線偵錯啟動時一樣。</string>

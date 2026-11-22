@@ -59,7 +59,7 @@ internal object Refusals {
     fun content(code: String, style: RefusalStyle, before: List<GuardVerdict>, hit: Irreversible?, reason: String?): JsonObject = when (style) {
         // 模型单步被守卫叫停时任务就此结束,用不到说明
         RefusalStyle.Model -> if (code == "approval_unavailable") notRun(code,
-            "This action needs the user's approval, but this run cannot collect it. The action was not run. " +
+            "This step spends money, but this run cannot collect the user's approval. The action was not run. " +
                 "Do not retry this action in this run; explain the limitation to the user.") {
             hit?.let { put("action", it.action.name); put("matched", it.matched) }
             put("counts_as_failure", false)
@@ -71,9 +71,9 @@ internal object Refusals {
             val message = when (code) {
                 "guard_stopped" -> "Qusin's operation guard stopped the task."
                 "guard_warning" -> "Qusin's operation guard flagged this action; it was not run."
-                "confirmation_required" -> "this action needs the user's approval (${hit?.matched})"
+                "confirmation_required" -> "this step spends money (${hit?.matched})"
                 "confirmation_mismatch" -> "this action (${hit?.matched}) does not match what the user approved ($reason)"
-                "approval_unavailable" -> "this action needs user approval and this run cannot collect it; the action was not run"
+                "approval_unavailable" -> "this step spends money and this run cannot get the user's approval; the action was not run"
                 "target_unresolved" -> "that ref is not on the latest snapshot; call qusin.snapshot() again"
                 OWN_APP -> Feedback["own_app"]
                 else -> error("unknown refusal $code")
@@ -93,7 +93,7 @@ internal object Refusals {
         put("ok", false); put("error", "confirmation_required")
         put("action", hit.action.name); put("matched", hit.matched)
         put("message", if (hit.action == IrrevAction.pay) "This step is a payment, so it was not run. $PAYMENT_TAKEOVER"
-            else "This action was not run because it needs the user's approval. First call request_confirmation describing the action, the visible target, and what will be sent, published, submitted, deleted or changed. Include an amount only when money is due. Then do exactly that action immediately after approval. $SINGLE_USE")
+            else "This step spends money (${hit.action.name}), so it was not run. First call request_confirmation saying where, what is bought and how much it costs, and do it after the user approves. $SINGLE_USE")
         put("recoverable", true); put("counts_as_failure", false)
     }
 

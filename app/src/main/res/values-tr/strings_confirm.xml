@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="confirm_note">Gönderme, yayınlama, form gönderme ve silme gibi önemli işlemler her seferinde onayınızı gerektirir.</string>
+    <string name="confirm_note">Her seferinde yalnızca sipariş vermek gibi para harcayan adımlar için onayınız gerekir.</string>
     <string name="confirm_pay">Öde</string>
     <string name="confirm_delete">Sil</string>
     <string name="confirm_order">Sipariş ver</string>

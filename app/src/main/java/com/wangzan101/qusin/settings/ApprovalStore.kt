@@ -25,7 +25,7 @@ class ApprovalStore(private val file: File) {
         _autonomous = MutableStateFlow((o?.get("autonomous") as? JsonPrimitive)?.booleanOrNull ?: false)
     }
 
-    /** 自主模式:打开时跳过高影响动作的逐次确认(付款仍由用户亲手完成)。换它请走 [ApprovalControl.setAutonomous],正在跑的任务才会跟着换。 */
+    /** 自主模式:打开时跳过付款前的逐次确认(付款仍由用户亲手完成)。换它请走 [ApprovalControl.setAutonomous],正在跑的任务才会跟着换。 */
     val autonomous: StateFlow<Boolean> = _autonomous.asStateFlow()
 
     @Synchronized fun setAutonomous(on: Boolean) {

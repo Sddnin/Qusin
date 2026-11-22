@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="confirm_note">Ações importantes, como enviar, publicar, enviar formulários e excluir, exigem sua aprovação sempre.</string>
+    <string name="confirm_note">Somente as etapas que gastam dinheiro, como fazer um pedido, exigem sua aprovação a cada vez.</string>
     <string name="confirm_pay">Pagar</string>
     <string name="confirm_delete">Excluir</string>
     <string name="confirm_order">Fazer pedido</string>

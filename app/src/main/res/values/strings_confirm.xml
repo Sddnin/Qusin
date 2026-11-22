@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="confirm_note">High-impact actions such as sending, publishing, submitting and deleting need your OK each time.</string>
+    <string name="confirm_note">Only steps that spend money, such as placing an order, require your approval each time.</string>
     <string name="confirm_pay">Pay</string>
     <string name="confirm_delete">Delete</string>
     <string name="confirm_order">Place order</string>

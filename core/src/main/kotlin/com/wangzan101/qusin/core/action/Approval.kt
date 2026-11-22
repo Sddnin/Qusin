@@ -30,11 +30,11 @@ enum class ConfirmChoice { Once, Deny;
 
 /** 询问 / 自主:此刻是不是自主模式(中途换成自主时,正在跑的任务从下一步起照它)。由设置提供,测试里换成固定值。 */
 fun interface ApprovalSettings {
-    /** 自主模式:跳过对外和不可逆动作的逐次确认。 */
+    /** 自主模式:跳过非付款动作的逐次确认;支付仍交给用户亲手完成。 */
     fun autonomous(): Boolean
 
     companion object {
-        /** 询问(默认):对外、不可逆和工具声明要问的动作(见 [Risk.ask])先问。 */
+        /** 询问(默认):只有会花钱的步骤要求逐次确认;其他已授权动作直接执行。 */
         val ASK = ApprovalSettings { false }
     }
 }
@@ -49,14 +49,17 @@ sealed interface Approval {
 }
 
 /**
- * 审批判定:纯函数。询问模式下,对外动作(发送、发布、提交)、不可逆动作(删除、下单)和未知目标都要用户逐次同意。
- * 花钱仍走原来的专门流程,付款本身交给用户亲手完成。没有用户可问的后台、渠道和 MCP 运行,上述动作一律不做。
+ * 审批判定:纯函数。只有会花钱的动作或工具明确声明需要确认的步骤才等待用户。
+ * UI 中无费用的发送、提交、删除等已授权操作直接执行;无人值守或非 UI 运行仍拒绝付款、显式确认请求和不可逆动作。
  */
 object ApprovalPolicy {
-    fun decide(risk: Risk, run: RunProvenance = RunProvenance()): Approval {
-        val needsUser = risk.payment || risk.ask != null || risk.level.outward
-        if (!needsUser) return Approval.Allow
-        if (run.origin != RunOrigin.Ui || run.attendance == Attendance.Unattended) return Approval.Deny
-        return Approval.Ask
+    fun decide(risk: Risk, run: RunProvenance = RunProvenance()): Approval = when {
+        // Without an interactive user, refuse payments, explicitly declared approvals,
+        // and irreversible actions. Free external actions (for example sending/submitting)
+        // remain available; on the UI, explicitly requested free actions run directly.
+        (run.attendance == Attendance.Unattended || run.origin != RunOrigin.Ui) &&
+            (risk.payment || risk.ask != null || risk.level == ActionRisk.Irreversible) -> Approval.Deny
+        !risk.payment && risk.ask == null -> Approval.Allow
+        else -> Approval.Ask
     }
 }

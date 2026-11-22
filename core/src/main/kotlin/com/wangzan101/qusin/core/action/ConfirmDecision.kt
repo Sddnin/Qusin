@@ -40,7 +40,7 @@ sealed interface Decision {
 
 /**
  * 不可逆判定、审批与同意核对。整个代码库里只有这里调用 [IrreversibleDetector] 的判定和 [ConfirmationGate.permits]
- * (有测试守着),各来源只在 [OriginPolicy] 里写明哪里不同;问不问由 [ApprovalPolicy.decide] 定(高影响动作、付款和工具声明要问的动作)。
+ * (有测试守着),各来源只在 [OriginPolicy] 里写明哪里不同;问不问由 [ApprovalPolicy.decide] 决定(会花钱的步骤，以及工具明确声明需要用户同意的步骤)。
  */
 class ConfirmDecision(
     private val tools: ToolDispatcher,
@@ -78,8 +78,8 @@ class ConfirmDecision(
                 return if (ApprovalPolicy.decide(declaredPayment, provenance) == Approval.Deny) Decision.Denied(payment)
                 else Decision.Required(payment)
             }
-            // A declared external/irreversible/unknown tool must not execute from a run
-            // that cannot obtain approval, even when global autonomous mode is enabled.
+            // Explicitly declared approvals and irreversible tools cannot run from a
+            // context that cannot obtain user approval, even in global autonomous mode.
             if (declared != null && ApprovalPolicy.decide(declared, provenance) == Approval.Deny) {
                 return Decision.Denied(asIrreversible(declared, tool))
             }

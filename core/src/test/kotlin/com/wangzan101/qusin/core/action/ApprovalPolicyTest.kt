@@ -7,30 +7,21 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ApprovalPolicyTest {
-    @Test fun readAndReversibleChangesDoNotAsk() {
-        for (level in listOf(ActionRisk.Read, ActionRisk.Change)) {
+    @Test fun onlyPaymentAsks() {
+        for (level in ActionRisk.entries) {
             assertEquals("$level", Approval.Allow, ApprovalPolicy.decide(Risk(level)))
-        }
-    }
-
-    @Test fun highImpactActionsAskWhenTheUserCanApprove() {
-        for (level in listOf(ActionRisk.External, ActionRisk.Irreversible, ActionRisk.Unknown)) {
-            assertEquals("$level", Approval.Ask, ApprovalPolicy.decide(Risk(level)))
             assertEquals("$level payment", Approval.Ask, ApprovalPolicy.decide(Risk(level, payment = true)))
         }
-        assertEquals(Approval.Ask, ApprovalPolicy.decide(Risk(ActionRisk.Change, payment = true)))
     }
 
-    @Test fun highImpactActionsAreDeniedWhenNoUserCanApprove() {
-        for (origin in RunOrigin.entries) for (attendance in Attendance.entries) {
+    @Test fun everyOriginAndAttendance() {
+        for (origin in RunOrigin.entries) for (attendance in Attendance.entries) for (level in ActionRisk.entries) {
             val run = RunProvenance(origin, attendance)
-            val canAsk = origin == RunOrigin.Ui && attendance != Attendance.Unattended
-            for (level in listOf(ActionRisk.External, ActionRisk.Irreversible, ActionRisk.Unknown)) {
-                val expected = if (canAsk) Approval.Ask else Approval.Deny
-                assertEquals("$origin $attendance $level", expected, ApprovalPolicy.decide(Risk(level), run))
-            }
-            val expectedPayment = if (canAsk) Approval.Ask else Approval.Deny
-            assertEquals("$origin $attendance payment", expectedPayment, ApprovalPolicy.decide(Risk(ActionRisk.Read, payment = true), run))
+            val unattended = origin != RunOrigin.Ui || attendance == Attendance.Unattended
+            val noMoney = if (level == ActionRisk.Irreversible && unattended) Approval.Deny else Approval.Allow
+            assertEquals("$origin $attendance $level", noMoney, ApprovalPolicy.decide(Risk(level), run))
+            val expected = if (origin == RunOrigin.Ui && attendance != Attendance.Unattended) Approval.Ask else Approval.Deny
+            assertEquals("$origin $attendance $level payment", expected, ApprovalPolicy.decide(Risk(level, payment = true), run))
         }
     }
 

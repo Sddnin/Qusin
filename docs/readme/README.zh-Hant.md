@@ -1,188 +1,92 @@
-<!-- translated-from: README.md @ 7b09b8113580 -->
+<!-- translated-from: README.md @ 1e3fabff8c4e -->
 <div align="center">
 
 <img src="../media/logo.png" alt="Qusin" width="88" />
 
 # Qusin
 
-**你手機上的 AI 助理：說一句話，它替你操作 App、上網，把事情辦好。**
+**Qusin 是一款 Android AI 助理。** 以自然語言描述任務，它就能協助操作手機應用程式、網站、檔案與排程任務。
 
-它在一塊看不見的背景螢幕上做事，你照樣滑你的手機。
+Qusin 不內建 AI 模型。你可以連接自己的 API 金鑰、登入支援的帳戶，或使用在電腦或區域網路上執行的模型。
 
-<a href="https://github.com/Sddnin/Qusin"><img src="../media/star-banner-v2.png" alt="喜歡 Qusin？點個 Star —— 點右上角的 Star 按鈕" width="620" /></a>
+## 功能特色
 
-<br/>
-<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/badge/%E4%B8%8B%E8%BC%89%20APK-Android%2011%2B-2ea043?style=for-the-badge&logo=android&logoColor=white" alt="下載 APK" /></a> <a href="https://github.com/Sddnin/Qusin"><img src="https://img.shields.io/github/stars/Sddnin/Qusin?style=for-the-badge&logo=github&label=Star&color=FFD700&logoColor=white" alt="Star this repo" /></a>
+- **Android 應用程式控制：** 在獨立的背景虛擬螢幕操作應用程式，可讀取介面、點擊、輸入與捲動；你仍可同時使用手機主畫面。裝置與應用程式本身的限制仍然適用，登入、驗證碼和敏感步驟可能需要你接手。
+- **內建瀏覽器：** 使用獨立 WebView，保留網站登入狀態，支援真實輸入事件、讀取頁面、上傳與下載。
+- **長任務與平行任務：** 查看進度和已執行步驟，補充指令或停止任務；平行數量受裝置和應用程式限制。
+- **排程與條件任務：** 建立一次性、每日、每週或依條件觸發的任務，並查看下次執行時間與歷史紀錄。
+- **記憶與技能：** 儲存經你允許的資訊、使用應用程式/網站知識，並新增文字技能。
+- **Linux 工作區：** 每段對話都有獨立工作區，可處理檔案與執行命令；內建執行環境目前僅支援 ARM64 裝置。
+- **電腦連線：** 透過 CLI/Skill 或 MCP 從電腦傳送任務、追蹤狀態並取得結果。
 
-<a href="https://github.com/Sddnin/Qusin/releases"><img src="https://img.shields.io/github/downloads/Sddnin/Qusin/total?label=%E4%B8%8B%E8%BC%89&color=2ea043" alt="downloads" /></a>
-<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/github/v/release/Sddnin/Qusin?include_prereleases&label=%E7%89%88%E6%9C%AC" alt="version" /></a>
-<a href="../../LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-lightgrey" alt="license" /></a>
+## 模型與 API 金鑰
 
-<br/>
+Qusin 支援相容 OpenAI Chat Completions、Anthropic Messages、Google Gemini `generateContent` 和 OpenAI Responses 的協定。預設涵蓋多種雲端服務商、OpenAI 相容服務，以及 Ollama/LM Studio 等本機伺服器，也支援自訂端點。
 
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/daily?language=Kotlin" alt="#1 Kotlin Repository of the Day" width="250" height="55" /></a>
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/weekly?language=Kotlin" alt="#1 Kotlin Repository of the Week" width="250" height="55" /></a>
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/daily" alt="#5 Repository of the Day" width="250" height="55" /></a>
+開啟 **設定 → 模型 → 選擇服務商**，在 **API 金鑰池 → 新增 API 金鑰** 中新增金鑰。多把金鑰可用逗號、分號或換行分隔。Qusin 會在可用金鑰間輪替：`401/403` 會將金鑰標記為遭拒，`429` 則依伺服器回應讓金鑰進入冷卻期。所有金鑰都不可用時，不會回退至已遭拒的金鑰。
 
-<br/>
+金鑰池適用於支援的 API 金鑰協定。ChatGPT 和 xAI 等 OAuth 登入工作階段不是 API 金鑰，必須分開管理。OpenRouter 可以同時保留已登入帳戶與另外新增的備用金鑰。
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · 繁體中文 · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Türkçe](README.tr.md)
+## 內建知識
 
-<sub>這份繁體中文版譯自簡體中文版。用詞不夠道地、或內容跟原文對不上的地方，歡迎直接發 PR 修改。</sub>
+內建 App、網站與通用操作技能清單會從專案知識來源產生，並隨原始資料更新。
 
-<br/>
+## 服務商預設
 
-<img src="../media/wechat-send-side.gif" alt="一句話，Qusin 在背景螢幕上打開微信、找到聯絡人、送出訊息" width="640" />
+內建 DeepSeek、通義千問、Kimi、智譜、硅基流動、火山方舟、MiniMax、階躍星辰、騰訊混元、百度千帆、OpenRouter、OpenDesign Go、OpenCode Go、Anthropic、Gemini、OpenAI、xAI、Mistral、Groq、Cloudflare Workers AI、Ollama 和 LM Studio 等服務商預設，也可選擇自訂端點。
 
-<sub>一句話「給文件傳輸助手發一則訊息」：左邊是 Qusin 的對話，右邊是它在背景螢幕上的每一步（4 倍速播放，聊天列表已打碼）</sub>
+## 系統需求
 
-</div>
+- Android 10 或更新版本可安裝並使用核心功能。
+- 控制其他 Android 應用程式需要 Android 12 或更新版本，並完成應用程式內設定流程。
+- 使用內建 Linux 沙箱需要 ARM64 裝置。
+- 主要助理模型需要支援工具/函式呼叫。
 
-## 一句話，辦好一件事
+## 開始使用
 
-<table>
-<tr>
-<td align="center" width="33%"><img src="../media/wechat-group.gif" width="230" alt="翻完微信群組，總結今天聊了什麼" /><br/><b>「總結一下群組裡今天聊了什麼」</b><br/><sub>在背景翻完聊天紀錄再總結</sub></td>
-<td align="center" width="33%"><img src="../media/amazon-cart.gif" width="230" alt="在購物網站挑充電器加入購物車" /><br/><b>「30 美元以內、4.5 星以上的充電器」</b><br/><sub>挑好加入購物車，停在結帳前</sub></td>
-<td align="center" width="33%"><img src="../media/xhs-summary.gif" width="230" alt="總結一位創作者最近發的內容" /><br/><b>「總結這位創作者最近發了什麼」</b><br/><sub>打開 App 逐篇看完再整理</sub></td>
-</tr>
-</table>
+1. 在手機上安裝並開啟 Qusin。
+2. 前往 **設定 → 模型**，新增服務商或登入支援的帳戶。
+3. 選擇支援工具呼叫的主要模型；視覺、輕量模型與語音轉文字模型可另外設定。
+4. 如需控制 Android 應用程式，請完成應用程式內的無線除錯配對與無障礙設定。
+5. 開始對話，以自然語言描述要完成的任務。
 
-<details>
-<summary>更多示範</summary>
+文件：
 
-<table>
-<tr>
-<td align="center" width="33%"><img src="../media/boss-greet.gif" width="230" alt="在求職網站上向 3 個職缺打招呼" /><br/>在求職網站上向 3 個職缺打招呼</td>
-<td align="center" width="33%"><img src="../media/google-flights.gif" width="230" alt="找最便宜的直飛航班" /><br/>找舊金山飛紐約最便宜的直飛</td>
-<td align="center" width="33%"><img src="../media/hacker-news.gif" width="230" alt="念出首頁前 5 則和分數" /><br/>念出新聞網站首頁前 5 則</td>
-</tr>
-<tr>
-<td align="center"><img src="../media/job-greet.jpg" width="230" alt="找職缺、打招呼" /><br/>找職缺、打招呼</td>
-<td align="center"><img src="../media/music-vip.jpg" width="230" alt="看廣告領聽歌權益" /><br/>看廣告領聽歌權益</td>
-<td align="center"><img src="../media/food-order.jpg" width="230" alt="湊滿額折扣點外送，付款前問你" /><br/>湊滿額折扣點外送，付款前問你</td>
-</tr>
-</table>
+- [模型與登入](../models.en.md)
+- [手機控制設定](../setup-guide.en.md)
+- [功能說明](../features.en.md)
+- [常見問題](../faq.en.md)
+- [透過電腦使用 Qusin](../computer.en.md)
+- [開發路線圖](../dev/roadmap.md)
 
-</details>
+## 發布說明
 
-## 為什麼選 Qusin
+GitHub Release 說明可以包含帶有語言標籤的章節。Qusin 會優先顯示與應用程式語言相符的內容，缺少對應語言時則回退到英文。發布版本時可使用[多語言發布說明範本](../dev/release-notes-template.md)。
 
-| | |
-|---|---|
-| 📱 **不佔用你的螢幕** | 在一塊獨立的背景螢幕上打開 App、點按、打字、翻頁，你照常用手機；想看就點開小畫面 |
-| 🧩 **什麼 App 都能用** | 像人一樣看畫面、找按鈕，不需要 App 開放介面，也不用事先適配 |
-| 🌐 **在網頁上直接叫它** | 在內建瀏覽器裡，對著正在看的這一頁說一句，它就在這一頁上做事；你一碰頁面它就停 |
-| 🧠 **越用越上手** | 記得你說過的偏好；辦成的事會自動整理成技能，下次更快更穩 |
-| 🔒 **資料只留在你手機上** | 沒有 Qusin 伺服器；用你自己的模型 Key，或用 ChatGPT、xAI、OpenRouter 帳號登入 |
-| 🆓 **開源、免費** | Apache-2.0，程式碼全部公開 |
+## 從原始碼建置
 
-## 三步開始
+需要 JDK 17，以及符合 Gradle 專案設定的 Android SDK。
 
-1. **下載安裝**：從 [Releases](https://github.com/Sddnin/Qusin/releases/latest) 下載 APK。
-2. **連上模型**：設定 › 模型，選一家服務商填入 API Key，或直接用帳號登入（[模型與登入](../models.md)）。
-3. **要操作手機 App 時**：照著設定裡「設定手機操作」的引導，在手機上配對一次無線偵錯（[設定指南](../setup-guide.md)）。只聊天、上網、處理檔案的話可以跳過這一步。
+```bash
+# 單元測試
+./gradlew :core:test :app:testDebugUnitTest
 
-然後說一句試試：「幫我設明天早上 9:40 和 10:00 的鬧鐘」「每天早上 8 點看看天氣，會下雨才告訴我」。
+# 建置 Debug APK
+./gradlew :app:assembleDebug
+```
 
-> 💡 手邊有電腦？把這句話傳給電腦上的 AI 助手，它會幫你裝好：<br/>
-> `請依照 https://github.com/Sddnin/Qusin/blob/main/docs/install-with-agent.md 的步驟，幫我把 Qusin 安裝到透過 USB 連著的 Android 手機上。`
+Debug APK 輸出至：
 
-## 能做什麼
+```text
+app/build/outputs/apk/debug/app-debug.apk
+```
 
-| | |
-|---|---|
-| **操作 App** | 讀長列表和聊天紀錄、點按輸入、分享文字到 App；登入、驗證碼、付款交給你接手 |
-| **上網** | 內建電腦版瀏覽器，保留登入狀態，能讀頁面、下載上傳；翻頁有節奏，遇到攔截交給你 |
-| **此刻的螢幕** | 點兩下懸浮膠囊，把你正在看的這個畫面傳給 Qusin：「這要怎麼回」「幫我記下來」 |
-| **定時與條件** | 「明早 9 點提醒我」「每週五做某件事」，時間到了在原本的對話裡執行 |
-| **隨時插話、隨時停** | 任務進行中可以繼續補充要求，還沒處理的可以長按撤回或修改；停下後會交代做到哪裡，說「繼續」就接著做 |
-| **按住說話** | 輸入框按住說話，字填進框裡改好再送出；懸浮膠囊長按說話，放開直接送出。用手機內建的語音辨識，沒有時可選服務商的語音模型 |
-| **檔案與運算** | 每個對話一個 Linux 沙箱，跑 Python、Node 和 shell，處理你傳來的檔案（arm64） |
-| **電腦上也能用** | 電腦上的 AI 工具透過 CLI + Skill 或 MCP 把任務交給 Qusin（[從電腦使用 Qusin](../computer.md)） |
+## 隱私與限制
 
-預設是**詢問模式**：只有花錢（下單、付款）會先問你，其他事直接做完；也可以改成**自主模式**。詳見[詢問與自主](../modes.md)。
+API 金鑰和機密資訊會在裝置上加密儲存。傳送給模型的提示詞和其他資料會由你設定的服務商處理，Qusin 無法覆蓋服務商的資料處理政策。手機控制任務使用你授予的 Android 權限。安全畫面、DRM 內容及禁止截圖的介面可能無法讀取，需要你接手。
 
-每一項怎麼用、有哪些細節，見[詳細說明](../features.md)。
-
-<details>
-<summary>已經寫好使用知識的 App 和網站（沒寫到的照樣能用）</summary>
-
-完整清單見簡體中文版 README 的[「能做什么」](README.zh-CN.md#能做什么)一節，會隨內建知識自動更新。
-
-</details>
-
-<details>
-<summary>支援的模型服務商</summary>
-
-內建的服務商預設和「自定義」能接的介面類型，完整清單見簡體中文版 README 的[「能做什么」](README.zh-CN.md#能做什么)一節，會隨程式碼自動更新。
-
-也可以不填 Key：用 ChatGPT（Plus / Pro）、xAI / Grok、OpenRouter 帳號登入。新增模型的步驟和各家登入的注意事項見[模型與登入](../models.md)。
-
-</details>
-
-## 能在哪些手機上用
-
-| | 需求 |
-|---|---|
-| 聊天、上網、檔案 | Android 11 以上 |
-| 操作手機 App | Android 12 以上；**建議 Android 14+**（背景螢幕有自己的焦點，不影響你在主螢幕打字） |
-| Linux 沙箱 | arm64 裝置 |
-
-不確定自己的手機行不行？設定 › 恢復與修復 › **相容性自我檢查**，一分鐘跑完 12 項，結果可以一鍵[回報給我們](https://github.com/Sddnin/Qusin/issues/new?template=device-report.yml)。
-
-## 隱私與安全
-
-- **沒有 Qusin 伺服器**：你說的話、螢幕內容只會傳給你自己設定的模型服務商。
-- API Key、記憶加密保存在手機上；對話、執行紀錄只存在本機；檢查更新只連到 GitHub。
-- 自動操作第三方 App 和網站可能違反它們的使用條款，請自行判斷。重要的事用詢問模式，並檢查結果。詳見[免責聲明](../disclaimer.md)。
-
-<details>
-<summary><b>常見問題</b></summary>
-
-**無線偵錯自己關掉了？** Android 在換 Wi-Fi、重新開機後會關掉它。Qusin 會在你允許的前提下自己打開；連不上就回到「設定手機操作」重新配對。
-
-**系統裡找不到無線偵錯？** 有的手機系統拿掉了這一項，可以用電腦透過 USB 啟動手機助手，見[設定指南](../setup-guide.md)。
-
-**有的頁面讀不到、截不到？** 付款、輸入密碼這類頁面禁止截圖，Qusin 會請你接手。
-
-**能用自己電腦上跑的模型嗎？** 可以，服務商選「自定義」，填區域網路位址即可。
-
-**App 有繁體中文介面嗎？** 有。介面有繁體中文、簡體中文、英文、阿拉伯語、日文、韓文、西班牙文、葡萄牙文、俄文和印尼文，跟隨系統語言，也可以在 設定 › 語言 裡切換。
-
-**更新從哪裡來？** 只從本倉庫的 [Releases](https://github.com/Sddnin/Qusin/releases) 發布；App 裡「關於 › 檢查更新」也能直接升級。
-
-更多問答見[常見問題](../faq.md)。
-
-</details>
-
-## 社群與貢獻
-
-- **文件**：全部文件和閱讀順序見[文件目錄](../README.md)
-- **交流**：App 裡「關於 › 聯絡作者」掃碼加作者微信（請備註 Qusin）；不用微信的話可以加入 [X 群聊](https://x.com/i/chat/group_join/g2116926829198246025/48B52j5svL)
-- **關注作者**：X [@wangzan101](https://x.com/wangzan101)
-- **回報問題**：[開 Issue](https://github.com/Sddnin/Qusin/issues/new/choose)，App 裡「關於 › 回報問題」可以附上診斷資訊
-- **參與貢獻**：為某個 App、網站補一份使用知識（純文字，不用寫程式），或者貢獻程式碼，見[貢獻指南](../../.github/CONTRIBUTING.zh-CN.md)
-
-<p align="center">⭐ 如果 Qusin 幫你省了時間，點個 Star，讓更多人找到它。</p>
-
-## Star History
-
-<a href="https://star-history.com/#Sddnin/Qusin&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&theme=dark&v=20261110-2017" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&v=20261110-2017" width="600" />
-  </picture>
-</a>
-
-## 貢獻者
-
-感謝每一位參與 Qusin 的人：
-
-<a href="https://github.com/Sddnin/Qusin/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Sddnin/Qusin&max=100&columns=12" alt="Contributors" />
-</a>
+Qusin 仍在積極開發中。對於傳送訊息、刪除資料、下單或付款等重要操作，請先檢查執行結果。
 
 ## 授權條款
 
-[Apache-2.0](../../LICENSE) · [NOTICE](../../NOTICE) · [第三方元件](../../licenses/THIRD_PARTY_NOTICES.md)
+請參閱 [LICENSE](../../LICENSE)、[NOTICE](../../NOTICE) 和[第三方授權聲明](../../licenses/THIRD_PARTY_NOTICES.md)。

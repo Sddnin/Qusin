@@ -168,7 +168,7 @@
     <string name="phone_root_commands_on">Açık. Salt okunur komutlar doğrudan çalışabilir; bir şeyi değiştiren veya silen komutlar yine de mevcut onay modunu izler.</string>
     <string name="phone_root_commands_denied">Root reddedildi, bu yüzden bu kapalı kalır.</string>
     <string name="phone_root_commands_title">Root komutlarına izin verilsin mi?</string>
-    <string name="phone_root_commands_warning">Root komutları, diğer uygulamaların verileri dahil telefonda her şeyi değiştirebilir veya silebilir ve telefonu kullanılamaz hale getirebilir. Sor modunda Qusin, bir şeyi değiştiren veya silen her root komutundan önce size sorar; Otonom modda sormaz. Bunu yalnızca riski anlıyorsanız açın.</string>
+    <string name="phone_root_commands_warning">Root komutları, diğer uygulamaların verileri dahil telefondaki her şeyi değiştirebilir veya silebilir ve telefonu kullanılamaz hâle getirebilir. Sor modunda bu seçeneği açmak, istediğiniz root komutlarının her komuttan önce sorulmadan doğrudan Qusin tarafından çalıştırılmasına izin verir; Otonom modda da komut başına onay atlanır. Yalnızca riski anlıyorsanız açın.</string>
     <string name="phone_root_commands_confirm">İzin ver</string>
     <string name="phone_root_commands_note">Bu, yardımcıyı başlatmaktan ayrıdır. Bunu açmak, Qusin\'nın yardımcıyı root olarak çalıştırmasına izin vermez; yalnızca görevlere root komutları ekler.</string>
     <string name="phone_root_note">Qusin bu telefonda su buldu. Root ile başlatılan bir yardımcı yine de aynı kısıtlı kullanıcı olarak, Kablosuz hata ayıklama üzerinden başlatılanla aynı izinlerle çalışır.</string>

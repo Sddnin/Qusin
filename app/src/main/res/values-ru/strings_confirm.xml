@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="confirm_note">Для важных действий, таких как отправка, публикация, отправка форм и удаление, каждый раз требуется ваше согласие.</string>
+    <string name="confirm_note">Ваше подтверждение каждый раз требуется только для действий, которые тратят деньги, например оформления заказа.</string>
     <string name="confirm_pay">Оплатить</string>
     <string name="confirm_delete">Удалить</string>
     <string name="confirm_order">Оформить заказ</string>

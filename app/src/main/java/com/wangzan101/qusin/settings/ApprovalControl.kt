@@ -5,7 +5,7 @@ import com.wangzan101.qusin.core.gate.ConfirmationGate
 
 /**
  * 一个任务自己的审批设置:自主与否是开工时取全局的,之后跟着开发者选项里的「自主模式」变([set])。
- * 询问时对外和不可逆动作先问;自主时跳过这些逐次确认。
+ * 询问时只有花钱的步骤需要逐次确认;自主模式跳过付款前的确认,但付款仍由用户亲手完成。
  */
 class RunApproval(startAutonomous: Boolean) : ApprovalSettings {
     /** 开工时就是自主:这个任务没有确认关卡,也不给 request_confirmation;中途关掉自主留给下一个任务。 */
@@ -31,8 +31,8 @@ class ApprovalControl(private val store: ApprovalStore) {
 
     /**
      * [alwaysAsk] 为 true 的任务不管开关,一律按询问开工、也不跟着开关变。两种:
-     * - 电脑经 MCP 交来的任务:高影响操作在这类任务里永远不做(审批判定对非手机发起的一律拒绝),远端没有办法让它放行。
-     * - 对话里有通知提醒的任务(见 [com.wangzan101.qusin.core.agent.NoticeTurn]):对话里带着别人写的字,高影响动作照样先问用户。
+     * - 电脑经 MCP 交来的任务:付款和不可逆操作在这类非手机运行里不会执行,远端没有办法让它们获得手机上的确认。
+     * - 对话里有通知提醒的任务(见 [com.wangzan101.qusin.core.agent.NoticeTurn]):任务从询问模式开始,付款仍需要用户确认;不花钱的已授权操作按统一策略直接执行。
      */
     @Synchronized fun start(alwaysAsk: Boolean = false): RunApproval =
         if (alwaysAsk) RunApproval(false) else RunApproval(store.autonomous.value).also { runs += it }

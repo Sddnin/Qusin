@@ -18,7 +18,7 @@ import (
 const maxBody = 1 << 20
 
 // Both ends must speak the same tunnel protocol; a phone offering another version is refused before upgrade.
-const subprotocol = "mika-relay.v2"
+const subprotocol = "qusin-relay.v2"
 
 type frame struct {
 	Type    string            `json:"type"`

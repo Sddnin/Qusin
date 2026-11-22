@@ -1,190 +1,92 @@
-<!-- translated-from: README.md @ 7b09b8113580 -->
+<!-- translated-from: README.md @ 1e3fabff8c4e -->
 <div align="center">
 
 <img src="../media/logo.png" alt="Qusin" width="88" />
 
 # Qusin
 
-**Un asistente de IA en tu móvil: dile lo que necesitas y usará tus apps y la web hasta dejarlo hecho.**
+**Qusin es un asistente de IA para Android.** Describe una tarea con lenguaje natural y te ayudará a usar aplicaciones, sitios web, archivos y tareas programadas.
 
-Trabaja en una pantalla en segundo plano que no ves, así que puedes seguir usando el móvil con normalidad.
+Qusin no incluye un modelo de IA propio. Puedes conectar un proveedor con tu clave API, iniciar sesión con una cuenta compatible o usar un modelo alojado en tu ordenador o red local.
 
-<a href="https://github.com/Sddnin/Qusin"><img src="../media/star-banner-v2.png" alt="¿Te gusta Qusin? Dale una estrella — haz clic en Star arriba a la derecha" width="620" /></a>
+## Funciones
 
-<br/>
-<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/badge/Descargar%20APK-Android%2011%2B-2ea043?style=for-the-badge&logo=android&logoColor=white" alt="Descargar APK" /></a> <a href="https://github.com/Sddnin/Qusin"><img src="https://img.shields.io/github/stars/Sddnin/Qusin?style=for-the-badge&logo=github&label=Star&color=FFD700&logoColor=white" alt="Star this repo" /></a>
+- **Control de aplicaciones Android:** opera las aplicaciones en una pantalla virtual en segundo plano, lee la interfaz, toca, escribe y desplaza contenido mientras sigues usando la pantalla principal. Hay límites del dispositivo y de cada aplicación; el inicio de sesión, los CAPTCHA y los pasos sensibles pueden requerir tu intervención.
+- **Navegador integrado:** usa un WebView independiente que conserva las sesiones de los sitios y admite eventos de entrada reales, lectura de páginas, cargas y descargas.
+- **Tareas largas y paralelas:** consulta el progreso y los pasos ejecutados, envía instrucciones adicionales o detén una tarea. El paralelismo está limitado por el dispositivo y las aplicaciones.
+- **Horarios y condiciones:** crea tareas únicas, diarias, semanales o basadas en condiciones; consulta la próxima ejecución y el historial.
+- **Memoria y habilidades:** guarda información autorizada, consulta conocimientos sobre aplicaciones y sitios, y añade habilidades de texto.
+- **Espacio de trabajo Linux:** cada conversación tiene un espacio propio para archivos y comandos. El entorno integrado solo admite actualmente dispositivos ARM64.
+- **Conexión con el ordenador:** envía tareas mediante CLI/Skill o MCP, sigue su estado y recibe los resultados desde el ordenador.
 
-<a href="https://github.com/Sddnin/Qusin/releases"><img src="https://img.shields.io/github/downloads/Sddnin/Qusin/total?label=descargas&color=2ea043" alt="downloads" /></a>
-<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/github/v/release/Sddnin/Qusin?include_prereleases&label=versi%C3%B3n" alt="version" /></a>
-<a href="../../LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-lightgrey" alt="license" /></a>
+## Modelos y claves API
 
-<br/>
+Qusin admite los protocolos compatibles con OpenAI Chat Completions, Anthropic Messages, Google Gemini `generateContent` y OpenAI Responses. Incluye plantillas para varios proveedores en la nube, servicios compatibles con OpenAI y servidores locales como Ollama/LM Studio; también admite endpoints personalizados.
 
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/daily?language=Kotlin" alt="#1 Kotlin Repository of the Day" width="250" height="55" /></a>
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/weekly?language=Kotlin" alt="#1 Kotlin Repository of the Week" width="250" height="55" /></a>
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/daily" alt="#5 Repository of the Day" width="250" height="55" /></a>
+Abre **Ajustes → Modelos → elige un proveedor** y usa **Grupo de claves API → Añadir clave API** para añadir claves. Puedes pegar varias separadas por comas, punto y coma o saltos de línea. Qusin alterna entre las claves disponibles: `401/403` marca una clave como rechazada y `429` la pone en espera según la respuesta del servidor. Si ninguna está disponible, no vuelve a usar una clave rechazada.
 
-<br/>
+El grupo se aplica a los protocolos compatibles con claves API. Las sesiones OAuth, como los inicios de sesión de ChatGPT y xAI, no son claves API y se administran por separado. OpenRouter permite conservar una cuenta con sesión iniciada y añadir claves de respaldo independientes.
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-Hant.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · Español · [Türkçe](README.tr.md)
+## Conocimientos integrados
 
-<sub>Esta versión en español es una traducción del original en chino simplificado. Si ves algo que suena raro o que no coincide con el original, te agradecemos que lo corrijas con un PR.</sub>
+La lista integrada de aplicaciones, sitios web y habilidades generales se genera a partir de las fuentes de conocimiento del proyecto y se actualiza con esos datos.
 
-<br/>
+## Proveedores preconfigurados
 
-<img src="../media/wechat-send-side.gif" alt="Con una sola frase, Qusin abre WeChat en su pantalla en segundo plano, busca el contacto y envía el mensaje" width="640" />
+Hay plantillas para DeepSeek, Qwen, Kimi, Zhipu, SiliconFlow, Volcano Engine, MiniMax, StepFun, Tencent Hunyuan, Baidu Qianfan, OpenRouter, OpenDesign Go, OpenCode Go, Anthropic, Gemini, OpenAI, xAI, Mistral, Groq, Cloudflare Workers AI, Ollama y LM Studio. También puedes configurar un endpoint personalizado.
 
-<sub>Con la frase «Envía un mensaje a Transferencia de archivos»: a la izquierda, la conversación con Qusin; a la derecha, cada paso en su pantalla en segundo plano (a velocidad 4×, con la lista de chats difuminada)</sub>
+## Requisitos
 
-</div>
+- Android 10 o posterior para la instalación y las funciones básicas.
+- Android 12 o posterior y completar el asistente de configuración para controlar otras aplicaciones Android.
+- Un dispositivo ARM64 para el entorno Linux integrado.
+- Un modelo principal que admita llamadas a herramientas/funciones.
 
-## Una frase, una tarea resuelta
+## Primeros pasos
 
-<table>
-<tr>
-<td align="center" width="33%"><img src="../media/wechat-group.gif" width="230" alt="Lee un grupo de WeChat de principio a fin y resume lo que se habló hoy" /><br/><b>«¿De qué se habló hoy en el grupo?»</b><br/><sub>Repasa el chat en segundo plano y luego lo resume</sub></td>
-<td align="center" width="33%"><img src="../media/amazon-cart.gif" width="230" alt="Elige un cargador en una tienda online y lo añade al carrito" /><br/><b>«Un cargador de menos de 30 dólares y 4,5 estrellas o más»</b><br/><sub>Lo añade al carrito y se detiene antes de pagar</sub></td>
-<td align="center" width="33%"><img src="../media/xhs-summary.gif" width="230" alt="Resume las publicaciones recientes de un creador" /><br/><b>«¿Qué ha publicado últimamente este creador?»</b><br/><sub>Abre la app, lee publicación por publicación y lo ordena</sub></td>
-</tr>
-</table>
+1. Instala Qusin y ábrelo en tu teléfono.
+2. Ve a **Ajustes → Modelos** y añade un proveedor o inicia sesión con una cuenta compatible.
+3. Selecciona un modelo principal compatible con llamadas a herramientas. Los modelos de visión, ligeros y de voz a texto se configuran por separado.
+4. Para controlar aplicaciones Android, completa el emparejamiento de depuración inalámbrica y la configuración de accesibilidad dentro de la aplicación.
+5. Inicia una conversación y describe la tarea en lenguaje natural.
 
-<details>
-<summary>Más demos</summary>
+Documentación:
 
-<table>
-<tr>
-<td align="center" width="33%"><img src="../media/boss-greet.gif" width="230" alt="Saluda a los reclutadores de 3 ofertas en un portal de empleo" /><br/>Saluda a los reclutadores de 3 ofertas en un portal de empleo</td>
-<td align="center" width="33%"><img src="../media/google-flights.gif" width="230" alt="Busca el vuelo directo más barato" /><br/>Busca el vuelo directo más barato de San Francisco a Nueva York</td>
-<td align="center" width="33%"><img src="../media/hacker-news.gif" width="230" alt="Lee en voz alta las 5 primeras noticias y su puntuación" /><br/>Lee las 5 primeras noticias de un sitio de noticias</td>
-</tr>
-<tr>
-<td align="center"><img src="../media/job-greet.jpg" width="230" alt="Busca ofertas de empleo y saluda a los reclutadores" /><br/>Busca ofertas y saluda a los reclutadores</td>
-<td align="center"><img src="../media/music-vip.jpg" width="230" alt="Mira anuncios para conseguir ventajas en una app de música" /><br/>Mira anuncios para conseguir ventajas de música</td>
-<td align="center"><img src="../media/food-order.jpg" width="230" alt="Pide comida a domicilio combinando descuentos y te pregunta antes de pagar" /><br/>Pide comida combinando descuentos y pregunta antes de pagar</td>
-</tr>
-</table>
+- [Modelos e inicio de sesión](../models.en.md)
+- [Configuración del control del teléfono](../setup-guide.en.md)
+- [Referencia de funciones](../features.en.md)
+- [Preguntas frecuentes](../faq.en.md)
+- [Usar Qusin desde un ordenador](../computer.en.md)
+- [Hoja de ruta de desarrollo](../dev/roadmap.md)
 
-</details>
+## Notas de versión
 
-<sub>En varias demos aparecen WeChat, una app de mensajería, y Xiaohongshu (RED), una red social de estilo de vida. Qusin no depende de ellas: funciona con cualquier app o sitio web de tu móvil.</sub>
+Las descripciones de GitHub Releases pueden incluir secciones etiquetadas por idioma. Qusin muestra la sección correspondiente al idioma de la aplicación y recurre al inglés si no existe. Para publicar una versión, utiliza la [plantilla de notas multilingües](../dev/release-notes-template.md).
 
-## Por qué Qusin
+## Compilar desde el código fuente
 
-| | |
-|---|---|
-| 📱 **No te quita la pantalla** | Abre apps, toca, escribe y se desplaza en una pantalla aparte en segundo plano mientras tú usas el móvil como siempre; si quieres mirar, toca la vista en miniatura |
-| 🧩 **Funciona con cualquier app** | Mira la pantalla y encuentra los botones como lo haría una persona: no necesita APIs de la app ni integraciones previas |
-| 🌐 **Llámalo desde cualquier página web** | En el navegador integrado, di lo que quieres en la página que estás leyendo y trabajará ahí mismo; si tocas la página, se detiene |
-| 🧠 **Mejora con el uso** | Recuerda las preferencias que le cuentas y convierte las tareas que completa en habilidades, para hacerlas más rápido y con más fiabilidad la próxima vez |
-| 🔒 **Tus datos se quedan en tu móvil** | No hay ningún servidor de Qusin; usa tu propia clave de API del modelo o inicia sesión con una cuenta de ChatGPT, xAI u OpenRouter |
-| 🆓 **Código abierto y gratis** | Apache-2.0, todo el código es público |
+Necesitas JDK 17 y un Android SDK que coincida con la configuración del proyecto Gradle.
 
-## Empieza en tres pasos
+```bash
+# Pruebas unitarias
+./gradlew :core:test :app:testDebugUnitTest
 
-1. **Instálalo**: descarga el APK desde [Releases](https://github.com/Sddnin/Qusin/releases/latest).
-2. **Conecta un modelo**: en Ajustes › Modelo, elige un proveedor e introduce una clave de API, o simplemente inicia sesión con una cuenta ([modelos e inicio de sesión](../models.en.md)).
-3. **Para que maneje apps del móvil**: sigue el asistente «Set up phone control» de los ajustes y empareja la depuración inalámbrica una sola vez ([guía de configuración](../setup-guide.en.md)). Si solo quieres chatear, navegar y trabajar con archivos, puedes saltarte este paso.
+# Crear un APK Debug
+./gradlew :app:assembleDebug
+```
 
-Después, prueba a decirle: «Pon alarmas mañana a las 9:40 y a las 10:00» o «Mira el tiempo cada mañana a las 8 y avísame solo si va a llover».
+El APK Debug se genera en:
 
-> 💡 ¿Tienes un ordenador a mano? Envía esta frase al agente de IA de tu ordenador y lo instalará todo por ti:<br/>
-> `Sigue los pasos de https://github.com/Sddnin/Qusin/blob/main/docs/install-with-agent.en.md para instalar Qusin en el móvil Android conectado por USB.`
+```text
+app/build/outputs/apk/debug/app-debug.apk
+```
 
-## Qué puede hacer
+## Privacidad y limitaciones
 
-| | |
-|---|---|
-| **Manejar apps** | Lee listas largas e historiales de chat, toca y escribe, comparte texto con las apps; los inicios de sesión, códigos de verificación y pagos te los deja a ti |
-| **Navegar por la web** | Un navegador integrado de tipo escritorio que mantiene tus sesiones, lee páginas, descarga y sube archivos; marca su propio ritmo al pasar páginas y, si algo lo bloquea, te lo pasa |
-| **Lo que tienes en pantalla** | Toca dos veces la cápsula flotante para enviarle la pantalla que estás viendo: «¿qué le respondo?», «apúntame esto» |
-| **Horarios y condiciones** | «Recuérdamelo mañana a las 9», «haz esto todos los viernes»; se ejecuta a su hora en la conversación original |
-| **Interrúmpelo o páralo cuando quieras** | Sigue hablándole mientras trabaja para añadir o corregir cosas (mantén pulsado un mensaje que aún no haya recogido para retirarlo o editarlo); al parar te dice hasta dónde llegó, y con «sigue» retoma desde ahí |
-| **Mantén pulsado para hablar** | Mantén pulsado el cuadro de texto para dictar y corrige antes de enviar; mantén pulsada la cápsula flotante para hablar y suelta para enviarlo directamente. Usa el reconocimiento de voz del teléfono o, si no tiene, un modelo de voz de tu proveedor |
-| **Archivos y cálculo** | Un sandbox de Linux por conversación ejecuta Python, Node y shell sobre los archivos que le envías (arm64) |
-| **Desde tu ordenador** | Las herramientas de IA de tu ordenador pueden encargarle tareas a Qusin mediante CLI + Skill o MCP ([usar Qusin desde un ordenador](../computer.en.md)) |
+Las claves API y los secretos se cifran al guardarse en el dispositivo. El proveedor que configures procesa las instrucciones y otros datos enviados al modelo; Qusin no puede sustituir la política de tratamiento de datos de ese proveedor. Las tareas de control del teléfono usan los permisos Android que concedas. Es posible que no se puedan leer pantallas seguras, contenido DRM o interfaces que bloqueen las capturas, y que tengas que intervenir.
 
-Por defecto, Qusin funciona en **modo Preguntar**: solo te consulta antes de gastar dinero (hacer pedidos, pagar) y todo lo demás lo hace sin más. También puedes cambiar al **modo Autónomo**. Consulta [Preguntar y Autónomo](../modes.en.md).
-
-Para ver cómo funciona cada cosa y los detalles, consulta las [funciones en detalle](../features.en.md).
-
-<details>
-<summary>Apps y sitios web con conocimiento de uso integrado (los que no aparecen también funcionan)</summary>
-
-La lista completa está en la sección [What it can do](../../README.md#what-it-can-do) del README en inglés y se actualiza sola a medida que cambia el conocimiento integrado.
-
-</details>
-
-<details>
-<summary>Proveedores de modelos compatibles</summary>
-
-Los proveedores predefinidos y los tipos de API a los que se puede conectar con «Custom» aparecen en la sección [What it can do](../../README.md#what-it-can-do) del README en inglés, que se actualiza sola a partir del código.
-
-También puedes prescindir de la clave e iniciar sesión con una cuenta de ChatGPT (Plus / Pro), xAI / Grok u OpenRouter. Los pasos para añadir un modelo y lo que conviene saber de cada inicio de sesión están en [modelos e inicio de sesión](../models.en.md).
-
-</details>
-
-## En qué móviles funciona
-
-| | Requisito |
-|---|---|
-| Chat, web, archivos | Android 11 o posterior |
-| Manejar apps del móvil | Android 12 o posterior; **se recomienda Android 14+** (la pantalla en segundo plano tiene su propio foco, así que no interfiere cuando escribes en la pantalla principal) |
-| Sandbox de Linux | Dispositivos arm64 |
-
-¿No sabes si tu móvil sirve? Ejecuta Ajustes › Recuperación y reparación › **Autocomprobación de compatibilidad**: 12 comprobaciones en un minuto, y puedes [enviarnos el resultado](https://github.com/Sddnin/Qusin/issues/new?template=device-report.yml) con un toque.
-
-## Privacidad y seguridad
-
-- **No hay ningún servidor de Qusin**: lo que dices y lo que hay en tu pantalla solo se envía al proveedor de modelos que tú configuras.
-- Las claves de API y los recuerdos se guardan cifrados en el móvil; las conversaciones y los registros de ejecución se quedan en el dispositivo; para buscar actualizaciones solo se contacta con GitHub.
-- Manejar automáticamente apps y sitios web de terceros puede ir en contra de sus condiciones de uso, así que decide tú. Para lo importante, usa el modo Preguntar y revisa los resultados. Consulta el [aviso legal](../disclaimer.en.md).
-
-<details>
-<summary><b>Preguntas frecuentes</b></summary>
-
-**¿La depuración inalámbrica se desactiva sola?** Android la desactiva al cambiar de Wi-Fi o al reiniciar. Si se lo permites, Qusin la vuelve a activar por su cuenta; si aun así no conecta, vuelve a «Set up phone control» y empareja de nuevo.
-
-**¿No encuentras la depuración inalámbrica en tu móvil?** Algunos sistemas no la incluyen. En ese caso puedes iniciar el asistente del móvil desde un ordenador por USB; consulta la [guía de configuración](../setup-guide.en.md).
-
-**¿Hay pantallas que no se pueden leer ni capturar?** Las pantallas de pago o de introducción de contraseñas bloquean las capturas, así que Qusin te pide que te encargues tú.
-
-**¿Puedo usar un modelo que se ejecuta en mi propio ordenador?** Sí: elige «Custom» como proveedor e introduce su dirección en tu red local.
-
-**¿La app está en español?** Sí. La interfaz está en español, inglés, árabe, chino simplificado, chino tradicional, japonés, coreano, portugués, ruso e indonesio, sigue el idioma del sistema y se puede cambiar en Ajustes › Idioma. Puedes hablarle a Qusin en español sin problema. El conocimiento integrado sobre apps y sitios web está escrito en chino, y el modelo lo entiende sin dificultad.
-
-**¿De dónde vienen las actualizaciones?** Solo de los [Releases](https://github.com/Sddnin/Qusin/releases) de este repositorio; también puedes actualizar desde la app en Acerca de Qusin › Buscar actualizaciones.
-
-Hay más respuestas en las [preguntas frecuentes](../faq.en.md).
-
-</details>
-
-## Comunidad y contribuciones
-
-- **Documentación**: toda la documentación y un orden de lectura sugerido están en el [índice de documentación](../README.en.md)
-- **Comunidad**: únete al [chat de grupo en X](https://x.com/i/chat/group_join/g2116926829198246025/48B52j5svL); para escribir al autor por WeChat, escanea el código QR de la app en Acerca de Qusin › Contactar con el autor (menciona «Qusin» en la solicitud)
-- **Sigue al autor**: X [@wangzan101](https://x.com/wangzan101)
-- **Informa de un problema**: [abre un issue](https://github.com/Sddnin/Qusin/issues/new/choose); en la app, Acerca de Qusin › Enviar comentarios permite adjuntar información de diagnóstico
-- **Contribuye**: añade conocimiento de uso para una app o un sitio web (texto plano, sin programar) o contribuye con código; consulta la [guía de contribución](../../.github/CONTRIBUTING.md)
-
-<p align="center">⭐ Si Qusin te ahorra tiempo, dale una estrella para que más gente lo encuentre.</p>
-
-## Star History
-
-<a href="https://star-history.com/#Sddnin/Qusin&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&theme=dark&v=20261110-2017" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&v=20261110-2017" width="600" />
-  </picture>
-</a>
-
-## Colaboradores
-
-Gracias a todas las personas que han participado en Qusin:
-
-<a href="https://github.com/Sddnin/Qusin/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Sddnin/Qusin&max=100&columns=12" alt="Contributors" />
-</a>
+Qusin sigue en desarrollo. Comprueba los resultados antes de confiar en operaciones importantes, especialmente enviar mensajes, borrar datos, hacer pedidos o pagar.
 
 ## Licencia
 
-[Apache-2.0](../../LICENSE) · [NOTICE](../../NOTICE) · [Componentes de terceros](../../licenses/THIRD_PARTY_NOTICES.md)
+Consulta [LICENSE](../../LICENSE), [NOTICE](../../NOTICE) y los [avisos de licencias de terceros](../../licenses/THIRD_PARTY_NOTICES.md).

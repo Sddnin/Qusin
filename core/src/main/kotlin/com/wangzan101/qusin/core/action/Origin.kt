@@ -12,7 +12,7 @@ enum class RefusalStyle { Model, Script, Code }
  */
 data class OriginPolicy(
     val source: String,
-    /** 能否使用用户的一次性同意放行高影响动作;其他来源不能使用这份授权。 */
+    /** 能否使用用户的一次性同意放行需要付款确认或工具显式确认的步骤;其他来源不能使用这份授权。 */
     val usesGrant: Boolean,
     /** 没配确认关卡时也判不可逆:子步命中就停,不靠关卡。 */
     val judgeWithoutGate: Boolean,
@@ -69,7 +69,7 @@ sealed interface Origin {
         /** 一个页面脚本动作的上限:打开网址最多等 20 秒加载,再留余量等页面安静。 */
         const val SCRIPT_ACTION_CAP_MS = 40_000L
 
-        // 只有模型单步能等待并使用用户的一次性同意;批处理、脚本、回放和 MCP 遇到高影响动作就停止
+        // 只有模型单步能等待并使用用户的一次性同意;批处理、脚本、回放和 MCP 不能消费这份授权
         private val MODEL = OriginPolicy(
             "model", usesGrant = true, judgeWithoutGate = false, refuseUnresolved = false, stopOnGuardWarning = false,
             gatedByCaller = false, isolatedReads = false, actionCapMs = null, frames = Frames.Caller, routeTargets = true,

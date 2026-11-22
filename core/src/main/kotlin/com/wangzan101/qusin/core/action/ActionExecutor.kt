@@ -65,7 +65,7 @@ class ActionExecutor(
     private val decision = ConfirmDecision(tools, confirmations, approvals, recorder = recorder, provenance = provenance, selfPackage = selfPackage, autonomous = autonomous)
     private val pass = ActionPass()
 
-    /** 配了确认关卡(可由用户逐次批准受保护的高影响动作)。 */
+    /** 配了确认关卡(用于用户逐次批准付款或工具明确声明需要确认的步骤)。 */
     val confirms: Boolean = confirmations != null
 
     /** 不动屏幕的工具的守卫叫停的结论;没叫停为 null。 */

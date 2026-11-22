@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="confirm_note">送信、公開、フォーム送信、削除などの重要な操作には、その都度確認が必要です。</string>
+    <string name="confirm_note">注文など、お金を使う手順だけが毎回の承認を必要とします。</string>
     <string name="confirm_pay">支払う</string>
     <string name="confirm_delete">削除</string>
     <string name="confirm_order">注文する</string>

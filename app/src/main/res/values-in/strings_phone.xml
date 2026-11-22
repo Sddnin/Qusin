@@ -168,7 +168,7 @@
     <string name="phone_root_commands_on">Aktif. Perintah hanya-baca dapat langsung dijalankan; perintah yang mengubah atau menghapus tetap mengikuti mode konfirmasi saat ini.</string>
     <string name="phone_root_commands_denied">Root ditolak, jadi tetap nonaktif.</string>
     <string name="phone_root_commands_title">Izinkan perintah root?</string>
-    <string name="phone_root_commands_warning">Perintah root dapat mengubah atau menghapus apa pun di ponsel, termasuk data aplikasi lain, dan dapat membuat ponsel tidak dapat digunakan. Dalam mode Tanya, Qusin bertanya sebelum setiap perintah root yang mengubah atau menghapus sesuatu; dalam mode Mandiri, Qusin tidak bertanya. Aktifkan hanya jika Anda memahami risikonya.</string>
+    <string name="phone_root_commands_warning">Perintah root dapat mengubah atau menghapus apa pun di ponsel, termasuk data aplikasi lain, dan dapat membuat ponsel tidak dapat digunakan. Dalam mode Tanya, mengaktifkan opsi ini memberi wewenang kepada Qusin untuk menjalankan langsung perintah root yang Anda minta tanpa bertanya sebelum setiap perintah; mode Mandiri juga melewati konfirmasi perintah satu per satu. Aktifkan hanya jika Anda memahami risikonya.</string>
     <string name="phone_root_commands_confirm">Izinkan</string>
     <string name="phone_root_commands_note">Ini terpisah dari memulai pembantu. Mengaktifkannya tidak menjalankan pembantu sebagai root; hanya menambahkan perintah root ke tugas.</string>
     <string name="phone_root_note">Qusin menemukan su di ponsel ini. Pembantu yang dimulai dengan root tetap berjalan sebagai pengguna terbatas yang sama, dengan izin yang sama seperti melalui debug nirkabel.</string>

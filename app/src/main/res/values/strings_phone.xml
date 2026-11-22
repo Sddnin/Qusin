@@ -168,7 +168,7 @@
     <string name="phone_root_commands_on">On. Read-only commands can run directly; commands that change or delete something still follow the current confirmation mode.</string>
     <string name="phone_root_commands_denied">Root was denied, so this stays off.</string>
     <string name="phone_root_commands_title">Allow root commands?</string>
-    <string name="phone_root_commands_warning">Root commands can change or delete anything on the phone, including other apps’ data, and can leave the phone unusable. In Ask mode, Qusin asks you before each root command that changes or deletes something; in Autonomous mode it doesn’t ask. Turn this on only if you understand the risk.</string>
+    <string name="phone_root_commands_warning">Root commands can change or delete anything on the phone, including other apps’ data, and can leave the phone unusable. In Ask mode, enabling this option authorizes Qusin to run requested root commands directly, without asking before each command; Autonomous mode also skips per-command confirmation. Turn this on only if you understand the risk.</string>
     <string name="phone_root_commands_confirm">Allow</string>
     <string name="phone_root_commands_note">This is separate from starting the helper. Turning it on does not let Qusin run the helper as root; it only adds root commands to tasks.</string>
     <string name="phone_root_note">Qusin found su on this phone. A helper started with root still runs as the same limited user, with the same permissions as one started over Wireless debugging.</string>

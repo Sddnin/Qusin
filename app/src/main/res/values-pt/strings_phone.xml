@@ -168,7 +168,7 @@
     <string name="phone_root_commands_on">Ativado. Comandos somente leitura podem ser executados diretamente; os que alteram ou excluem seguem o modo de confirmação atual.</string>
     <string name="phone_root_commands_denied">O root foi negado, portanto continua desativado.</string>
     <string name="phone_root_commands_title">Permitir comandos root?</string>
-    <string name="phone_root_commands_warning">Comandos root podem alterar ou excluir qualquer coisa no celular, incluindo dados de outros apps, e podem deixá-lo inutilizável. No modo Perguntar, o Qusin pergunta antes de cada comando root que altere ou exclua algo; no modo Autônomo, não pergunta. Ative somente se entender o risco.</string>
+    <string name="phone_root_commands_warning">Comandos root podem alterar ou excluir qualquer coisa no celular, incluindo dados de outros apps, e podem deixá-lo inutilizável. No modo Perguntar, ativar esta opção autoriza o Qusin a executar diretamente os comandos root solicitados, sem perguntar antes de cada comando; o modo Autônomo também dispensa a confirmação por comando. Ative somente se entender o risco.</string>
     <string name="phone_root_commands_confirm">Permitir</string>
     <string name="phone_root_commands_note">Isso é independente do início do assistente. Ativar não executa o assistente como root; apenas adiciona comandos root às tarefas.</string>
     <string name="phone_root_note">O Qusin encontrou o su neste celular. Um assistente iniciado com root ainda é executado como o mesmo usuário limitado, com as mesmas permissões de um iniciado por depuração wireless.</string>

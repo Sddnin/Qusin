@@ -1,190 +1,92 @@
-<!-- translated-from: README.md @ 7b09b8113580 -->
+<!-- translated-from: README.md @ 1e3fabff8c4e -->
 <div align="center">
 
 <img src="../media/logo.png" alt="Qusin" width="88" />
 
 # Qusin
 
-**휴대폰 속 AI 비서: 한마디만 하면 앱과 웹을 대신 조작해서 일을 끝내 줍니다.**
+**Qusin은 Android용 AI 비서입니다.** 자연어로 작업을 설명하면 휴대폰 앱, 웹사이트, 파일, 예약 작업을 처리하도록 도와줍니다.
 
-보이지 않는 백그라운드 화면에서 일하기 때문에, 그동안에도 휴대폰은 평소처럼 쓰면 됩니다.
+Qusin에는 자체 AI 모델이 포함되어 있지 않습니다. 내 API 키로 공급자에 연결하거나 지원되는 계정으로 로그인하거나, PC 또는 로컬 네트워크에서 실행 중인 모델을 사용할 수 있습니다.
 
-<a href="https://github.com/Sddnin/Qusin"><img src="../media/star-banner-v2.png" alt="Qusin가 마음에 들면 Star를 —— 오른쪽 위 Star 버튼을 클릭" width="620" /></a>
+## 주요 기능
 
-<br/>
-<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/badge/APK%20%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-Android%2011%2B-2ea043?style=for-the-badge&logo=android&logoColor=white" alt="APK 다운로드" /></a> <a href="https://github.com/Sddnin/Qusin"><img src="https://img.shields.io/github/stars/Sddnin/Qusin?style=for-the-badge&logo=github&label=Star&color=FFD700&logoColor=white" alt="Star this repo" /></a>
+- **Android 앱 제어:** 별도의 백그라운드 가상 화면에서 앱을 조작하고 화면 읽기, 탭, 입력, 스크롤을 수행합니다. 메인 화면에서는 계속 휴대폰을 사용할 수 있습니다. 기기와 앱의 제한에 따라 로그인, CAPTCHA, 민감한 단계에는 사용자의 처리가 필요할 수 있습니다.
+- **내장 브라우저:** 별도 WebView에서 사이트 로그인 상태를 유지하고 실제 입력 이벤트, 페이지 읽기, 업로드와 다운로드를 지원합니다.
+- **장시간 및 병렬 작업:** 진행 상황과 실행 단계를 확인하고 추가 지시를 보내거나 작업을 중지할 수 있습니다. 병렬 실행 수는 기기와 앱의 제한을 받습니다.
+- **일정 및 조건:** 일회성, 매일, 매주 또는 조건 기반 작업을 만들고 다음 실행 시간과 기록을 확인할 수 있습니다.
+- **메모리 및 스킬:** 허용한 정보를 저장하고 앱/웹사이트 지식을 활용하며 텍스트 기반 스킬을 추가할 수 있습니다.
+- **Linux 작업 공간:** 각 대화에 별도 작업 공간이 있어 파일과 명령을 처리합니다. 내장 런타임은 현재 ARM64 기기만 지원합니다.
+- **컴퓨터 연결:** CLI/Skill 또는 MCP로 컴퓨터에서 작업을 보내고 상태를 추적하며 결과를 받을 수 있습니다.
 
-<a href="https://github.com/Sddnin/Qusin/releases"><img src="https://img.shields.io/github/downloads/Sddnin/Qusin/total?label=%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C&color=2ea043" alt="downloads" /></a>
-<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/github/v/release/Sddnin/Qusin?include_prereleases&label=%EB%B2%84%EC%A0%84" alt="version" /></a>
-<a href="../../LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-lightgrey" alt="license" /></a>
+## 모델 및 API 키
 
-<br/>
+Qusin은 OpenAI Chat Completions 호환, Anthropic Messages, Google Gemini `generateContent`, OpenAI Responses 프로토콜을 지원합니다. 여러 클라우드 공급자, OpenAI 호환 서비스, Ollama/LM Studio 같은 로컬 서버의 프리셋과 사용자 지정 엔드포인트를 제공합니다.
 
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/daily?language=Kotlin" alt="#1 Kotlin Repository of the Day" width="250" height="55" /></a>
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/weekly?language=Kotlin" alt="#1 Kotlin Repository of the Week" width="250" height="55" /></a>
-<a href="https://trendshift.io/repositories/326940#achievements"><img src="https://trendshift.io/api/badge/trendshift/repositories/326940/daily" alt="#5 Repository of the Day" width="250" height="55" /></a>
+**설정 → 모델 → 공급자 선택**을 열고 **API 키 풀 → API 키 추가**에서 키를 등록하세요. 여러 키는 쉼표, 세미콜론 또는 줄바꿈으로 구분해 붙여넣을 수 있습니다. Qusin은 사용 가능한 키를 순환합니다. `401/403`은 키를 거부된 것으로 표시하고, `429`는 서버 응답에 따라 대기 시간에 넣습니다. 모든 키를 사용할 수 없으면 거부된 키로 되돌아가지 않습니다.
 
-<br/>
+키 풀은 지원되는 API 키 프로토콜에 적용됩니다. ChatGPT 및 xAI 로그인과 같은 OAuth 세션은 API 키가 아니므로 별도로 관리합니다. OpenRouter는 로그인 계정과 별도로 추가한 백업 키를 함께 사용할 수 있습니다.
 
-[English](../../README.md) · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-Hant.md) · [日本語](README.ja.md) · 한국어 · [Español](README.es.md) · [Türkçe](README.tr.md)
+## 내장 지식
 
-<sub>이 한국어판은 중국어(간체) 원문을 번역한 것입니다. 어색한 표현이나 원문과 다른 부분이 보이면 PR로 고쳐 주세요.</sub>
+내장 앱, 웹사이트 및 일반 작업 스킬 목록은 프로젝트 지식 원본에서 생성되며 원본 데이터에 맞춰 갱신됩니다.
 
-<br/>
+## 공급자 프리셋
 
-<img src="../media/wechat-send-side.gif" alt="한마디에 Qusin가 백그라운드 화면에서 WeChat을 열고, 상대를 찾아 메시지를 보내는 모습" width="640" />
+DeepSeek, 통의천문, Kimi, Zhipu, SiliconFlow, Volcano Engine, MiniMax, StepFun, Tencent Hunyuan, Baidu Qianfan, OpenRouter, OpenDesign Go, OpenCode Go, Anthropic, Gemini, OpenAI, xAI, Mistral, Groq, Cloudflare Workers AI, Ollama, LM Studio 등의 프리셋을 제공하며 사용자 지정 엔드포인트도 지원합니다.
 
-<sub>"파일 전송 도우미에게 메시지 보내 줘" 한마디: 왼쪽은 Qusin와의 대화, 오른쪽은 백그라운드 화면에서 진행한 모든 단계(4배속, 채팅 목록은 모자이크 처리)</sub>
+## 요구 사항
 
-</div>
+- 설치와 핵심 기능에는 Android 10 이상이 필요합니다.
+- 다른 Android 앱을 제어하려면 Android 12 이상과 앱 내 설정 절차가 필요합니다.
+- 내장 Linux 샌드박스에는 ARM64 기기가 필요합니다.
+- 기본 어시스턴트 모델은 도구/함수 호출을 지원해야 합니다.
 
-## 한마디로 일 하나를 끝내기
+## 시작하기
 
-<table>
-<tr>
-<td align="center" width="33%"><img src="../media/wechat-group.gif" width="230" alt="WeChat 단톡방을 끝까지 읽고 오늘 나온 이야기를 요약" /><br/><b>"단톡방에서 오늘 무슨 얘기 했는지 정리해 줘"</b><br/><sub>백그라운드에서 대화 기록을 다 읽고 요약</sub></td>
-<td align="center" width="33%"><img src="../media/amazon-cart.gif" width="230" alt="쇼핑 사이트에서 충전기를 골라 장바구니에 담기" /><br/><b>"30달러 이하, 별점 4.5 이상인 충전기"</b><br/><sub>골라서 장바구니에 담고 결제 직전에 멈춤</sub></td>
-<td align="center" width="33%"><img src="../media/xhs-summary.gif" width="230" alt="한 크리에이터의 최근 게시물을 요약" /><br/><b>"이 크리에이터가 요즘 뭘 올렸는지 정리해 줘"</b><br/><sub>앱을 열어 하나씩 본 뒤 정리</sub></td>
-</tr>
-</table>
+1. 휴대폰에 Qusin을 설치하고 엽니다.
+2. **설정 → 모델**로 이동해 공급자를 추가하거나 지원되는 계정으로 로그인합니다.
+3. 도구 호출을 지원하는 기본 모델을 선택합니다. 비전, 경량 모델, 음성 텍스트 변환 모델은 별도로 설정할 수 있습니다.
+4. Android 앱을 제어하려면 앱 내 무선 디버깅 페어링과 접근성 설정을 완료합니다.
+5. 대화를 시작하고 자연어로 작업을 설명합니다.
 
-<details>
-<summary>데모 더 보기</summary>
+문서:
 
-<table>
-<tr>
-<td align="center" width="33%"><img src="../media/boss-greet.gif" width="230" alt="채용 사이트에서 공고 3개에 인사 보내기" /><br/>채용 사이트에서 공고 3개에 인사 보내기</td>
-<td align="center" width="33%"><img src="../media/google-flights.gif" width="230" alt="가장 싼 직항편 찾기" /><br/>샌프란시스코발 뉴욕행 최저가 직항 찾기</td>
-<td align="center" width="33%"><img src="../media/hacker-news.gif" width="230" alt="상위 5개 기사와 점수를 읽어 주기" /><br/>뉴스 사이트 첫 페이지 상위 5개 읽어 주기</td>
-</tr>
-<tr>
-<td align="center"><img src="../media/job-greet.jpg" width="230" alt="채용 공고를 찾아 인사 보내기" /><br/>채용 공고를 찾아 인사 보내기</td>
-<td align="center"><img src="../media/music-vip.jpg" width="230" alt="광고를 보고 음악 앱 혜택 받기" /><br/>광고를 보고 음악 앱 혜택 받기</td>
-<td align="center"><img src="../media/food-order.jpg" width="230" alt="할인 조건을 맞춰 배달 주문, 결제 전에 확인" /><br/>할인 조건을 맞춰 배달 주문, 결제 전에 확인</td>
-</tr>
-</table>
+- [모델 및 로그인](../models.en.md)
+- [휴대폰 제어 설정](../setup-guide.en.md)
+- [기능 안내](../features.en.md)
+- [자주 묻는 질문](../faq.en.md)
+- [컴퓨터에서 Qusin 사용](../computer.en.md)
+- [개발 로드맵](../dev/roadmap.md)
 
-</details>
+## 릴리스 노트
 
-<sub>데모에 나오는 WeChat은 메신저 앱이고, 샤오훙수(RED)는 라이프스타일 SNS입니다. Qusin는 특정 앱 전용이 아니라 휴대폰에 있는 어떤 앱이나 사이트에서도 동작합니다.</sub>
+GitHub Release 설명에는 언어 태그가 지정된 섹션을 포함할 수 있습니다. Qusin은 앱 언어와 일치하는 섹션을 표시하고, 없으면 영어로 대체합니다. 릴리스 게시 시 [다국어 릴리스 노트 템플릿](../dev/release-notes-template.md)을 사용할 수 있습니다.
 
-## 왜 Qusin인가
+## 소스에서 빌드
 
-| | |
-|---|---|
-| 📱 **내 화면을 차지하지 않음** | 별도의 백그라운드 화면에서 앱을 열고, 탭하고, 입력하고, 스크롤합니다. 그동안 휴대폰은 평소처럼 쓰고, 보고 싶을 때만 작은 미리보기를 누르면 됩니다 |
-| 🧩 **어떤 앱이든 OK** | 사람처럼 화면을 보고 버튼을 찾기 때문에 앱의 API도, 앱별 사전 연동도 필요 없습니다 |
-| 🌐 **웹페이지에서 바로 부르기** | 내장 브라우저에서 보고 있는 페이지에 한마디 하면 그 페이지에서 바로 일합니다. 페이지를 건드리면 즉시 멈춥니다 |
-| 🧠 **쓸수록 똑똑해짐** | 알려 준 취향을 기억하고, 끝낸 일은 자동으로 스킬로 정리해 다음번엔 더 빠르고 안정적으로 해냅니다 |
-| 🔒 **데이터는 내 휴대폰에만** | Qusin 서버는 없습니다. 내 모델 API 키를 쓰거나 ChatGPT, xAI, OpenRouter 계정으로 로그인하세요 |
-| 🆓 **오픈 소스, 무료** | Apache-2.0, 코드 전부 공개 |
+JDK 17과 Gradle 프로젝트 설정에 맞는 Android SDK가 필요합니다.
 
-## 3단계로 시작하기
+```bash
+# 단위 테스트
+./gradlew :core:test :app:testDebugUnitTest
 
-1. **설치**: [Releases](https://github.com/Sddnin/Qusin/releases/latest)에서 APK를 내려받습니다.
-2. **모델 연결**: 설정 › 모델에서 제공업체를 골라 API 키를 입력하거나, 계정으로 바로 로그인합니다([모델과 로그인](../models.en.md)).
-3. **휴대폰 앱을 조작하게 하려면**: 설정의 "Set up phone control" 마법사를 따라 휴대폰에서 무선 디버깅을 한 번 페어링합니다([설정 가이드](../setup-guide.en.md)). 채팅, 웹, 파일 작업만 할 거라면 이 단계는 건너뛰어도 됩니다.
+# Debug APK 빌드
+./gradlew :app:assembleDebug
+```
 
-이제 말을 걸어 보세요: "내일 아침 9시 40분이랑 10시에 알람 맞춰 줘", "매일 아침 8시에 날씨 보고 비 올 때만 알려 줘".
+Debug APK는 다음 경로에 생성됩니다.
 
-> 💡 컴퓨터가 옆에 있나요? 이 문장을 컴퓨터의 AI 에이전트에게 보내면 대신 설치해 줍니다:<br/>
-> `https://github.com/Sddnin/Qusin/blob/main/docs/install-with-agent.en.md 의 단계에 따라, USB로 연결된 Android 휴대폰에 Qusin를 설치해 줘.`
+```text
+app/build/outputs/apk/debug/app-debug.apk
+```
 
-## 할 수 있는 일
+## 개인정보 및 제한 사항
 
-| | |
-|---|---|
-| **앱 조작** | 긴 목록과 대화 기록 읽기, 탭과 입력, 앱으로 텍스트 공유. 로그인, 인증 코드, 결제는 사용자에게 넘깁니다 |
-| **웹 사용** | 로그인 상태가 유지되는 PC 버전 내장 브라우저로 페이지를 읽고, 다운로드와 업로드도 합니다. 페이지는 적당한 속도로 넘기고, 차단 페이지가 나오면 사용자에게 넘깁니다 |
-| **지금 보고 있는 화면** | 플로팅 캡슐을 두 번 탭하면 보고 있는 화면을 Qusin에게 보냅니다: "이거 뭐라고 답하지?", "이거 기록해 둬" |
-| **예약과 조건** | "내일 아침 9시에 알려 줘", "매주 금요일에 이거 해 줘". 시간이 되면 원래 대화에서 실행합니다 |
-| **언제든 끼어들고, 언제든 멈추기** | 작업 중에도 계속 말해서 요구 사항을 더할 수 있고, 아직 반영되지 않은 말은 길게 눌러 취소하거나 수정할 수 있습니다. 멈추면 어디까지 했는지 알려 주고, "계속"이라고 하면 이어서 합니다 |
-| **눌러서 말하기** | 입력창을 누른 채 말하면 글자가 들어가고, 고친 뒤 보낼 수 있습니다. 플로팅 캡슐은 길게 눌러 말하고 손을 떼면 바로 보냅니다. 휴대폰의 음성 인식을 쓰고, 없으면 제공자의 음성 모델을 고를 수 있습니다 |
-| **파일과 계산** | 대화마다 Linux 샌드박스가 있어 Python, Node, 셸로 보내 준 파일을 처리합니다(arm64) |
-| **컴퓨터에서도 사용** | 컴퓨터의 AI 도구가 CLI + Skill 또는 MCP로 Qusin에게 일을 맡길 수 있습니다([컴퓨터에서 Qusin 쓰기](../computer.en.md)) |
+API 키와 비밀 정보는 기기에 암호화해 저장됩니다. 모델에 전송되는 프롬프트와 기타 데이터는 설정한 공급자가 처리하며, Qusin은 공급자의 데이터 처리 정책을 바꿀 수 없습니다. 휴대폰 제어 작업에는 사용자가 부여한 Android 권한이 사용됩니다. 보안 화면, DRM 콘텐츠, 스크린샷을 차단하는 인터페이스는 읽지 못할 수 있어 사용자의 개입이 필요할 수 있습니다.
 
-기본값은 **확인 모드**입니다. 돈이 드는 일(주문, 결제)만 먼저 물어보고 나머지는 끝까지 해냅니다. **자율 모드**로 바꿀 수도 있습니다. 자세한 내용은 [확인 모드와 자율 모드](../modes.en.md)를 보세요.
-
-각 기능의 사용법과 세부 사항은 [기능 자세히 보기](../features.en.md)에 있습니다.
-
-<details>
-<summary>사용 지식이 준비된 앱과 사이트(목록에 없어도 그냥 쓸 수 있습니다)</summary>
-
-전체 목록은 영어판 README의 [What it can do](../../README.md#what-it-can-do)에 있으며, 내장 지식에 맞춰 자동으로 갱신됩니다.
-
-</details>
-
-<details>
-<summary>지원하는 모델 제공업체</summary>
-
-내장된 제공업체 프리셋과 "Custom"으로 연결할 수 있는 API 종류는 영어판 README의 [What it can do](../../README.md#what-it-can-do)에 목록이 있으며, 코드에 맞춰 자동으로 갱신됩니다.
-
-API 키 없이 ChatGPT(Plus / Pro), xAI / Grok, OpenRouter 계정으로 로그인할 수도 있습니다. 모델을 추가하는 방법과 서비스별 로그인 시 주의할 점은 [모델과 로그인](../models.en.md)에 정리해 두었습니다.
-
-</details>
-
-## 지원하는 휴대폰
-
-| | 요구 사항 |
-|---|---|
-| 채팅, 웹, 파일 | Android 11 이상 |
-| 휴대폰 앱 조작 | Android 12 이상. **Android 14 이상 권장**(백그라운드 화면이 자체 포커스를 가져서 메인 화면에서 타이핑하는 데 방해가 되지 않습니다) |
-| Linux 샌드박스 | arm64 기기 |
-
-내 휴대폰에서 될지 모르겠다면 설정 › 복구 및 수리 › **호환성 자가 점검**를 실행해 보세요. 1분 정도면 12개 항목을 확인하고, 결과를 한 번에 [저희에게 보낼 수 있습니다](https://github.com/Sddnin/Qusin/issues/new?template=device-report.yml).
-
-## 개인정보와 안전
-
-- **Qusin 서버는 없습니다**: 내가 한 말과 화면 내용은 직접 설정한 모델 제공업체에만 전송됩니다.
-- API 키와 기억은 암호화되어 휴대폰에 저장되고, 대화와 실행 기록은 기기에만 남습니다. 업데이트 확인은 GitHub에만 접속합니다.
-- 다른 회사의 앱이나 사이트를 자동으로 조작하면 이용 약관에 어긋날 수 있으니 스스로 판단하세요. 중요한 일은 확인 모드로 하고 결과를 확인하세요. 자세한 내용은 [면책 조항](../disclaimer.en.md)을 보세요.
-
-<details>
-<summary><b>자주 묻는 질문</b></summary>
-
-**무선 디버깅이 저절로 꺼져요?** Android는 Wi-Fi를 바꾸거나 재부팅하면 무선 디버깅을 끕니다. 허용해 두면 Qusin가 알아서 다시 켭니다. 그래도 연결되지 않으면 "Set up phone control"로 돌아가 다시 페어링하세요.
-
-**무선 디버깅 메뉴가 안 보여요?** 이 항목이 아예 없는 휴대폰도 있습니다. 그럴 땐 컴퓨터에서 USB로 휴대폰 도우미를 실행할 수 있습니다. [설정 가이드](../setup-guide.en.md)를 보세요.
-
-**읽지 못하거나 캡처되지 않는 화면이 있어요?** 결제나 비밀번호 입력 같은 화면은 스크린샷이 막혀 있어서, Qusin가 직접 처리해 달라고 요청합니다.
-
-**내 컴퓨터에서 돌리는 모델도 쓸 수 있나요?** 네. 제공업체로 "Custom"을 고르고 로컬 네트워크 주소를 입력하면 됩니다.
-
-**앱이 한국어를 지원하나요?** 네. 앱 화면은 한국어와 영어, 아랍어, 중국어 간체, 중국어 번체, 일본어, 스페인어, 포르투갈어, 러시아어, 인도네시아어로 제공되며 시스템 언어를 따라갑니다(설정 › 언어에서도 바꿀 수 있습니다). Qusin에게는 한국어로 말하면 됩니다. 내장된 앱·사이트 지식은 중국어로 쓰여 있지만 모델이 문제없이 읽습니다.
-
-**업데이트는 어디서 받나요?** 이 저장소의 [Releases](https://github.com/Sddnin/Qusin/releases)에서만 배포합니다. 앱의 Qusin 정보 › 업데이트 확인에서도 바로 업데이트할 수 있습니다.
-
-더 많은 질문과 답은 [FAQ](../faq.en.md)에 있습니다.
-
-</details>
-
-## 커뮤니티와 기여
-
-- **문서**: 모든 문서와 추천 읽기 순서는 [문서 목록](../README.en.md)에 있습니다
-- **커뮤니티**: [X 그룹 채팅](https://x.com/i/chat/group_join/g2116926829198246025/48B52j5svL)에 참여하세요. WeChat으로 작성자에게 연락하려면 앱의 Qusin 정보 › 개발자에게 연락에 있는 QR 코드를 스캔하세요(친구 신청에 "Qusin"라고 적어 주세요)
-- **작성자 팔로우**: X [@wangzan101](https://x.com/wangzan101)
-- **문제 신고**: [Issue 열기](https://github.com/Sddnin/Qusin/issues/new/choose). 앱의 Qusin 정보 › 의견 보내기에서 진단 정보를 첨부할 수 있습니다
-- **기여하기**: 앱이나 사이트의 사용 지식을 보태 주세요(일반 텍스트라 코드를 몰라도 됩니다). 코드 기여도 환영합니다. [기여 가이드](../../.github/CONTRIBUTING.md)를 보세요
-
-<p align="center">⭐ Qusin가 시간을 아껴 줬다면 Star를 눌러 더 많은 사람에게 알려 주세요.</p>
-
-## Star History
-
-<a href="https://star-history.com/#Sddnin/Qusin&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&theme=dark&v=20261110-2017" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&v=20261110-2017" width="600" />
-  </picture>
-</a>
-
-## 기여자
-
-Qusin에 함께해 주신 모든 분께 감사드립니다:
-
-<a href="https://github.com/Sddnin/Qusin/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Sddnin/Qusin&max=100&columns=12" alt="Contributors" />
-</a>
+Qusin은 계속 개발 중입니다. 메시지 전송, 데이터 삭제, 주문, 결제 등 중요한 작업은 결과를 확인한 뒤 사용하세요.
 
 ## 라이선스
 
-[Apache-2.0](../../LICENSE) · [NOTICE](../../NOTICE) · [서드파티 구성 요소](../../licenses/THIRD_PARTY_NOTICES.md)
+[LICENSE](../../LICENSE), [NOTICE](../../NOTICE), [제3자 라이선스 고지](../../licenses/THIRD_PARTY_NOTICES.md)를 참조하세요.

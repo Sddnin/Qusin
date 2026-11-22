@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="confirm_note">Các thao tác có tác động lớn như gửi, đăng công khai, nộp và xóa cần bạn phê duyệt mỗi lần.</string>
+    <string name="confirm_note">Chỉ những bước tiêu tiền, chẳng hạn đặt hàng, mới cần bạn phê duyệt mỗi lần.</string>
     <string name="confirm_pay">Thanh toán</string>
     <string name="confirm_delete">Xóa</string>
     <string name="confirm_order">Đặt hàng</string>

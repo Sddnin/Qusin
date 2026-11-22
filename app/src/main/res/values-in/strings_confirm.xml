@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="confirm_note">Tindakan berdampak tinggi seperti mengirim, memposting, mengirim formulir, dan menghapus memerlukan persetujuan Anda setiap kali.</string>
+    <string name="confirm_note">Hanya langkah yang mengeluarkan uang, seperti membuat pesanan, yang memerlukan persetujuan Anda setiap kali.</string>
     <string name="confirm_pay">Bayar</string>
     <string name="confirm_delete">Hapus</string>
     <string name="confirm_order">Buat pesanan</string>

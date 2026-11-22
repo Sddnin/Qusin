@@ -168,7 +168,7 @@
     <string name="phone_root_commands_on">Đang bật. Lệnh chỉ đọc có thể chạy trực tiếp; lệnh thay đổi hoặc xóa dữ liệu vẫn tuân theo chế độ xác nhận hiện tại.</string>
     <string name="phone_root_commands_denied">Đã từ chối root nên tùy chọn này vẫn tắt.</string>
     <string name="phone_root_commands_title">Cho phép lệnh root?</string>
-    <string name="phone_root_commands_warning">Lệnh root có thể thay đổi hoặc xóa mọi thứ trên điện thoại, bao gồm dữ liệu của ứng dụng khác, và có thể khiến điện thoại không sử dụng được. Trong chế độ Hỏi, Qusin sẽ hỏi bạn trước mỗi lệnh root có thay đổi hoặc xóa dữ liệu; trong chế độ Tự chủ, Qusin sẽ không hỏi. Chỉ bật nếu bạn hiểu rõ rủi ro.</string>
+    <string name="phone_root_commands_warning">Lệnh root có thể thay đổi hoặc xóa mọi thứ trên điện thoại, kể cả dữ liệu của ứng dụng khác, và có thể khiến điện thoại không sử dụng được. Trong chế độ Hỏi, bật tùy chọn này đồng nghĩa bạn cho phép Qusin chạy trực tiếp các lệnh root mà bạn yêu cầu, không hỏi lại trước từng lệnh; chế độ Tự chủ cũng bỏ qua xác nhận từng lệnh. Chỉ bật khi bạn hiểu rõ rủi ro.</string>
     <string name="phone_root_commands_confirm">Cho phép</string>
     <string name="phone_root_commands_note">Tùy chọn này tách biệt với việc khởi chạy trợ lý. Bật nó không cho phép Qusin chạy trợ lý dưới quyền root; nó chỉ bổ sung khả năng dùng lệnh root trong các tác vụ.</string>
     <string name="phone_root_note">Qusin tìm thấy su trên điện thoại này. Trợ lý khởi chạy bằng root vẫn chạy dưới cùng một người dùng bị giới hạn, với quyền giống như khi khởi chạy qua Gỡ lỗi không dây.</string>
