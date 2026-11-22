@@ -35,6 +35,33 @@ jobs:
           cache-provider: basic
       - name: Unit tests
         run: ./gradlew :core:test --stacktrace
+      # 测试挂了,把每个失败用例的「期望 / 实际」差异摘出来贴到本次运行的 Summary 页,手机上不用下载压缩包就能看。
+      # ComparisonFailure 的消息本身就是只留差异那一段的紧凑形式。
+      - name: Show failed test diffs
+        if: failure()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import glob, os, xml.etree.ElementTree as ET
+          out = os.environ["GITHUB_STEP_SUMMARY"]
+          rows = []
+          for f in sorted(glob.glob("core/build/test-results/test/TEST-*.xml")):
+              for case in ET.parse(f).getroot().iter("testcase"):
+                  fail = case.find("failure")
+                  if fail is None:
+                      fail = case.find("error")
+                  if fail is not None:
+                      msg = (fail.get("message") or fail.text or "").strip()
+                      rows.append((case.get("classname", "").rsplit(".", 1)[-1], case.get("name", ""), msg))
+          with open(out, "a", encoding="utf-8") as o:
+              o.write(f"## {len(rows)} failed test(s) in core\n\n")
+              for cls, name, msg in rows[:40]:
+                  short = msg if len(msg) <= 1500 else msg[:1500] + " …(cut)"
+                  o.write(f"### {cls} > {name}\n\n~~~\n{short}\n~~~\n\n")
+              if len(rows) > 40:
+                  o.write(f"…and {len(rows) - 40} more\n")
+          print(f"wrote {len(rows)} failures to the summary")
+          PY
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@v7
