@@ -13,6 +13,8 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
       - uses: actions/setup-java@v6
         with:
           distribution: temurin
