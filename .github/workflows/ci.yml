@@ -42,7 +42,7 @@ jobs:
         shell: bash
         run: |
           python3 - <<'PY'
-          import glob, os, xml.etree.ElementTree as ET
+          import glob, os, re, xml.etree.ElementTree as ET
           out = os.environ["GITHUB_STEP_SUMMARY"]
           rows = []
           for f in sorted(glob.glob("core/build/test-results/test/TEST-*.xml")):
@@ -56,7 +56,15 @@ jobs:
           with open(out, "a", encoding="utf-8") as o:
               o.write(f"## {len(rows)} failed test(s) in core\n\n")
               for cls, name, msg in rows[:40]:
-                  short = msg if len(msg) <= 1500 else msg[:1500] + " …(cut)"
+                  # ComparisonFailure: "...expected:<A> but was:<B>"。A 很长时 B 会被整体截掉,所以两边各取开头一段:
+                  # 紧凑形式里开头就是第一处不同,A、B 各看 700 字就能对出改了什么。
+                  m = re.search(r"^(.*?)expected:<(.*)> but was:<(.*)>\s*$", msg, re.S)
+                  if m:
+                      head, a, b = m.groups()
+                      cut = lambda t: t if len(t) <= 700 else t[:700] + " …(cut)"
+                      short = f"{head.strip()}\n\n--- expected (snapshot) ---\n{cut(a)}\n\n--- but was (current code) ---\n{cut(b)}"
+                  else:
+                      short = msg if len(msg) <= 1500 else msg[:1500] + " …(cut)"
                   o.write(f"### {cls} > {name}\n\n~~~\n{short}\n~~~\n\n")
               if len(rows) > 40:
                   o.write(f"…and {len(rows) - 40} more\n")
