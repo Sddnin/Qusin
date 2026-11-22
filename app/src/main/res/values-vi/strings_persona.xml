@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="persona_title">Phong cách nhân cách</string>
+    <string name="persona_sub">Chọn cách Qusin trò chuyện với bạn</string>
+    <string name="persona_default">Mặc định</string>
+    <string name="persona_default_sub">Giọng điệu thông thường của Qusin</string>
+    <string name="persona_empty">Chưa có phong cách nào</string>
+    <string name="persona_empty_sub">Phong cách chỉ thay đổi cách Qusin nói chuyện, không thay đổi những gì Qusin được phép làm.</string>
+    <string name="persona_new">Phong cách mới</string>
+    <string name="persona_edit">Sửa phong cách</string>
+    <string name="persona_name">Tên</string>
+    <string name="persona_description">Mô tả ngắn</string>
+    <string name="persona_prompt">Hướng dẫn</string>
+    <string name="persona_prompt_hint">Giọng điệu, độ dài, cách diễn đạt, định dạng…</string>
+    <string name="persona_empty_prompt">Nếu không có hướng dẫn, phong cách này sẽ không thay đổi điều gì.</string>
+    <string name="persona_counter">%1$d ký tự · khoảng %2$d token</string>
+    <string name="persona_preview">Xem trước toàn bộ lời nhắc</string>
+    <string name="persona_preview_hide">Ẩn bản xem trước</string>
+    <string name="persona_preview_note">Các quy tắc màu xám là cố định. Phong cách có thể thay đổi giọng điệu và cách diễn đạt, nhưng không được thay đổi an toàn, quyền hạn hoặc nội dung Qusin báo cáo.</string>
+    <string name="persona_chip">Phong cách: %1$s</string>
+    <string name="persona_manage">Quản lý phong cách</string>
+    <string name="persona_switch_note">Việc chuyển đổi chỉ ảnh hưởng đến các tin nhắn tiếp theo trong cuộc trò chuyện này.</string>
+    <string name="persona_delete_title">Xóa “%1$s”?</string>
+    <string name="persona_delete_body">Các cuộc trò chuyện đang dùng phong cách này sẽ quay về phong cách mặc định. Không thể hoàn tác.</string>
+    <string name="persona_copy">Nhân bản</string>
+    <string name="persona_missing">Phong cách đã bị xóa</string>
+    <string name="persona_name_required">Nhập tên.</string>
+    <string name="persona_name_too_long">Tên quá dài.</string>
+    <string name="persona_description_too_long">Mô tả quá dài (tối đa %1$d ký tự).</string>
+    <string name="persona_prompt_too_long">Hướng dẫn quá dài (tối đa %1$d ký tự).</string>
+    <string name="persona_save_failed">Không thể lưu phong cách.</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="calls_dtmf_status_label">Trạng thái cuộc gọi</string>
+    <string name="calls_dtmf_open">Bàn phím</string>
+    <string name="calls_dtmf_title">Bàn phím cuộc gọi</string>
+    <string name="calls_dtmf_close">Đóng</string>
+    <string name="calls_dtmf_batch">Nhập một chuỗi phím</string>
+    <string name="calls_dtmf_hint">Mỗi phím được gửi ngay lập tức. Hãy làm theo hướng dẫn bằng giọng nói.</string>
+    <string name="calls_dtmf_batch_hint">Nhập tối đa 32 phím rồi nhấn Gửi.</string>
+    <string name="calls_dtmf_input">0–9, * hoặc #</string>
+    <string name="calls_dtmf_delete">Xóa</string>
+    <string name="calls_dtmf_send">Gửi</string>
+    <string name="calls_dtmf_sending">Đang gửi…</string>
+    <string name="calls_dtmf_sent">Đã gửi các phím; hãy chờ phản hồi</string>
+    <string name="calls_dtmf_failed">Không thể hoàn tất thao tác gửi. Hãy chờ phản hồi trước khi thực hiện lại.</string>
+    <string name="calls_dtmf_invalid">Chỉ dùng 0–9, * và #, tối đa 32 phím.</string>
+    <string name="calls_voice_briefing_start">Mô tả tác vụ bằng giọng nói</string>
+    <string name="calls_voice_briefing_note">Hãy nói bằng tiếng Quan Thoại. Để cho phép gọi, hãy nói riêng cụm “%1$s” sau khi mô tả tác vụ.</string>
+    <string name="calls_voice_briefing_stopped">Đã dừng phần mô tả; chưa thực hiện cuộc gọi nào</string>
+    <string name="calls_voice_briefing_authorized">Tác vụ đã được cho phép; đang gửi yêu cầu gọi</string>
+    <string name="calls_voice_briefing_permission_granted">Đã cho phép micrô. Nhấn nút giọng nói một lần nữa để bắt đầu.</string>
+    <string name="calls_voice_briefing_permission_denied">Chưa cấp quyền micrô. Bạn có thể dùng biểu mẫu tác vụ bằng văn bản.</string>
+    <string name="calls_voice_briefing_incomplete">Hãy hoàn tất hoặc xóa hướng dẫn văn bản hiện có trước khi bắt đầu.</string>
+    <string name="calls_voice_briefing_configure">Trước tiên, hãy cấu hình giọng nói thời gian thực trong Cài đặt.</string>
+</resources>

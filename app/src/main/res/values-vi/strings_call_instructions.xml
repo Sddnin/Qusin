@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="call_instructions_title">Hướng dẫn cuộc gọi</string>
+    <string name="call_instructions_intro">Hướng dẫn đã lưu sẽ áp dụng cho các cuộc gọi sau này. Tất cả hướng dẫn đang hoạt động sẽ được gửi đến dịch vụ giọng nói đã chọn khi phiên gọi AI được chuẩn bị, ngay cả khi cuộc gọi không được trả lời. Lời nói của người gọi không làm thay đổi các hướng dẫn này.</string>
+    <string name="call_instructions_add">Thêm hướng dẫn</string>
+    <string name="call_instructions_empty">Thêm nội dung trợ lý có thể nói và những điều cần hỏi. Thay đổi sẽ áp dụng từ cuộc gọi tiếp theo.</string>
+    <string name="call_instructions_heading">Tiêu đề</string>
+    <string name="call_instructions_situation">Khi nào áp dụng</string>
+    <string name="call_instructions_response">Cách trả lời</string>
+    <string name="call_instructions_save">Lưu hướng dẫn</string>
+    <string name="call_instructions_cancel">Hủy</string>
+    <string name="call_instructions_edit">Sửa</string>
+    <string name="call_instructions_delete">Xóa</string>
+    <string name="call_instructions_delete_confirm">Xóa hướng dẫn này? Hướng dẫn sẽ không còn áp dụng cho các cuộc gọi sau.</string>
+    <string name="call_instructions_expiry">Thời hạn</string>
+    <string name="call_instructions_forever">Cho đến khi tôi thay đổi</string>
+    <string name="call_instructions_today">Đến tối nay</string>
+    <string name="call_instructions_two_hours">Hai giờ</string>
+    <string name="call_instructions_expired">Đã hết hạn</string>
+    <string name="call_instructions_saved">Đã lưu trên điện thoại này</string>
+    <string name="call_instructions_failed">Không thể lưu. Bản nháp của bạn vẫn được giữ lại.</string>
+    <string name="call_instructions_presets">Bắt đầu từ tình huống mẫu</string>
+    <string name="call_instructions_delivery">Giao hàng</string>
+    <string name="call_instructions_delivery_when">Khi nhân viên chuyển phát hoặc giao hàng gọi</string>
+    <string name="call_instructions_delivery_reply">Hỏi vị trí bưu kiện và có cần gọi lại không. Không tự bịa địa chỉ hoặc cấp quyền truy cập.</string>
+    <string name="call_instructions_business">Yêu cầu kinh doanh</string>
+    <string name="call_instructions_business_when">Khi khách hàng hỏi về sản phẩm, dịch vụ hoặc lịch hẹn</string>
+    <string name="call_instructions_business_reply">Hỏi nhu cầu, số lượng hoặc thời gian mong muốn và phương thức liên hệ. Ghi nhận lời nhắn nhưng không cam kết về giá hoặc lịch hẹn.</string>
+    <string name="call_instructions_review_limit">Xem lại câu trả lời và giữ hướng dẫn dưới 800 ký tự trước khi lưu.</string>
+</resources>

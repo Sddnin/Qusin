@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qusin-feishu"
+version = "0.1.0"
+description = "Feishu bot connector for Qusin's versioned phone task API"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+dependencies = ["lark-oapi>=1.7.5,<2", "qrcode>=8.2,<9"]
+
+[project.scripts]
+qusin-feishu = "qusin_feishu.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

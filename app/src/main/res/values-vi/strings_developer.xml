@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="dev_adaptive">Đọc các phần tử trước, chỉ dùng hình ảnh khi cần</string>
+    <string name="dev_adaptive_sub">Không gửi hình ảnh nếu cây giao diện đã đủ; chỉ thêm ảnh khi cần thiết</string>
+    <string name="dev_inline">Trả về thay đổi màn hình sau thao tác</string>
+    <string name="dev_inline_sub">Quan sát nhanh màn hình sau mỗi thao tác, tiết kiệm một lần đọc riêng</string>
+    <string name="dev_batch">Thực hiện nhiều bước khi đã chắc chắn</string>
+    <string name="dev_batch_sub">Thực hiện một số bước chắc chắn trong một lượt mà không cần hỏi mô hình</string>
+    <string name="dev_deep_links">Mở trực tiếp trang đích</string>
+    <string name="dev_deep_links_sub">Dùng liên kết để chuyển thẳng đến trang bên trong ứng dụng thay vì nhấn từng bước</string>
+    <string name="dev_light">Chuyển các bước đơn giản sang mô hình nhẹ</string>
+    <string name="dev_light_sub">Mô hình nhẹ nhanh hơn xử lý các bước đơn giản; mô hình chính xử lý các bước khó</string>
+    <string name="dev_replay">Lặp lại thao tác đã thành công trước đây</string>
+    <string name="dev_replay_sub">Phát lại tuyến đường đã lưu cho các việc đã làm trước đây; nếu không khớp, chuyển lại cho mô hình xử lý</string>
+    <string name="dev_parallel">Chạy các cuộc trò chuyện song song</string>
+    <string name="dev_parallel_sub">Tác vụ từ các cuộc trò chuyện khác nhau có màn hình ảo riêng và chạy cùng lúc</string>
+    <string name="dev_compaction">Tóm tắt có cấu trúc cho tác vụ dài</string>
+    <string name="dev_compaction_sub">Khi cần nén nhiều bước, ghi lại mục tiêu, dữ kiện, tiến độ và bước tiếp theo</string>
+    <string name="dev_group">Cách Qusin hoạt động</string>
+    <string name="dev_autonomy">Chế độ tự chủ</string>
+    <string name="dev_autonomy_sub">Khi tắt, Qusin hỏi trước khi gửi, đăng, nộp hoặc xóa; khi bật, Qusin bỏ qua các xác nhận đó. Thanh toán luôn do bạn thực hiện.</string>
+    <string name="dev_note">Các công tắc này ảnh hưởng đến cách thức và tốc độ làm việc của Qusin. Thông thường nên giữ cài đặt mặc định.</string>
+    <string name="dev_grounding">Đã xác minh định vị bằng thị giác</string>
+    <string name="dev_grounding_sub">Chỉ bật sau khi mô hình thị giác %1$s được kiểm tra và xác định vị trí chính xác; khi tắt, các vị trí mô hình đánh dấu cần có bằng chứng khác trước khi Qusin nhấn.</string>
+    <string name="dev_speed">Tốc độ</string>
+    <string name="dev_experiments">Thử nghiệm</string>
+    <string name="dev_run_log">Bản ghi thực thi</string>
+    <string name="dev_screen_tables">Nén các phần tử màn hình mới</string>
+    <string name="dev_screen_tables_sub">Gửi các trường lặp lại dưới dạng cột bảng ngay lần đầu đọc màn hình. Tham chiếu phần tử và cây giao diện đầy đủ vẫn được giữ lại.</string>
+    <string name="dev_device_files">Nhập tệp từ thiết bị</string>
+    <string name="dev_device_files_sub">Cho phép Qusin sao chép tệp từ bộ nhớ dùng chung của thiết bị vào không gian làm việc. Thay đổi chỉ áp dụng cho tác vụ mới.</string>
+</resources>

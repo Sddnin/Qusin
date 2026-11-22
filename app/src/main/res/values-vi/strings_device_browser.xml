@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="device_browser_title">Tệp trên thiết bị</string>
+    <string name="device_browser_roots">Thư mục được cấp quyền</string>
+    <string name="device_browser_back">Quay lại</string>
+    <string name="device_browser_retry">Không thể tải tệp. Nhấn để thử lại.</string>
+    <string name="device_browser_empty">Không có tệp hoặc thư mục nào được cấp quyền</string>
+    <string name="device_browser_more">Tải thêm</string>
+    <string name="device_browser_add">Thêm mục đã chọn (%1$d)</string>
+    <string name="device_browser_cancel">Hủy</string>
+    <string name="device_browser_history">Tệp đã nhập vào cuộc trò chuyện</string>
+    <string name="device_browser_show_files">Duyệt tệp</string>
+    <string name="device_browser_history_hint">Lịch sử nhập; các bản sao có thể đã bị xóa. Mở thư viện tệp để xem tệp.</string>
+    <string name="device_browser_search">Tìm tệp</string>
+    <string name="device_browser_truncated">Tìm kiếm đã dừng do đạt giới hạn độ sâu, thời gian hoặc số lượng tệp; kết quả có thể chưa đầy đủ.</string>
+</resources>

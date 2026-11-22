@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="viewer_no_open_app">Không có ứng dụng nào có thể mở tệp này</string>
+    <string name="viewer_no_share_app">Không có ứng dụng nào có thể chia sẻ tệp này</string>
+    <string name="viewer_open_elsewhere">Mở bằng ứng dụng khác</string>
+    <string name="viewer_unsupported">Không thể xem tệp này trong Qusin.</string>
+    <string name="viewer_read_error">Đã xảy ra lỗi khi đọc tệp.</string>
+    <string name="viewer_page">Trang %1$d</string>
+    <string name="viewer_truncated">Tệp này lớn; chỉ hiển thị phần đầu.</string>
+    <string name="viewer_find">Tìm kiếm trong tệp</string>
+    <string name="viewer_find_hint">Nhập nội dung cần tìm</string>
+    <string name="viewer_find_prev">Kết quả trước</string>
+    <string name="viewer_find_next">Kết quả tiếp theo</string>
+    <string name="viewer_find_close">Đóng tìm kiếm</string>
+    <string name="viewer_find_no_matches">Không tìm thấy kết quả</string>
+    <string name="viewer_copy">Sao chép tất cả</string>
+    <string name="viewer_copied">Đã sao chép</string>
+    <string name="viewer_copied_part">Đã sao chép (chỉ phần đầu)</string>
+    <string name="viewer_copy_failed">Nội dung quá lớn để sao chép</string>
+</resources>

@@ -1,0 +1,113 @@
+package com.wangzan101.qusin.ui
+
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.wangzan101.qusin.R
+import com.wangzan101.qusin.ui.components.*
+import com.wangzan101.qusin.ui.theme.QusinIcons
+import com.wangzan101.qusin.ui.theme.QusinTheme
+import com.wangzan101.qusin.ui.theme.QusinType
+import com.wangzan101.qusin.ui.theme.QusinRadius
+import com.wangzan101.qusin.ui.theme.QusinShapes
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+@Composable
+internal fun TaskReportEntries(onReport: () -> Unit, onReplay: () -> Unit) {
+    val c = QusinTheme.colors
+    Column(Modifier.fillMaxWidth().padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Row(Modifier.fillMaxWidth().clip(QusinShapes.Card).background(c.surface)
+            .clickable(onClick = onReport).padding(14.dp), verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Icon(QusinIcons.Doc, null, Modifier.size(26.dp), tint = c.accent)
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.report_title), style = QusinType.BodyStrong, color = c.ink)
+                Text(stringResource(R.string.report_entry_hint), style = QusinType.Hint, color = c.ink2)
+            }
+            Icon(QusinIcons.Chevron, null, Modifier.size(16.dp), tint = c.ink3)
+        }
+        Row(Modifier.fillMaxWidth().clip(QusinShapes.Card).clickable(onClick = onReplay)
+            .heightIn(min = 48.dp).padding(horizontal = 14.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Icon(QusinIcons.Route, null, Modifier.size(18.dp), tint = c.accent)
+            Text(stringResource(R.string.playback_title), Modifier.weight(1f), style = QusinType.Caption, color = c.accent)
+            Icon(QusinIcons.Chevron, null, Modifier.size(16.dp), tint = c.ink3)
+        }
+    }
+}
+
+@Composable
+internal fun rememberReport(vm: TaskReportViewModel): Pair<Boolean, TaskReport?> {
+    var loaded by remember(vm) { mutableStateOf(false) }
+    var report by remember(vm) { mutableStateOf<TaskReport?>(null) }
+    LaunchedEffect(vm) { report = withContext(Dispatchers.IO) { vm.load() }; loaded = true }
+    return loaded to report
+}
+
+@Composable
+fun TaskReportScreen(vm: TaskReportViewModel, onBack: () -> Unit, onReplay: (Int?) -> Unit, onTimeline: () -> Unit) {
+    BackHandler(onBack = onBack)
+    val (loaded, report) = rememberReport(vm)
+    val c = QusinTheme.colors
+    PageBackground {
+        Column(Modifier.fillMaxSize()) {
+            TopBar(stringResource(R.string.report_title), QusinIcons.Back, onBack, stringResource(R.string.back),
+                right = { ReportExportMenu(vm.runId, report) })
+            val r = report
+            if (r == null) {
+                if (loaded) EmptyNote(TimelineUi.EXPIRED_TEXT, Modifier.padding(top = 70.dp))
+            } else LazyColumn(Modifier.fillMaxSize().testTag("report-scroll"),
+                contentPadding = PaddingValues(16.dp, 8.dp, 16.dp, WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 20.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                item("document") {
+                    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(QusinRadius.Bubble)).background(c.surface).padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                        Text(r.header.goal, style = QusinType.Title.copy(fontWeight = FontWeight.Bold), color = c.ink)
+                        Row(Modifier.fillMaxWidth().clip(QusinShapes.Tile).background(c.accentSoft).height(IntrinsicSize.Min), verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.width(3.dp).fillMaxHeight().background(c.accent))
+                            Text(r.header.outcome, Modifier.weight(1f).padding(12.dp), style = QusinType.Label, color = c.accent)
+                            r.header.duration?.let { Text(it, Modifier.padding(end = 12.dp), style = QusinType.Hint, color = c.ink2) }
+                        }
+                        if (r.header.criteria.isNotEmpty()) Text(r.header.criteria.joinToString(" · "), style = QusinType.Caption, color = c.ink2)
+                        if (r.answer.isBlank()) Text(stringResource(R.string.report_no_answer), style = QusinType.Body, color = c.ink2)
+                        else MarkdownText(TaskReportExport.displayMarkdown(r.answer, r.header.goal), QusinType.Body.copy(color = c.ink, lineHeight = 25.sp), Modifier.fillMaxWidth(), reportStyle = true)
+                    }
+                }
+                if (r.pages.isNotEmpty()) {
+                    item("screens-heading") { Text(stringResource(R.string.report_screens), style = QusinType.BodyStrong, color = c.ink) }
+                    itemsIndexed(r.pages, key = { _, p -> "page-${p.screenshotId}" }) { _, page ->
+                        Row(Modifier.fillMaxWidth().clip(QusinShapes.Card).background(c.surface)
+                            .clickable { onReplay(page.screenshotId) }.padding(12.dp), verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            StaticPlaybackImage(vm, page.screenshotId, Modifier.size(46.dp, 72.dp))
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Text(page.title, style = QusinType.BodyStrong, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                Text(stringResource(R.string.report_view_step, page.stepIndex + 1), style = QusinType.Hint, color = c.ink2)
+                            }
+                            Icon(QusinIcons.Chevron, null, Modifier.size(14.dp), tint = c.ink3)
+                        }
+                    }
+                }
+                item("replay") { QusinButton(stringResource(R.string.playback_title), { onReplay(null) }, Modifier.fillMaxWidth(), kind = ButtonKind.Primary) }
+                item("timeline") { QusinButton(stringResource(R.string.chat_view_process), onTimeline, Modifier.fillMaxWidth(), kind = ButtonKind.Tonal, size = ButtonSize.Small) }
+                item("privacy") { Text(stringResource(R.string.report_local_note), style = QusinType.Hint, color = c.ink2) }
+            }
+        }
+    }
+}

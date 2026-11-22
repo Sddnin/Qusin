@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="web_search_title">Tìm kiếm web</string>
+    <string name="web_search_provider">Dịch vụ tìm kiếm</string>
+    <string name="web_search_note_you">Hoạt động không cần khóa (miễn phí, 100 lượt tìm kiếm mỗi ngày); nếu có khóa, dịch vụ sẽ dùng API trả phí.</string>
+    <string name="web_search_searxng_url">URL máy chủ</string>
+    <string name="web_search_note_jina">Cần khóa API. Kết quả đến từ Jina Search (s.jina.ai).</string>
+    <string name="web_search_note_exa">Cần khóa API. Kết quả đến từ Exa Search (api.exa.ai).</string>
+    <string name="web_search_note_deepseek">Cần khóa API (có thể dùng cùng khóa với trò chuyện). Kết quả đến từ DeepSeek Search (api.deepseek.com).</string>
+    <string name="web_search_note_searxng">Máy chủ SearXNG của riêng bạn; không cần khóa. Máy chủ phải cho phép đầu ra JSON (thêm json vào search.formats trong settings.yml).</string>
+    <string name="web_search_api_key_required">Khóa API (bắt buộc)</string>
+    <string name="web_search_missing_key">%1$s cần khóa API để hoạt động.</string>
+    <string name="web_search_get_key">Lấy khóa API</string>
+    <string name="web_search_privacy">Khóa được lưu mã hóa trên điện thoại này. Kết quả tìm kiếm được xem là dữ liệu không đáng tin cậy.</string>
+    <string name="web_search_row_sub">Dịch vụ tìm kiếm tùy chọn; tìm kiếm trong trình duyệt luôn khả dụng</string>
+    <string name="web_search_enabled">Bật tìm kiếm web</string>
+    <string name="web_search_api_key">Khóa API (không bắt buộc)</string>
+    <string name="web_search_invalid_endpoint">Nhập URL HTTP hoặc HTTPS không có tham số truy vấn.</string>
+    <string name="web_search_action">Tìm kiếm trên web</string>
+    <string name="web_search_google_grounding_toggle">Google Search grounding (Gemini)</string>
+    <string name="web_search_note_google">Sử dụng khóa API Gemini hiện có của bạn (tools: [{googleSearch: {}}]). Miễn phí 5.000 lời nhắc có grounding mỗi tháng, sau đó là 14 USD/1.000 truy vấn; một câu hỏi có thể kích hoạt nhiều lượt tìm kiếm.</string>
+    <string name="web_search_google_unavailable_provider">Google Search grounding không khả dụng trên %1$s. Tính năng này yêu cầu mô hình chính Gemini.</string>
+    <string name="web_search_google_unavailable_none">Google Search grounding yêu cầu mô hình chính Gemini trong Cài đặt › Mô hình.</string>
+    <string name="web_search_google_unavailable_value">Không khả dụng</string>
+</resources>

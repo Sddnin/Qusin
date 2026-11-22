@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="teach_title">Dạy Qusin</string>
+    <string name="teach_menu">Dạy Qusin</string>
+    <string name="teach_goal_label">Mục tiêu</string>
+    <string name="teach_goal_hint">Bạn muốn Qusin học gì? Hãy viết trong một câu.</string>
+    <string name="teach_disclosure">Các bước chỉ được lưu trên điện thoại này và chỉ sau khi bạn chạm Bắt đầu minh họa. Nếu đã thiết lập mô hình, việc tạo kỹ năng sẽ gửi bản tóm tắt đã loại bỏ thông tin nhạy cảm về mục tiêu và các bước đến mô hình đó. Mật khẩu, mã xác minh và thông tin thanh toán sẽ được loại trừ. Nếu chưa thiết lập mô hình, bản nháp sẽ được tạo trên điện thoại này và không có dữ liệu nào được tải lên. Bản nháp chỉ được sử dụng sau khi bạn chấp nhận và chưa được chạy thử.</string>
+    <string name="teach_continue">Tiếp tục</string>
+    <string name="teach_ready_body">Qusin sẽ quan sát và không thao tác trên điện thoại. Bạn có thể tạm dừng, kết thúc hoặc hủy. Không có gì được ghi lại cho đến khi bạn chạm Bắt đầu minh họa.</string>
+    <string name="teach_start">Bắt đầu minh họa</string>
+    <string name="teach_learning">Đang học</string>
+    <string name="teach_paused">Đã tạm dừng</string>
+    <string name="teach_pause">Tạm dừng</string>
+    <string name="teach_resume">Tiếp tục</string>
+    <string name="teach_end">Kết thúc minh họa</string>
+    <string name="teach_discard">Hủy bỏ</string>
+    <string name="teach_discard_body">Hủy phần minh họa này và xóa các bước đã lưu?</string>
+    <string name="teach_review">Xem lại</string>
+    <string name="teach_correct">Sửa bước này</string>
+    <string name="teach_clarify">Bước này có ý nghĩa gì?</string>
+    <string name="teach_remove">Xóa</string>
+    <string name="teach_generate">Tạo bản nháp kỹ năng</string>
+    <string name="teach_busy">Đang có tác vụ chạy. Hãy đợi tác vụ kết thúc trước khi bắt đầu dạy.</string>
+    <string name="teach_need_a11y">Hãy bật Trợ năng trước khi minh họa. Qusin không thể nhìn thấy thao tác chạm nếu không có quyền này.</string>
+    <string name="teach_interrupted">Phần minh họa đã dừng vì ứng dụng khởi động lại hoặc Trợ năng bị tắt. Không có gì được ghi lại cho đến khi bạn chạm Tiếp tục.</string>
+    <string name="teach_need_goal">Trước tiên hãy nhập mục tiêu.</string>
+    <string name="teach_secret_goal">Mục tiêu có vẻ là mật khẩu hoặc mã nên không được lưu.</string>
+    <string name="teach_draft_failed">Không thể tạo bản nháp. Các bước vẫn được giữ lại.</string>
+    <string name="teach_draft_ready">Một bản nháp đang chờ trong mục Bộ nhớ và kỹ năng. Bản nháp chỉ được dùng sau khi bạn chấp nhận và chưa được chạy thử.</string>
+    <string name="teach_open_drafts">Xem lại bản nháp</string>
+    <string name="teach_no_steps">Không có bước nào được giữ lại.</string>
+    <string name="teach_blocked_task">Qusin đang học từ bạn nên tác vụ này chưa được bắt đầu.</string>
+    <string name="teach_channel">Đang hướng dẫn</string>
+    <string name="teach_sensitive_note">Đã loại trừ nội dung nhập nhạy cảm.</string>
+    <string name="teach_insufficient_note">Không đủ thông tin giao diện. Đây không phải thao tác theo tọa độ.</string>
+    <string name="teach_notification">Qusin không thao tác trên điện thoại.</string>
+    <string name="teach_no_visible">Không thể hiển thị thanh Đang học nên quá trình ghi lại chưa bắt đầu. Không cần quyền thông báo. Lớp phủ Trợ năng phải hiển thị cùng các nút Tạm dừng và Kết thúc.</string>
+    <string name="teach_watch_lost">Thanh Đang học đã biến mất nên phần minh họa đã dừng. Không có thêm dữ liệu nào được ghi lại.</string>
+    <string name="teach_shelf_expand">Hiển thị Dạy Qusin</string>
+    <string name="teach_shelf_collapse">Ẩn Dạy Qusin</string>
+</resources>
