@@ -49,16 +49,17 @@ sealed interface Approval {
 }
 
 /**
- * 审批判定:纯函数。只有会花钱的动作或工具明确声明需要确认的步骤才等待用户。
- * UI 中无费用的发送、提交、删除等已授权操作直接执行;无人值守或非 UI 运行仍拒绝付款、显式确认请求和不可逆动作。
+ * 审批判定:纯函数。手机 UI 中,用户明确要求的免费发送、提交等对外动作直接执行;
+ * 来自 MCP、渠道、触发器、子任务或无人值守运行的对外/不可逆动作一律拒绝。
+ * 只有可交给在场用户确认的花钱步骤等待确认;工具明确声明的额外确认也不能绕过。
  */
 object ApprovalPolicy {
     fun decide(risk: Risk, run: RunProvenance = RunProvenance()): Approval = when {
-        // Without an interactive user, refuse payments, explicitly declared approvals,
-        // and irreversible actions. Free external actions (for example sending/submitting)
-        // remain available; on the UI, explicitly requested free actions run directly.
-        (run.attendance == Attendance.Unattended || run.origin != RunOrigin.Ui) &&
-            (risk.payment || risk.ask != null || risk.level == ActionRisk.Irreversible) -> Approval.Deny
+        // Free outward actions are only relaxed for an attended phone UI run.
+        // MCP and other non-UI origins must never perform external side effects,
+        // even when the run is marked autonomous. An unattended run cannot act outward either.
+        (run.origin != RunOrigin.Ui || run.attendance == Attendance.Unattended) &&
+            (risk.payment || risk.ask != null || risk.level.outward) -> Approval.Deny
         !risk.payment && risk.ask == null -> Approval.Allow
         else -> Approval.Ask
     }

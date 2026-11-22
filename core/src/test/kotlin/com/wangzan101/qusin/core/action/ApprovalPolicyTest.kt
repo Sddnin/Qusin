@@ -17,12 +17,31 @@ class ApprovalPolicyTest {
     @Test fun everyOriginAndAttendance() {
         for (origin in RunOrigin.entries) for (attendance in Attendance.entries) for (level in ActionRisk.entries) {
             val run = RunProvenance(origin, attendance)
-            val unattended = origin != RunOrigin.Ui || attendance == Attendance.Unattended
-            val noMoney = if (level == ActionRisk.Irreversible && unattended) Approval.Deny else Approval.Allow
+            val cannotPerformOutwardAction = origin != RunOrigin.Ui || attendance == Attendance.Unattended
+            val noMoney = if (level.outward && cannotPerformOutwardAction) Approval.Deny else Approval.Allow
             assertEquals("$origin $attendance $level", noMoney, ApprovalPolicy.decide(Risk(level), run))
             val expected = if (origin == RunOrigin.Ui && attendance != Attendance.Unattended) Approval.Ask else Approval.Deny
             assertEquals("$origin $attendance $level payment", expected, ApprovalPolicy.decide(Risk(level, payment = true), run))
         }
+    }
+
+    @Test fun outwardActionsAreAllowedOnlyFromAnAttendedPhoneUi() {
+        assertEquals(
+            Approval.Allow,
+            ApprovalPolicy.decide(Risk(ActionRisk.External), RunProvenance(RunOrigin.Ui, Attendance.Present)),
+        )
+        assertEquals(
+            Approval.Deny,
+            ApprovalPolicy.decide(Risk(ActionRisk.External), RunProvenance(RunOrigin.Mcp, Attendance.Present)),
+        )
+        assertEquals(
+            Approval.Deny,
+            ApprovalPolicy.decide(Risk(ActionRisk.External), RunProvenance(RunOrigin.Mcp, Attendance.Unattended)),
+        )
+        assertEquals(
+            Approval.Deny,
+            ApprovalPolicy.decide(Risk(ActionRisk.External), RunProvenance(RunOrigin.Ui, Attendance.Unattended)),
+        )
     }
 
     @Test fun declaredOffScreenActionsStillRequireApproval() {
