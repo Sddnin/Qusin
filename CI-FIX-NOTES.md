@@ -53,3 +53,8 @@ git commit -m "Store the bundled runtime as a regular file, not an LFS pointer"
 ```
 
 If that size is still 133, the filter comes from `.git/info/attributes`, which beats `.gitattributes`: remove the lfs line there. The 58 MB file is under GitHub's 100 MB limit (it warns above 50 MB).
+
+### No terminal? (phone workflow)
+
+- `ci.yml` now has a step that tries `git lfs pull` when the commit holds a pointer. Unverified: it only works if the LFS object was actually uploaded to the repo. GitHub LFS free bandwidth is about 1 GB/month, so each CI run costs about 58 MB; recommitting the real file is still the lasting fix.
+- New workflow `.github/workflows/update-snapshots.yml` (Actions → Update snapshots → Run workflow) regenerates the core snapshots in CI and pushes them to a branch `ci/update-snapshots-<run_id>`, not to main. Review Files changed there before merging.

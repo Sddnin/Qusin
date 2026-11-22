@@ -107,6 +107,21 @@ jobs:
       # 编译设备测试以检查设置交互等回归用例；这里没有连接设备，不执行 instrumentation。
       # BundledRuntimeTest 读的是检出后的 rootfs.tar.xz；先把它的大小、哈希、文件头和代码里的常量并排打出来，
       # 检出把它改坏（换行转换、LFS 指针、没推全）时，日志里一眼就能看到，不用等单测报 XZFormatException。
+      # 提交里的 rootfs.tar.xz 若是 LFS 指针(133 字节的文本),先试着从 LFS 把真文件拉下来;
+      # 拉不到也不报错,下一步会把原因打出来。提交了真文件时这一步什么都不做。
+      - name: Fetch bundled runtime from LFS if the commit has a pointer
+        continue-on-error: true
+        shell: bash
+        run: |
+          f=app/src/main/assets/runtime/rootfs.tar.xz
+          if [ "$(stat -c %s "$f")" -lt 1024 ] && head -c 7 "$f" | grep -q '^version'; then
+            git lfs install --local
+            git lfs pull --include="$f"
+            git lfs checkout "$f" || true
+            ls -l "$f"
+          else
+            echo "not a pointer, nothing to fetch"
+          fi
       # continue-on-error:这一步只负责把原因打出来,不挡住后面的单测(其它测试的结果照常要看)。
       - name: Check bundled runtime asset
         continue-on-error: true
