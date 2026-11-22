@@ -39,13 +39,12 @@ class AboutScreenTest {
 
     private val r020 = ReleaseInfo(
         "0.2.0", "Qusin 0.2.0", "### 新增\n- 附件面板", "2026-11-05",
-        "https://github.com/wangzan101/Mika/releases/tag/v0.2.0", "https://github.com/x/qusin-0.2.0.apk",
+        "https://github.com/Sddnin/Qusin/releases/tag/v0.2.0", "https://github.com/x/qusin-0.2.0.apk",
     )
 
     private class Calls {
         val urls = mutableListOf<String>()
         var checks = 0
-        var saves = 0
         var licenses = 0
     }
 
@@ -58,7 +57,7 @@ class AboutScreenTest {
                 AboutScreen(
                     versionName = "0.1.0", build = "abc1234", beta = true, update = update, issueUrl = "issue://prefilled",
                     onCheck = { calls.checks++ }, onOpenUrl = { calls.urls += it },
-                    onSaveQr = { calls.saves++; true }, onOpenLicense = { calls.licenses++ }, onBack = {},
+                    onOpenLicense = { calls.licenses++ }, onBack = {},
                     diagnostics = { sampleDiagnostics },
                 )
             }
@@ -79,10 +78,13 @@ class AboutScreenTest {
         compose.onNodeWithText("版本 0.1.0").assertIsDisplayed()
         compose.onNodeWithText("Beta").assertIsDisplayed()
         compose.onNodeWithText("· 构建 abc1234").assertIsDisplayed()
-        for (t in listOf("检查更新", "更新记录", "联系作者", "关注作者", "反馈问题", "开源仓库", "使用说明与参与方式", AboutCopy.DATA_NOTE, AboutCopy.AUTHOR)) {
+        for (t in listOf("检查更新", "更新记录", "反馈问题", "开源仓库", "使用说明与参与方式", AboutCopy.DATA_NOTE)) {
             scrollTo(t)
             compose.onNodeWithText(t).assertIsDisplayed()
         }
+        compose.onAllNodesWithText("联系作者").assertCountEquals(0)
+        compose.onAllNodesWithText("关注作者").assertCountEquals(0)
+        compose.onAllNodesWithText("WeChat").assertCountEquals(0)
         // 许可证只在页脚,不再单独一行
         compose.onAllNodesWithText("开源许可").assertCountEquals(0)
     }
@@ -90,11 +92,11 @@ class AboutScreenTest {
     @Test
     fun externalRowsOpenLinks() {
         val calls = about()
-        for (t in listOf("关注作者", "开源仓库", "使用说明与参与方式")) {
+        for (t in listOf("开源仓库", "使用说明与参与方式")) {
             scrollTo(t)
             compose.onNodeWithText(t).performClick()
         }
-        assertEquals(listOf(QusinLinks.X, QusinLinks.REPO, QusinLinks.README), calls.urls)
+        assertEquals(listOf(QusinLinks.REPO, QusinLinks.README), calls.urls)
     }
 
     @Test
@@ -134,20 +136,6 @@ class AboutScreenTest {
             clip = cm.primaryClip?.getItemAt(0)?.text?.toString()
         }
         assertEquals(sampleDiagnostics, clip)
-    }
-
-    /** 联系作者面板:作者微信码、提示和保存按钮都在,点保存走一次回调。 */
-    @Test
-    fun groupRowOpensGroupSheet() {
-        val calls = about()
-        scrollTo("联系作者")
-        compose.onNodeWithText("联系作者").performClick()
-        compose.awaitOne(AboutCopy.GROUP_SHEET_SUB).assertIsDisplayed()
-        compose.onNodeWithTag("wechat-qr").assertExists()
-        compose.onNodeWithText(AboutCopy.GROUP_HINT).assertExists()
-        compose.onNodeWithText(AboutCopy.SAVE_QR).performClick()
-        compose.waitForIdle()
-        assertEquals(1, calls.saves)
     }
 
     @Test

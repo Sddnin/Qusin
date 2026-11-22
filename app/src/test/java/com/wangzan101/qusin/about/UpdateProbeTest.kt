@@ -54,7 +54,7 @@ class UpdateProbeTest {
     private fun assetsPage(vararg apks: Pair<String, String?>) = buildString {
         append("<ul>")
         for ((name, sha) in apks) {
-            append("<li><a href=\"/wangzan101/Qusin/releases/download/v0.3.0/$name\">$name</a>")
+            append("<li><a href=\"/Sddnin/Qusin/releases/download/v0.3.0/$name\">$name</a>")
             sha?.let { append("<span>sha256:$it</span>") }
             append("</li>")
         }
@@ -65,14 +65,14 @@ class UpdateProbeTest {
         server.dispatcher = dispatcher {
             MockResponse().setBody(
                 """{"tag_name":"v0.3.0","name":"Qusin 0.3.0","body":"- 新东西","published_at":"2026-11-01T00:00:00Z",
-                   "html_url":"https://github.com/wangzan101/Mika/releases/tag/v0.3.0",
-                   "assets":[{"name":"Qusin-v0.3.0.apk","browser_download_url":"https://github.com/wangzan101/Mika/releases/download/v0.3.0/Mika-v0.3.0.apk","size":123,"digest":"$digest"}]}""",
+                   "html_url":"https://github.com/Sddnin/Qusin/releases/tag/v0.3.0",
+                   "assets":[{"name":"Qusin-v0.3.0.apk","browser_download_url":"https://github.com/Sddnin/Qusin/releases/download/v0.3.0/Qusin-v0.3.0.apk","size":123,"digest":"$digest"}]}""",
             )
         }
         val found = UpdateProbe.fetch(UpdateChecker.defaultClient(), "", api, releases, emptyList(), "Qusin/test")
         assertNotNull(found)
         assertEquals("0.3.0", found!!.version)
-        assertEquals("https://github.com/wangzan101/Mika/releases/download/v0.3.0/Mika-v0.3.0.apk", found.apkUrl)
+        assertEquals("https://github.com/Sddnin/Qusin/releases/download/v0.3.0/Qusin-v0.3.0.apk", found.apkUrl)
         assertEquals(123L, found.apkSize)
         assertEquals(digest, found.apkDigest)
     }
@@ -112,7 +112,7 @@ class UpdateProbeTest {
                 path.endsWith("/api") -> MockResponse().setResponseCode(403)
                 path.endsWith("/releases/latest") ->
                     MockResponse().setResponseCode(302)
-                        .setHeader("Location", "https://github.com/wangzan101/Mika/releases/tag/v0.3.0")
+                        .setHeader("Location", "https://github.com/Sddnin/Qusin/releases/tag/v0.3.0")
                 path.endsWith("/expanded_assets/v0.3.0") ->
                     MockResponse().setBody(assetsPage(
                         "Qusin-v0.3.0-arm64.apk" to "b".repeat(64),
@@ -136,7 +136,7 @@ class UpdateProbeTest {
             when {
                 path.endsWith("/api") -> MockResponse().setResponseCode(403)
                 path.endsWith("/releases/latest") -> MockResponse().setBody(
-                    "<html><a href=\"/wangzan101/Qusin/releases/tag/v0.4.0\">latest</a></html>",
+                    "<html><a href=\"/Sddnin/Qusin/releases/tag/v0.4.0\">latest</a></html>",
                 )
                 path.endsWith("/expanded_assets/v0.4.0") -> MockResponse().setBody(assetsPage("Qusin-v0.4.0.apk" to "c".repeat(64)))
                 else -> MockResponse().setResponseCode(404)
@@ -153,7 +153,7 @@ class UpdateProbeTest {
             when {
                 path.endsWith("/api") -> MockResponse().setResponseCode(403)
                 path.endsWith("/releases/latest") ->
-                    MockResponse().setResponseCode(302).setHeader("Location", "https://github.com/wangzan101/Mika/releases/tag/v0.5.0")
+                    MockResponse().setResponseCode(302).setHeader("Location", "https://github.com/Sddnin/Qusin/releases/tag/v0.5.0")
                 else -> MockResponse().setResponseCode(404)
             }
         }
@@ -197,7 +197,7 @@ class UpdateProbeTest {
             when {
                 path.endsWith("/api") -> MockResponse().setSocketPolicy(okhttp3.mockwebserver.SocketPolicy.DISCONNECT_AT_START)
                 path.endsWith("/releases/latest") ->
-                    MockResponse().setResponseCode(302).setHeader("Location", "https://github.com/wangzan101/Mika/releases/tag/v0.6.0")
+                    MockResponse().setResponseCode(302).setHeader("Location", "https://github.com/Sddnin/Qusin/releases/tag/v0.6.0")
                 path.endsWith("/expanded_assets/v0.6.0") -> MockResponse().setBody(assetsPage("Qusin-v0.6.0.apk" to null))
                 else -> MockResponse().setResponseCode(404)
             }

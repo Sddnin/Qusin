@@ -86,19 +86,11 @@ If you need a proxy to reach a model service but don't want a system-wide VPN, e
 
 ## API key pool and rotation
 
-API-key providers expose an **Add API Key** action on their provider details page. You can add one key or paste several keys separated by commas, semicolons, or line breaks. The same pool is available for OpenAI-compatible Chat Completions, OpenAI Responses, Anthropic Messages, and Gemini providers. Account sign-in credentials are managed separately; OpenRouter can keep its account key alongside keys you add manually.
+On a provider details page that supports API keys, use **Add API Key** to open the entry field. You can paste one key or several keys separated by commas, semicolons, or line breaks. The pool is available for OpenAI-compatible Chat Completions, OpenAI Responses, Anthropic Messages, and Google Gemini `generateContent`. OAuth sign-in credentials are managed separately; OpenRouter can keep its signed-in account credential alongside backup keys that you add manually.
 
-Qusin selects usable keys in round-robin order. When a request receives `401` or `403`, that key is marked exhausted and will not be selected again until the app process restarts or that key is removed and added again. A `429` places the key on cooldown, using the server's `Retry-After` information when available and a 60-second default otherwise. After one of these responses, the current request can try another key; each key is attempted at most once for that logical request. If no other key is available, the original response is returned. Network failures and unrelated HTTP errors do not trigger key rotation.
+Qusin rotates through currently available keys. A `401` or `403` response marks that key as rejected for the current app process; it will not be selected again until the process restarts or you remove and add the key again. A `429` response places the key on cooldown. Qusin uses the server's `Retry-After` value when present, otherwise it uses a 60-second default. The current request can try the next key after either response, but each key is attempted at most once for a logical request. If no other key is available, the original error is returned. Network failures and other HTTP status codes do not trigger key rotation.
 
-Key status is runtime state, not a promise that a provider's account quota can be shared or increased. Every key remains subject to the provider's own account, billing, and rate-limit rules.
-
-## Multi-model waterfall and fallback
-
-To prevent tasks from failing when a provider encounters capacity outages, service degradations, or prompt token limits (e.g. `HTTP 413` or `5xx` errors):
-
-- Qusin supports configuring secondary and tertiary fallback models under each role.
-- If all keys for your primary model fail or the provider is temporarily unavailable, execution cascades down your waterfall chain automatically.
-- Once primary keys recover from their cooldown, subsequent tasks automatically ascend back to your primary model.
+Key status is runtime state, not a promise that a provider shares quotas across accounts. Every key remains subject to its provider's own access, billing, and rate-limit rules.
 
 ## ChatGPT reports a workspace access error after switching accounts
 

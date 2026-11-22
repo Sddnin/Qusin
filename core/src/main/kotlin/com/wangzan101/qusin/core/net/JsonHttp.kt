@@ -20,7 +20,7 @@ import java.io.IOException
 internal object JsonHttp {
     private const val MAX_RESPONSE_CHARS = 1_000_000
     private val JSON_TYPE = "application/json".toMediaType()
-    private const val USER_AGENT = "Qusin (+https://github.com/wangzan101/Mika)"
+    private const val USER_AGENT = "Qusin (+https://github.com/Sddnin/Qusin)"
 
     /** 一次调用没成的原因;由调用方换成自己的失败类型。 */
     data class Failure(val code: String, val message: String, val retryAfterSeconds: Long? = null)

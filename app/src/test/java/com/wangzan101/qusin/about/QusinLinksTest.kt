@@ -38,7 +38,7 @@ class QusinLinksTest {
     @Test
     fun issueUrlIsEncoded() {
         val url = QusinLinks.issueUrl(device)
-        assertTrue(url.startsWith("https://github.com/wangzan101/Mika/issues/new?title=&body="))
+        assertTrue(url.startsWith("https://github.com/Sddnin/Qusin/issues/new?title=&body="))
         val query = url.substringAfter('?')
         assertFalse("no raw spaces or newlines", query.any { it == ' ' || it == '\n' || it == '+' })
         assertFalse("no raw non-ASCII", query.any { it.code > 127 })

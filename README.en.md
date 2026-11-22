@@ -4,6 +4,8 @@
 
 # Qusin
 
+[GitHub repository](https://github.com/Sddnin/Qusin) · [Releases](https://github.com/Sddnin/Qusin/releases) · [Contributing guide](https://github.com/Sddnin/Qusin/blob/main/.github/CONTRIBUTING.md)
+
 **Qusin is an AI assistant for Android.** Describe a task in natural language and Qusin can work with phone apps, websites, files, and scheduled tasks.
 
 Qusin does not bundle its own AI model. Connect a provider with your API key, sign in with a supported account, or use a model hosted on your computer or local network.
@@ -49,6 +51,10 @@ Documentation:
 - [FAQ](docs/faq.en.md)
 - [Use Qusin from a computer](docs/computer.en.md)
 - [Development roadmap](docs/dev/roadmap.md)
+
+## Release notes
+
+GitHub release descriptions can include language-tagged sections. Qusin shows the section matching the app language and falls back to English. Use the [multilingual release-notes template](docs/dev/release-notes-template.md) when publishing a release.
 
 ## Build from source
 

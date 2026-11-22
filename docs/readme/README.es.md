@@ -9,13 +9,13 @@
 
 Trabaja en una pantalla en segundo plano que no ves, así que puedes seguir usando el móvil con normalidad.
 
-<a href="https://github.com/wangzan101/Mika"><img src="../media/star-banner-v2.png" alt="¿Te gusta Qusin? Dale una estrella — haz clic en Star arriba a la derecha" width="620" /></a>
+<a href="https://github.com/Sddnin/Qusin"><img src="../media/star-banner-v2.png" alt="¿Te gusta Qusin? Dale una estrella — haz clic en Star arriba a la derecha" width="620" /></a>
 
 <br/>
-<a href="https://github.com/wangzan101/Mika/releases/latest"><img src="https://img.shields.io/badge/Descargar%20APK-Android%2011%2B-2ea043?style=for-the-badge&logo=android&logoColor=white" alt="Descargar APK" /></a> <a href="https://github.com/wangzan101/Mika"><img src="https://img.shields.io/github/stars/wangzan101/Qusin?style=for-the-badge&logo=github&label=Star&color=FFD700&logoColor=white" alt="Star this repo" /></a>
+<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/badge/Descargar%20APK-Android%2011%2B-2ea043?style=for-the-badge&logo=android&logoColor=white" alt="Descargar APK" /></a> <a href="https://github.com/Sddnin/Qusin"><img src="https://img.shields.io/github/stars/Sddnin/Qusin?style=for-the-badge&logo=github&label=Star&color=FFD700&logoColor=white" alt="Star this repo" /></a>
 
-<a href="https://github.com/wangzan101/Mika/releases"><img src="https://img.shields.io/github/downloads/wangzan101/Qusin/total?label=descargas&color=2ea043" alt="downloads" /></a>
-<a href="https://github.com/wangzan101/Mika/releases/latest"><img src="https://img.shields.io/github/v/release/wangzan101/Qusin?include_prereleases&label=versi%C3%B3n" alt="version" /></a>
+<a href="https://github.com/Sddnin/Qusin/releases"><img src="https://img.shields.io/github/downloads/Sddnin/Qusin/total?label=descargas&color=2ea043" alt="downloads" /></a>
+<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/github/v/release/Sddnin/Qusin?include_prereleases&label=versi%C3%B3n" alt="version" /></a>
 <a href="../../LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-lightgrey" alt="license" /></a>
 
 <br/>
@@ -81,14 +81,14 @@ Trabaja en una pantalla en segundo plano que no ves, así que puedes seguir usan
 
 ## Empieza en tres pasos
 
-1. **Instálalo**: descarga el APK desde [Releases](https://github.com/wangzan101/Mika/releases/latest).
+1. **Instálalo**: descarga el APK desde [Releases](https://github.com/Sddnin/Qusin/releases/latest).
 2. **Conecta un modelo**: en Ajustes › Modelo, elige un proveedor e introduce una clave de API, o simplemente inicia sesión con una cuenta ([modelos e inicio de sesión](../models.en.md)).
 3. **Para que maneje apps del móvil**: sigue el asistente «Set up phone control» de los ajustes y empareja la depuración inalámbrica una sola vez ([guía de configuración](../setup-guide.en.md)). Si solo quieres chatear, navegar y trabajar con archivos, puedes saltarte este paso.
 
 Después, prueba a decirle: «Pon alarmas mañana a las 9:40 y a las 10:00» o «Mira el tiempo cada mañana a las 8 y avísame solo si va a llover».
 
 > 💡 ¿Tienes un ordenador a mano? Envía esta frase al agente de IA de tu ordenador y lo instalará todo por ti:<br/>
-> `Sigue los pasos de https://github.com/wangzan101/Mika/blob/main/docs/install-with-agent.en.md para instalar Qusin en el móvil Android conectado por USB.`
+> `Sigue los pasos de https://github.com/Sddnin/Qusin/blob/main/docs/install-with-agent.en.md para instalar Qusin en el móvil Android conectado por USB.`
 
 ## Qué puede hacer
 
@@ -131,7 +131,7 @@ También puedes prescindir de la clave e iniciar sesión con una cuenta de ChatG
 | Manejar apps del móvil | Android 12 o posterior; **se recomienda Android 14+** (la pantalla en segundo plano tiene su propio foco, así que no interfiere cuando escribes en la pantalla principal) |
 | Sandbox de Linux | Dispositivos arm64 |
 
-¿No sabes si tu móvil sirve? Ejecuta Ajustes › Recuperación y reparación › **Autocomprobación de compatibilidad**: 12 comprobaciones en un minuto, y puedes [enviarnos el resultado](https://github.com/wangzan101/Mika/issues/new?template=device-report.yml) con un toque.
+¿No sabes si tu móvil sirve? Ejecuta Ajustes › Recuperación y reparación › **Autocomprobación de compatibilidad**: 12 comprobaciones en un minuto, y puedes [enviarnos el resultado](https://github.com/Sddnin/Qusin/issues/new?template=device-report.yml) con un toque.
 
 ## Privacidad y seguridad
 
@@ -152,7 +152,7 @@ También puedes prescindir de la clave e iniciar sesión con una cuenta de ChatG
 
 **¿La app está en español?** Sí. La interfaz está en español, inglés, árabe, chino simplificado, chino tradicional, japonés, coreano, portugués, ruso e indonesio, sigue el idioma del sistema y se puede cambiar en Ajustes › Idioma. Puedes hablarle a Qusin en español sin problema. El conocimiento integrado sobre apps y sitios web está escrito en chino, y el modelo lo entiende sin dificultad.
 
-**¿De dónde vienen las actualizaciones?** Solo de los [Releases](https://github.com/wangzan101/Mika/releases) de este repositorio; también puedes actualizar desde la app en Acerca de Qusin › Buscar actualizaciones.
+**¿De dónde vienen las actualizaciones?** Solo de los [Releases](https://github.com/Sddnin/Qusin/releases) de este repositorio; también puedes actualizar desde la app en Acerca de Qusin › Buscar actualizaciones.
 
 Hay más respuestas en las [preguntas frecuentes](../faq.en.md).
 
@@ -163,17 +163,17 @@ Hay más respuestas en las [preguntas frecuentes](../faq.en.md).
 - **Documentación**: toda la documentación y un orden de lectura sugerido están en el [índice de documentación](../README.en.md)
 - **Comunidad**: únete al [chat de grupo en X](https://x.com/i/chat/group_join/g2116926829198246025/48B52j5svL); para escribir al autor por WeChat, escanea el código QR de la app en Acerca de Qusin › Contactar con el autor (menciona «Qusin» en la solicitud)
 - **Sigue al autor**: X [@wangzan101](https://x.com/wangzan101)
-- **Informa de un problema**: [abre un issue](https://github.com/wangzan101/Mika/issues/new/choose); en la app, Acerca de Qusin › Enviar comentarios permite adjuntar información de diagnóstico
+- **Informa de un problema**: [abre un issue](https://github.com/Sddnin/Qusin/issues/new/choose); en la app, Acerca de Qusin › Enviar comentarios permite adjuntar información de diagnóstico
 - **Contribuye**: añade conocimiento de uso para una app o un sitio web (texto plano, sin programar) o contribuye con código; consulta la [guía de contribución](../../.github/CONTRIBUTING.md)
 
 <p align="center">⭐ Si Qusin te ahorra tiempo, dale una estrella para que más gente lo encuentre.</p>
 
 ## Star History
 
-<a href="https://star-history.com/#wangzan101/Qusin&Date">
+<a href="https://star-history.com/#Sddnin/Qusin&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=wangzan101/Qusin&type=Date&theme=dark&v=20261110-2017" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=wangzan101/Qusin&type=Date&v=20261110-2017" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&theme=dark&v=20261110-2017" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&v=20261110-2017" width="600" />
   </picture>
 </a>
 
@@ -181,8 +181,8 @@ Hay más respuestas en las [preguntas frecuentes](../faq.en.md).
 
 Gracias a todas las personas que han participado en Qusin:
 
-<a href="https://github.com/wangzan101/Mika/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=wangzan101/Qusin&max=100&columns=12" alt="Contributors" />
+<a href="https://github.com/Sddnin/Qusin/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Sddnin/Qusin&max=100&columns=12" alt="Contributors" />
 </a>
 
 ## Licencia

@@ -6,15 +6,13 @@ import java.net.URLEncoder
 
 /** Qusin 对外的地址都在这里:仓库、问题、检查更新用的两个来源。换地址只改这一处。 */
 object QusinLinks {
-    const val REPO = "https://github.com/wangzan101/Mika"
-    const val REPO_LABEL = "github.com/wangzan101/Qusin"
-    const val README = "$REPO#readme"
+    const val REPO = "https://github.com/Sddnin/Qusin"
+    const val REPO_LABEL = "github.com/Sddnin/Qusin"
+    const val README = "$REPO/blob/main/docs/README.en.md"
     const val RELEASES = "$REPO/releases"
     const val NEW_ISSUE = "$REPO/issues/new"
-    const val X = "https://x.com/wangzan101"
-    const val X_HANDLE = "@wangzan101"
     /** 检查更新只问 GitHub 发布页(不登录,每小时有次数限制)。 */
-    const val LATEST_RELEASE_API = "https://api.github.com/repos/wangzan101/Qusin/releases/latest"
+    const val LATEST_RELEASE_API = "https://api.github.com/repos/Sddnin/Qusin/releases/latest"
 
     /** 反馈时预先填进问题模板的设备与版本信息。 */
     data class Device(

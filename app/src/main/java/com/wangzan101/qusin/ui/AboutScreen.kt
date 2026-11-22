@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +15,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,9 +37,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -54,7 +50,6 @@ import androidx.compose.ui.unit.dp
 import com.wangzan101.qusin.R
 import com.wangzan101.qusin.about.CheckStatus
 import com.wangzan101.qusin.about.QusinLinks
-import com.wangzan101.qusin.about.QrImage
 import com.wangzan101.qusin.about.ReleaseInfo
 import com.wangzan101.qusin.about.UpdateState
 import com.wangzan101.qusin.ui.components.ButtonKind
@@ -73,11 +68,11 @@ import com.wangzan101.qusin.ui.theme.QusinRadius
 import com.wangzan101.qusin.ui.theme.QusinShapes
 
 /** 关于页上点开的底部面板。 */
-private enum class AboutSheet { Update, Changelog, Feedback, Group, Diagnostics }
+private enum class AboutSheet { Update, Changelog, Feedback, Diagnostics }
 
 /**
  * 关于 Qusin:顶上图标、名字、一句话介绍、版本(Beta 标记、构建编号);下面是检查更新与更新记录、
- * 反馈问题、开源仓库与使用说明;一段数据说明;最底下许可证与作者。
+ * 反馈问题、开源仓库与使用说明;一段数据说明;最底下是许可证。
  * 外部链接都交给 [onOpenUrl](系统浏览器);手动检查的结果到了([UpdateState.manualRounds] 变了)才提示。
  * [diagnostics] 写出诊断信息(反馈面板里「复制诊断信息」点开预览时在后台线程调)。
  */
@@ -90,7 +85,6 @@ fun AboutScreen(
     issueUrl: String,
     onCheck: () -> Unit,
     onOpenUrl: (String) -> Unit,
-    onSaveQr: () -> Boolean,
     onOpenLicense: () -> Unit,
     onBack: () -> Unit,
     diagnostics: () -> String = { "" },
@@ -116,9 +110,6 @@ fun AboutScreen(
                 else -> Toast.makeText(context, AboutCopy.UP_TO_DATE_TOAST, Toast.LENGTH_SHORT).show()
             }
         }
-    }
-    val saveQr = {
-        Toast.makeText(context, if (onSaveQr()) AboutCopy.QR_SAVED else AboutCopy.QR_SAVE_FAILED, Toast.LENGTH_SHORT).show()
     }
     PageScaffold(AboutCopy.TITLE, onBack) {
         Hero(versionName, build, beta)
@@ -164,9 +155,7 @@ fun AboutScreen(
             ListRow(QusinIcons.Lines, AboutCopy.CHANGELOG, AboutCopy.CHANGELOG_SUB, onClick = { sheet = AboutSheet.Changelog }) { RowChevron() }
         }
         GroupCard {
-            ListRow(QusinIcons.Chats, AboutCopy.GROUP, AboutCopy.GROUP_SUB, first = true, onClick = { sheet = AboutSheet.Group }) { RowChevron() }
-            ListRow(QusinIcons.XMark, AboutCopy.FOLLOW, AboutCopy.FOLLOW_SUB, onClick = { onOpenUrl(QusinLinks.X) }) { ExternalMark() }
-            ListRow(QusinIcons.Bug, AboutCopy.FEEDBACK, AboutCopy.FEEDBACK_SUB, onClick = { sheet = AboutSheet.Feedback }) { RowChevron() }
+            ListRow(QusinIcons.Bug, AboutCopy.FEEDBACK, AboutCopy.FEEDBACK_SUB, first = true, onClick = { sheet = AboutSheet.Feedback }) { RowChevron() }
         }
         GroupCard {
             ListRow(QusinIcons.Code, AboutCopy.REPO, AboutCopy.REPO_SUB, first = true, onClick = { onOpenUrl(QusinLinks.REPO) }) { ExternalMark() }
@@ -193,7 +182,6 @@ fun AboutScreen(
                     .testTag("about-license"),
                 style = QusinType.Hint, color = c.ink3, textAlign = TextAlign.Center,
             )
-            Text(AboutCopy.AUTHOR, Modifier.padding(top = 2.dp), style = QusinType.Hint, color = c.ink3)
         }
     }
 
@@ -208,7 +196,6 @@ fun AboutScreen(
             onDiagnostics = { sheet = AboutSheet.Diagnostics },
             onDismiss = close,
         )
-        AboutSheet.Group -> GroupSheet(onSave = saveQr, onDismiss = close)
         AboutSheet.Diagnostics -> DiagnosticsSheet(diagnostics, onDismiss = close)
         null -> Unit
     }
@@ -290,11 +277,13 @@ private fun AboutSheetFrame(title: String, sub: String?, tag: String, onDismiss:
 @Composable
 private fun NotesBox(notes: String) {
     val c = QusinTheme.colors
+    val languageTag = LocalConfiguration.current.locales[0]?.toLanguageTag()
+    val localizedNotes = com.wangzan101.qusin.about.ReleaseNotesLocalization.select(notes, languageTag)
     Box(
         Modifier.padding(top = 12.dp).fillMaxWidth().heightIn(max = 280.dp)
             .background(c.fill, QusinShapes.Chip).verticalScroll(rememberScrollState()).padding(12.dp),
     ) {
-        MarkdownText(notes, QusinType.Caption.copy(color = c.ink2))
+        MarkdownText(localizedNotes, QusinType.Caption.copy(color = c.ink2))
     }
 }
 
@@ -343,27 +332,5 @@ private fun FeedbackSheet(onGitHub: () -> Unit, onDiagnostics: () -> Unit, onDis
 private fun FeedbackOption(icon: ImageVector, title: String, sub: String, first: Boolean, onClick: () -> Unit) {
     Box(Modifier.testTag("feedback-option")) {
         ListRow(icon, title, sub, first = first, onClick = onClick)
-    }
-}
-
-/**
- * 联系作者面板:作者的微信二维码,长按或按钮存进相册。二维码最高占屏幕约三分之一,常见手机上不用滚就能看到按钮。
- */
-@Composable
-internal fun GroupSheet(onSave: () -> Unit, onDismiss: () -> Unit) {
-    val c = QusinTheme.colors
-    val qrHeight = (LocalConfiguration.current.screenHeightDp * 0.34f).coerceAtMost(280f).dp
-    val qr = painterResource(QrImage.RES)
-    AboutSheetFrame(AboutCopy.GROUP_SHEET_TITLE, AboutCopy.GROUP_SHEET_SUB, "group-sheet", onDismiss) {
-        Image(
-            qr, contentDescription = AboutCopy.GROUP_SHEET_TITLE,
-            Modifier.padding(top = 12.dp, bottom = 6.dp).align(Alignment.CenterHorizontally)
-                .height(qrHeight).aspectRatio(qr.intrinsicSize.width / qr.intrinsicSize.height)
-                .clip(QusinShapes.Chip)
-                .pointerInput(Unit) { detectTapGestures(onLongPress = { onSave() }) }
-                .testTag("wechat-qr"),
-        )
-        Text(AboutCopy.GROUP_HINT, Modifier.fillMaxWidth(), style = QusinType.Hint, color = c.ink3, textAlign = TextAlign.Center)
-        QusinButton(AboutCopy.SAVE_QR, onSave, Modifier.fillMaxWidth().padding(top = 14.dp), kind = ButtonKind.Tonal)
     }
 }

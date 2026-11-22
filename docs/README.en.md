@@ -1,5 +1,7 @@
 # Qusin documentation
 
+[GitHub repository](https://github.com/Sddnin/Qusin) · [Releases](https://github.com/Sddnin/Qusin/releases) · [Contributing guide](https://github.com/Sddnin/Qusin/blob/main/.github/CONTRIBUTING.md)
+
 [简体中文](README.md) | English
 
 All of Qusin's documentation lives here. If you're new, reading the "Getting started" docs in order is enough; look up the rest when you need it.
@@ -33,5 +35,7 @@ Start with [Use Qusin from a computer](computer.en.md): pick CLI + Skill or MCP,
 | [Install with an AI agent on your computer](install-with-agent.en.md) | Installation steps written for an AI agent on your computer: with the phone on USB, hand it this doc and it sets things up for you |
 
 ## Developing Qusin
+
+For GitHub releases, use the [multilingual release-notes template](dev/release-notes-template.md) so the app can show notes in the selected app language.
 
 To contribute code or add usage knowledge for apps and websites, read the [contributing guide](../.github/CONTRIBUTING.md) first, then the [developer docs](dev/README.en.md) (architecture, knowledge format, roadmap and more).

@@ -9,15 +9,15 @@
 
 İşi gizli bir arka plan ekranında yapar, böylece sen telefonunu kullanmaya devam edebilirsin.
 
-<a href="https://github.com/wangzan101/Mika"><img src="../media/star-banner-v2.png" alt="Qusin'yı beğendin mi? Bir yıldız ver: sağ üst köşedeki Star'a tıkla" width="620" /></a>
+<a href="https://github.com/Sddnin/Qusin"><img src="../media/star-banner-v2.png" alt="Qusin'yı beğendin mi? Bir yıldız ver: sağ üst köşedeki Star'a tıkla" width="620" /></a>
 
 <br/>
 
-<a href="https://github.com/wangzan101/Mika/releases/latest"><img src="https://img.shields.io/badge/Download%20APK-Android%2011%2B-2ea043?style=for-the-badge&logo=android&logoColor=white" alt="APK'yı indir" /></a> <a href="https://github.com/wangzan101/Mika"><img src="https://img.shields.io/github/stars/wangzan101/Qusin?style=for-the-badge&logo=github&label=Star&color=FFD700&logoColor=white" alt="Bu repoya yıldız ver" /></a>
+<a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/badge/Download%20APK-Android%2011%2B-2ea043?style=for-the-badge&logo=android&logoColor=white" alt="APK'yı indir" /></a> <a href="https://github.com/Sddnin/Qusin"><img src="https://img.shields.io/github/stars/Sddnin/Qusin?style=for-the-badge&logo=github&label=Star&color=FFD700&logoColor=white" alt="Bu repoya yıldız ver" /></a>
 
 <br/>
 
-<a href="https://github.com/wangzan101/Mika/releases"><img src="https://img.shields.io/github/downloads/wangzan101/Qusin/total?label=downloads&color=2ea043" alt="indirmeler" /></a> <a href="https://github.com/wangzan101/Mika/releases/latest"><img src="https://img.shields.io/github/v/release/wangzan101/Qusin?include_prereleases&label=version" alt="sürüm" /></a> <a href="../../LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-lightgrey" alt="lisans" /></a>
+<a href="https://github.com/Sddnin/Qusin/releases"><img src="https://img.shields.io/github/downloads/Sddnin/Qusin/total?label=downloads&color=2ea043" alt="indirmeler" /></a> <a href="https://github.com/Sddnin/Qusin/releases/latest"><img src="https://img.shields.io/github/v/release/Sddnin/Qusin?include_prereleases&label=version" alt="sürüm" /></a> <a href="../../LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-lightgrey" alt="lisans" /></a>
 
 <br/>
 
@@ -80,14 +80,14 @@
 
 ## Üç adımda başla
 
-1. **Kur**: APK'yı [Releases](https://github.com/wangzan101/Mika/releases/latest) sayfasından indir.
+1. **Kur**: APK'yı [Releases](https://github.com/Sddnin/Qusin/releases/latest) sayfasından indir.
 2. **Bir model bağla**: Settings › Model (Ayarlar › Model) bölümünde bir sağlayıcı seçip API anahtarını gir ya da bir hesapla giriş yap ([modeller ve giriş](../models.en.md)).
 3. **Telefon uygulamalarını kullandırmak için**: Ayarlar'daki "Set up phone control" (Telefon kontrolünü kur) sihirbazını izle ve telefonda kablosuz hata ayıklamayı (wireless debugging) bir kez eşleştir ([kurulum rehberi](../setup-guide.en.md)). Yalnızca sohbet, web ve dosyalar istiyorsan bu adımı atla.
 
 Sonra şunu söylemeyi dene: "Yarın sabah 9:40 ve 10:00 için alarm kur" ya da "Her sabah 8'de hava durumuna bak, sadece yağmur yağacaksa bana söyle".
 
 > 💡 Yanında bir bilgisayar mı var? Bunu bilgisayardaki AI ajanına gönder, her şeyi senin için kursun:<br/>
-> `Follow https://github.com/wangzan101/Mika/blob/main/docs/install-with-agent.en.md to install Qusin on the Android phone connected over USB.`
+> `Follow https://github.com/Sddnin/Qusin/blob/main/docs/install-with-agent.en.md to install Qusin on the Android phone connected over USB.`
 
 ## Neler yapabilir
 
@@ -130,7 +130,7 @@ Anahtar kullanmadan bir ChatGPT (Plus / Pro), xAI / Grok veya OpenRouter hesabı
 | Telefon uygulamalarını kullanma | Android 12 veya üzeri; **Android 14+ önerilir** (arka plan ekranının kendi odağı olduğu için ana ekranda yazmana engel olmaz) |
 | Linux sandbox | arm64 cihazlar |
 
-Telefonunun yeterli olup olmadığından emin değil misin? Settings › Recovery & repair › **Compatibility self-check** (Ayarlar › Kurtarma ve onarım › Uyumluluk öz kontrolü) çalıştır: yaklaşık bir dakikada 12 kontrol yapar ve sonuçları tek dokunuşla [bize gönderebilirsin](https://github.com/wangzan101/Mika/issues/new?template=device-report.yml).
+Telefonunun yeterli olup olmadığından emin değil misin? Settings › Recovery & repair › **Compatibility self-check** (Ayarlar › Kurtarma ve onarım › Uyumluluk öz kontrolü) çalıştır: yaklaşık bir dakikada 12 kontrol yapar ve sonuçları tek dokunuşla [bize gönderebilirsin](https://github.com/Sddnin/Qusin/issues/new?template=device-report.yml).
 
 ## Gizlilik ve güvenlik
 
@@ -151,7 +151,7 @@ Telefonunun yeterli olup olmadığından emin değil misin? Settings › Recover
 
 **Uygulama Türkçe mi?** Henüz değil. Uygulama arayüzü İngilizce, Arapça, Basitleştirilmiş Çince, Geleneksel Çince, Japonca, Korece, İspanyolca, Portekizce, Rusça ve Endonezce dillerinde; sistem dilini izler ve Settings › Language (Ayarlar › Dil) bölümünden değiştirilebilir. Yerleşik uygulama ve web sitesi bilgisi Çince yazılmış, ama bu seni sınırlamaz: model onu rahatça okur ve sen Qusin ile Türkçe konuşabilirsin.
 
-**Güncellemeler nereden geliyor?** Yalnızca bu reponun [Releases](https://github.com/wangzan101/Mika/releases) sayfasından; uygulama içinde About › Check for updates (Hakkında › Güncellemeleri kontrol et) bölümünden de yükseltebilirsin.
+**Güncellemeler nereden geliyor?** Yalnızca bu reponun [Releases](https://github.com/Sddnin/Qusin/releases) sayfasından; uygulama içinde About › Check for updates (Hakkında › Güncellemeleri kontrol et) bölümünden de yükseltebilirsin.
 
 Daha fazla cevap [SSS](../faq.en.md) sayfasında.
 
@@ -162,17 +162,17 @@ Daha fazla cevap [SSS](../faq.en.md) sayfasında.
 - **Belgeler**: tüm belgeler ve önerilen okuma sırası [belge dizininde](../README.en.md)
 - **Topluluk**: [X grup sohbetine](https://x.com/i/chat/group_join/g2116926829198246025/48B52j5svL) katıl; yazara WeChat'ten ulaşmak için uygulamada About › Contact the author (Hakkında › Yazarla iletişim) altındaki QR kodu okut (isteğinde Qusin'dan bahset)
 - **Yazarı takip et**: X [@wangzan101](https://x.com/wangzan101)
-- **Sorun bildir**: [bir issue aç](https://github.com/wangzan101/Mika/issues/new/choose); uygulamadaki About › Send feedback (Hakkında › Geri bildirim gönder) tanılama bilgisi ekleyebilir
+- **Sorun bildir**: [bir issue aç](https://github.com/Sddnin/Qusin/issues/new/choose); uygulamadaki About › Send feedback (Hakkında › Geri bildirim gönder) tanılama bilgisi ekleyebilir
 - **Katkıda bulun**: bir uygulama ya da web sitesi için kullanım bilgisi ekle (düz metin, kod gerekmez) ya da kod katkısı yap; bkz. [katkı rehberi](../../.github/CONTRIBUTING.md)
 
 <p align="center">⭐ Qusin sana zaman kazandırıyorsa ona bir yıldız ver; daha fazla insanın onu bulmasına yardımcı olur.</p>
 
 ## Yıldız geçmişi
 
-<a href="https://star-history.com/#wangzan101/Qusin&Date">
+<a href="https://star-history.com/#Sddnin/Qusin&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=wangzan101/Qusin&type=Date&theme=dark&v=20261110-2017" />
-    <img alt="Yıldız geçmişi grafiği" src="https://api.star-history.com/svg?repos=wangzan101/Qusin&type=Date&v=20261110-2017" width="600" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&theme=dark&v=20261110-2017" />
+    <img alt="Yıldız geçmişi grafiği" src="https://api.star-history.com/svg?repos=Sddnin/Qusin&type=Date&v=20261110-2017" width="600" />
   </picture>
 </a>
 
@@ -180,8 +180,8 @@ Daha fazla cevap [SSS](../faq.en.md) sayfasında.
 
 Qusin'yı geliştirmeye yardım eden herkese teşekkürler:
 
-<a href="https://github.com/wangzan101/Mika/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=wangzan101/Qusin&max=100&columns=12" alt="Katkıda bulunanlar" />
+<a href="https://github.com/Sddnin/Qusin/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Sddnin/Qusin&max=100&columns=12" alt="Katkıda bulunanlar" />
 </a>
 
 ## Lisans

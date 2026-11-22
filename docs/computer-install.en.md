@@ -11,16 +11,16 @@ Agents wanting a fixed shortest path: see the [agent quick path](agent-quickstar
 - To let a computer agent that can run commands and supports Skills use Qusin, install the [Skill](#skill-install). It includes its own CLI script, so no separate CLI install is needed.
 - To submit tasks from a terminal or script, install the [CLI](#cli-install), which gives you the `qusin` command.
 
-On the phone: install the APK ([Releases](https://github.com/wangzan101/Mika/releases/latest)), open Qusin once and add a model. **If Qusin only needs to chat, browse the web and work with files, you can skip accessibility and the phone helper, and Android 11 works**; only phone app control needs the phone-control setup in the [setup guide](setup-guide.en.md) (Android 12+). Installing or updating the computer tools does not install or update the APK on the phone.
+On the phone: install the APK ([Releases](https://github.com/Sddnin/Qusin/releases/latest)), open Qusin once and add a model. **If Qusin only needs to chat, browse the web and work with files, you can skip accessibility and the phone helper, and Android 11 works**; only phone app control needs the phone-control setup in the [setup guide](setup-guide.en.md) (Android 12+). Installing or updating the computer tools does not install or update the APK on the phone.
 
-Below, `<tag>` means the version tag of the [latest release](https://github.com/wangzan101/Mika/releases/latest) (the `v0.1.x` in its title). Keep the computer tools and the phone APK on the same version where you can.
+Below, `<tag>` means the version tag of the [latest release](https://github.com/Sddnin/Qusin/releases/latest) (the `v0.1.x` in its title). Keep the computer tools and the phone APK on the same version where you can.
 
 ## CLI: install
 
 Requires Python 3.10+, Git and pipx; ADB connections also need Android platform-tools. Install:
 
 ```bash
-pipx install 'git+https://github.com/wangzan101/Mika.git@<tag>#subdirectory=tools/qusin'
+pipx install 'git+https://github.com/Sddnin/Qusin.git@<tag>#subdirectory=tools/qusin'
 qusin --version
 ```
 
@@ -31,7 +31,7 @@ The pipx package is `qusin-phone-cli` and the command is `qusin`. The CLI has it
 To update, use the new `<tag>`; to roll back, use the previous one; `--force` replaces the installed copy:
 
 ```bash
-pipx install --force 'git+https://github.com/wangzan101/Mika.git@<tag>#subdirectory=tools/qusin'
+pipx install --force 'git+https://github.com/Sddnin/Qusin.git@<tag>#subdirectory=tools/qusin'
 ```
 
 `pipx upgrade` does not move to another tag; use the command above to change versions. To remove:
@@ -44,7 +44,7 @@ pipx uninstall qusin-phone-cli
 
 The Skill is the repository's `tools/qusin` folder: `SKILL.md` tells the agent how to use it, and `scripts/qusin_cli.py` is the bundled CLI, which needs only Python 3.10+ (plus platform-tools for ADB connections).
 
-1. From the [latest release](https://github.com/wangzan101/Mika/releases/latest), download **Source code (zip)** and extract it.
+1. From the [latest release](https://github.com/Sddnin/Qusin/releases/latest), download **Source code (zip)** and extract it.
 2. Copy the **whole** `tools/qusin` folder into your agent's skills directory (see that agent's own documentation for where it is). The result should be `<skills-directory>/qusin/SKILL.md`, without an extra nested `qusin` folder.
 3. Check that the bundled script runs:
 

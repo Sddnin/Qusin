@@ -57,7 +57,6 @@ import com.wangzan101.qusin.QusinApp
 import com.wangzan101.qusin.about.Diagnostics
 import com.wangzan101.qusin.about.DiagnosticsCollector
 import com.wangzan101.qusin.about.QusinLinks
-import com.wangzan101.qusin.about.QrImage
 import com.wangzan101.qusin.about.ReleaseInfo
 import com.wangzan101.qusin.chat.ConversationStore
 import com.wangzan101.qusin.chat.CurrentChat
@@ -679,7 +678,6 @@ private fun QusinRoot(
             },
             onOpenMirrors = { nav.push(Route.UpdateMirrors) },
             onOpenUrl = { openInBrowser(context, it) },
-            onSaveQr = { QrImage.saveToPictures(context) },
             onOpenLicense = { nav.push(Route.License) },
             onBack = back,
             diagnostics = {

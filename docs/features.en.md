@@ -129,7 +129,7 @@ Computer AI tools can use **CLI + Skill or MCP** to hand Qusin tasks, check prog
 Connect the phone to your computer with a USB cable, turn on USB debugging on the phone (don't change other switches in Developer options unless the agent asks you to: some can erase the phone), and send this sentence to an AI agent on the computer that can run commands:
 
 ```
-Follow https://github.com/wangzan101/Mika/blob/main/docs/install-with-agent.en.md to install Qusin on the Android phone connected over USB.
+Follow https://github.com/Sddnin/Qusin/blob/main/docs/install-with-agent.en.md to install Qusin on the Android phone connected over USB.
 ```
 
 It checks the phone, downloads and installs Qusin, turns on the permissions it needs, and stops to tell you whenever something needs a tap on the phone. You enter your API key in Qusin yourself; it never goes through the agent. If you also ask for computer access, the agent configures the access method you choose. The steps are in [Installing Qusin with an AI agent](install-with-agent.en.md).

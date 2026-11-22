@@ -8,7 +8,7 @@
   "author": "Qusin 插件示例",
   "description": "在电脑上运行 qusin-feishu，把飞书私聊交给 Qusin；App 里只展示安装指引和状态。",
   "connector": {
-    "installDocs": "https://github.com/wangzan101/mika/blob/main/docs/feishu.md",
+    "installDocs": "https://github.com/Sddnin/Qusin/blob/main/docs/feishu.en.md",
     "command": "pipx install qusin-feishu && qusin-feishu setup",
     "statusApi": "/api/v1",
     "pairing": "code"

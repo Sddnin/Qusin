@@ -7,11 +7,11 @@
 ## 1. 解析最新版本 tag
 
 ```sh
-curl -s https://api.github.com/repos/wangzan101/Qusin/releases/latest   # 取 tag_name
+curl -s https://api.github.com/repos/Sddnin/Qusin/releases/latest   # 取 tag_name
 ```
 
 ```powershell
-(Invoke-RestMethod https://api.github.com/repos/wangzan101/Qusin/releases/latest).tag_name
+(Invoke-RestMethod https://api.github.com/repos/Sddnin/Qusin/releases/latest).tag_name
 ```
 
 下文 `<tag>` 即该值（如 `v0.1.31`），`<ver>` 是去掉 `v` 的版本号（如 `0.1.31`）。
@@ -19,7 +19,7 @@ curl -s https://api.github.com/repos/wangzan101/Qusin/releases/latest   # 取 ta
 ## 2. 选 CLI 还是 Skill
 
 - Agent 支持 Skill：**默认装 Skill**，它自带 CLI 脚本。
-- 否则装 CLI：`pipx install 'git+https://github.com/wangzan101/Mika.git@<tag>#subdirectory=tools/qusin'`。
+- 否则装 CLI：`pipx install 'git+https://github.com/Sddnin/Qusin.git@<tag>#subdirectory=tools/qusin'`。
 
 ## 3. 安装 Skill
 
@@ -28,7 +28,7 @@ curl -s https://api.github.com/repos/wangzan101/Qusin/releases/latest   # 取 ta
 POSIX：
 
 ```sh
-curl -L -o qusin.zip https://github.com/wangzan101/Mika/archive/refs/tags/<tag>.zip
+curl -L -o qusin.zip https://github.com/Sddnin/Qusin/archive/refs/tags/<tag>.zip
 unzip -q qusin.zip -d qusin-src
 mkdir -p <技能目录> && cp -R qusin-src/Qusin-<ver>/tools/qusin <技能目录>/qusin
 python3 <技能目录>/qusin/scripts/qusin_cli.py --version
@@ -37,7 +37,7 @@ python3 <技能目录>/qusin/scripts/qusin_cli.py --version
 Windows PowerShell：
 
 ```powershell
-Invoke-WebRequest https://github.com/wangzan101/Mika/archive/refs/tags/<tag>.zip -OutFile qusin.zip
+Invoke-WebRequest https://github.com/Sddnin/Qusin/archive/refs/tags/<tag>.zip -OutFile qusin.zip
 Expand-Archive qusin.zip -DestinationPath qusin-src
 New-Item -ItemType Directory -Force "<技能目录>" | Out-Null
 Copy-Item -Recurse qusin-src\Qusin-<ver>\tools\qusin "<技能目录>\qusin"
