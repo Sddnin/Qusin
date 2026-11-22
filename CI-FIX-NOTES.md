@@ -56,5 +56,5 @@ If that size is still 133, the filter comes from `.git/info/attributes`, which b
 
 ### No terminal? (phone workflow)
 
-- `ci.yml` now has a step that tries `git lfs pull` when the commit holds a pointer. Unverified: it only works if the LFS object was actually uploaded to the repo. GitHub LFS free bandwidth is about 1 GB/month, so each CI run costs about 58 MB; recommitting the real file is still the lasting fix.
+- `ci.yml` has a step that, when the commit holds a pointer, asks GitHub's LFS batch API for the object, checks its sha256 and replaces the pointer (the first attempt, `git lfs pull`, downloaded nothing in run `b731682`). If GitHub has no such object the job log prints the server's answer: then the object was never uploaded and the real file must be committed. GitHub LFS free bandwidth is about 1 GB/month, so each CI run costs about 58 MB; recommitting the real file is still the lasting fix.
 - New workflow `.github/workflows/update-snapshots.yml` (Actions → Update snapshots → Run workflow) regenerates the core snapshots in CI and pushes them to a branch `ci/update-snapshots-<run_id>`, not to main. Review Files changed there before merging.

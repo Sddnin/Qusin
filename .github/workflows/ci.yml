@@ -107,21 +107,41 @@ jobs:
       # 编译设备测试以检查设置交互等回归用例；这里没有连接设备，不执行 instrumentation。
       # BundledRuntimeTest 读的是检出后的 rootfs.tar.xz；先把它的大小、哈希、文件头和代码里的常量并排打出来，
       # 检出把它改坏（换行转换、LFS 指针、没推全）时，日志里一眼就能看到，不用等单测报 XZFormatException。
-      # 提交里的 rootfs.tar.xz 若是 LFS 指针(133 字节的文本),先试着从 LFS 把真文件拉下来;
-      # 拉不到也不报错,下一步会把原因打出来。提交了真文件时这一步什么都不做。
+      # 提交里的 rootfs.tar.xz 若是 LFS 指针(133 字节的文本):直接问 GitHub 的 LFS 接口要这个对象。
+      # 要得到就下载、核对哈希、换掉指针;要不到(对象没传上来、没权限)就把服务端的回答原样打出来,不报错,
+      # 下一步照常把原因打出来。提交了真文件时这一步什么都不做。
       - name: Fetch bundled runtime from LFS if the commit has a pointer
         continue-on-error: true
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           f=app/src/main/assets/runtime/rootfs.tar.xz
-          if [ "$(stat -c %s "$f")" -lt 1024 ] && head -c 7 "$f" | grep -q '^version'; then
-            git lfs install --local
-            git lfs pull --include="$f"
-            git lfs checkout "$f" || true
-            ls -l "$f"
-          else
+          if [ "$(stat -c %s "$f")" -ge 1024 ] || ! head -c 7 "$f" | grep -q '^version'; then
             echo "not a pointer, nothing to fetch"
+            exit 0
           fi
+          oid=$(sed -n 's/^oid sha256://p' "$f")
+          size=$(sed -n 's/^size //p' "$f")
+          echo "pointer: oid=$oid size=$size"
+          curl -sS -u "x-access-token:$GITHUB_TOKEN" \
+            -H "Accept: application/vnd.git-lfs+json" -H "Content-Type: application/vnd.git-lfs+json" \
+            -X POST "https://github.com/$GITHUB_REPOSITORY.git/info/lfs/objects/batch" \
+            -d "{\"operation\":\"download\",\"transfers\":[\"basic\"],\"objects\":[{\"oid\":\"$oid\",\"size\":$size}]}" \
+            -o "$RUNNER_TEMP/batch.json"
+          href=$(jq -r '.objects[0].actions.download.href // empty' "$RUNNER_TEMP/batch.json")
+          if [ -z "$href" ]; then
+            echo "::error::GitHub LFS has no downloadable object for $oid. Server answer:"
+            cat "$RUNNER_TEMP/batch.json"; echo
+            exit 1
+          fi
+          mapfile -t hdrs < <(jq -r '.objects[0].actions.download.header // {} | to_entries[] | "-H", "\(.key): \(.value)"' "$RUNNER_TEMP/batch.json")
+          curl -sSL --fail "${hdrs[@]}" -o "$RUNNER_TEMP/rootfs.tar.xz" "$href"
+          got=$(sha256sum "$RUNNER_TEMP/rootfs.tar.xz" | cut -d' ' -f1)
+          test "$got" = "$oid" || { echo "::error::downloaded object has sha256 $got, expected $oid"; exit 1; }
+          mv "$RUNNER_TEMP/rootfs.tar.xz" "$f"
+          ls -l "$f"
       # continue-on-error:这一步只负责把原因打出来,不挡住后面的单测(其它测试的结果照常要看)。
       - name: Check bundled runtime asset
         continue-on-error: true
