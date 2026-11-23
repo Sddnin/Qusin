@@ -804,13 +804,10 @@ private fun SpeechVoiceSection(ui: ModelSetupUi, onSpeech: (() -> Unit)?, onVoic
     GroupCard {
         var first = true
         if (onSpeech != null) {
-            ListRow(
-                ModelsCopy.SPEECH_ICON,
-                stringResource(R.string.role_speech),
-                subtitle = ModelsCopy.speechLine(ui).title,
-                first = first,
-                onClick = onSpeech,
-            ) { RowChevron() }
+            ListRow(ModelsCopy.SPEECH_ICON, stringResource(R.string.role_speech), first = first, onClick = onSpeech) {
+                RowValue(ModelsCopy.speechLine(ui).title)
+                RowChevron()
+            }
             first = false
         }
         if (onVoice != null) {

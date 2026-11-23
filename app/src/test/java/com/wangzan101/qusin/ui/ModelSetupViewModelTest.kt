@@ -1,5 +1,6 @@
 package com.wangzan101.qusin.ui
 
+import com.wangzan101.qusin.R
 import com.wangzan101.qusin.i18n.ChineseTexts
 import com.wangzan101.qusin.i18n.tr
 import com.wangzan101.qusin.core.model.ApiKeyText
@@ -420,7 +421,7 @@ class ModelSetupViewModelTest {
             vm.selectPreset(ProviderPresets.custom.label); vm.setBaseUrl(url); vm.setApiKey("sk"); vm.testAndSave(); runCurrent()
             assertEquals("HTTP $status:只试第一个", listOf("vendor/a"), built.map { it.first })
             val failed = vm.state.value.form.test as ListState.Failed
-            assertTrue(failed.message, failed.message.contains("API Key 无效"))
+            assertEquals(tr(R.string.task_model_auth), failed.message)
             assertTrue(store.providers.value.isEmpty())
             assertNull(vm.state.value.pickToProbe)
         }
@@ -455,7 +456,7 @@ class ModelSetupViewModelTest {
         vm.selectPreset(ProviderPresets.custom.label); vm.setBaseUrl(url); vm.setApiKey("sk"); vm.testAndSave(); runCurrent()
         assertEquals(listOf("a-model", "b-model"), built.map { it.first })
         val failed = vm.state.value.form.test as ListState.Failed
-        assertTrue(failed.message, failed.message.contains("API Key 无效"))
+        assertEquals(tr(R.string.task_model_auth), failed.message)
         assertTrue(store.providers.value.isEmpty())
         assertTrue(store.list().isEmpty())
     }

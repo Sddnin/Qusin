@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="task_model_rate_limited">Model hizmeti, yeniden denemelerden sonra bile istekleri hız sınırlıyor. Lütfen daha sonra tekrar deneyin veya hesabınızın hız sınırlarını kontrol edin.</string>
+    <string name="task_model_auth">Model hizmeti API anahtarını reddetti. Anahtarın doğru olduğunu ve hesabın bu modeli kullanma yetkisi bulunduğunu kontrol edin.</string>
 </resources>
