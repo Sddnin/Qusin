@@ -10,6 +10,7 @@ internal fun localizeTaskFailure(state: TaskState): TaskState {
     if (state !is TaskState.Failed) return state
     val reason = when (state.code) {
         FailureCode.ModelRateLimited -> tr(R.string.task_model_rate_limited)
+        FailureCode.ModelAuth -> tr(R.string.task_model_auth)
         null -> return state
     }
     return state.copy(reason = reason)

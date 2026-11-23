@@ -49,6 +49,7 @@ class ModelSetupViewModelTest {
     private val key = KeyGenerator.getInstance("AES").apply { init(256) }.generateKey()
     /** 按地址给出列模型的结果;没写的地址列出空表。 */
     private val listing = mutableMapOf<String, ModelListResult>()
+    private val listingByKey = mutableMapOf<String, ModelListResult>()
     private val listCalls = mutableListOf<Triple<ProviderConfig.Kind, String, String?>>()
     /** 下一次列模型抛这个;用来确认异常收成失败,不打掉测试协程。 */
     private var listBoom: Throwable? = null
@@ -58,16 +59,21 @@ class ModelSetupViewModelTest {
         tmp.root, AesGcmKeyCipher { key },
         newId = { "id${++ids}" },
         userAgent = "Qusin/1.2.3",
-        modelFactory = { cfg, _, _, setup -> built += cfg.model to setup; Fake(cfg.capabilities) { reply() } },
+        modelFactory = { cfg, apiKey, _, setup ->
+            builtKeys += apiKey
+            built += cfg.model to setup
+            Fake(cfg.capabilities) { reply() }
+        },
         modelLister = { kind, url, apiKey, _ ->
             listBoom?.let { throw it }
             listCalls += Triple(kind, url, apiKey)
-            listing[url] ?: ModelListResult.Ok(emptyList())
+            listingByKey[apiKey.orEmpty()] ?: listing[url] ?: ModelListResult.Ok(emptyList())
         },
     )
 
     /** 建过的模型(模型名、请求头等);「测试并保存」的试调用回什么由 [reply] 定,默认调用试用的工具。 */
     private val built = mutableListOf<Pair<String, ClientSetup>>()
+    private val builtKeys = mutableListOf<String?>()
     private var reply: suspend () -> ModelReply = { ModelReply(listOf(Part.ToolCall("c1", "get_time", "{}")), StopReason.ToolUse, null) }
     private val probes = mutableListOf<Triple<String, List<Message>, List<ToolSpec>>>()
 
@@ -114,6 +120,36 @@ class ModelSetupViewModelTest {
         assertEquals("", s.form.apiKey)
         assertEquals(ListState.Idle, s.form.test)
         assertTrue(s.canNext)
+    }
+
+    @Test fun setupUsesNextKeyWhenModelListingRejectsTheFirstKey() = runTest {
+        listingByKey["bad-key"] = ModelListResult.Failed(ListFailure.Auth)
+        listingByKey["good-key"] = deepseek
+        val store = store()
+        val vm = vm(store)
+        vm.setApiKey("bad-key\ngood-key")
+        assertTrue(vm.state.value.form.canTest)
+        vm.testAndSave(); runCurrent()
+        assertEquals(listOf("bad-key", "good-key"), listCalls.map { it.third })
+        assertEquals(listOf("good-key"), builtKeys)
+        val provider = store.providers.value.single()
+        assertEquals(listOf("bad-key", "good-key"), store.providerKeys(provider.id))
+    }
+
+    @Test fun setupUsesNextKeyWhenModelProbeRejectsTheFirstKey() = runTest {
+        listing[deepseekUrl] = deepseek
+        reply = {
+            if (builtKeys.last() == "bad-key") throw ModelError.Auth()
+            ModelReply(listOf(Part.ToolCall("c1", "get_time", "{}")), StopReason.ToolUse, null)
+        }
+        val store = store()
+        val vm = vm(store)
+        vm.setApiKey("bad-key\ngood-key")
+        vm.testAndSave(); runCurrent()
+        assertEquals(listOf("bad-key", "good-key"), builtKeys)
+        val provider = store.providers.value.single()
+        assertEquals(listOf("bad-key", "good-key"), store.providerKeys(provider.id))
+        assertEquals("good-key", store.providerKey(provider.id).orEmpty().substringAfter(", "))
     }
 
     @Test fun failedTestShowsReasonAndSavesNothing() = runTest {
@@ -1096,43 +1132,44 @@ class ModelSetupViewModelTest {
 
     // ---------- 粘贴进来的 Key 里有换行、零宽或非 ASCII ----------
 
-    /** 中间的换行原样留下,立刻标红,两个保存动作都不发请求、也不存。 */
-    @Test fun newlineInTheKeyIsRejectedAndNotSaved() = runTest {
+    /** 换行是 Key 池分隔符:请求只带单独一把 Key,保存时保留整个池。 */
+    @Test fun newlineDelimitedKeysCanBeTestedAndSavedAsAPool() = runTest {
         listing[deepseekUrl] = deepseek
         val store = store()
         val vm = vm(store)
         vm.setApiKey("sk-ab\ncd")
         val form = vm.state.value.form
         assertEquals("sk-ab\ncd", form.apiKey)
-        assertEquals(ApiKeyText.Notice.IllegalCharacters, form.keyNotice)
-        assertFalse(form.canTest)
-        assertFalse(form.canSaveUntested)
+        assertEquals(ApiKeyText.Notice.None, form.keyNotice)
+        assertTrue(form.canTest)
+        assertTrue(form.canSaveUntested)
         vm.testAndSave(); runCurrent()
-        vm.saveWithoutTest(); runCurrent()
-        assertTrue(listCalls.isEmpty())
-        assertTrue(built.isEmpty())
-        assertTrue(store.providers.value.isEmpty())
-        assertTrue(vm.state.value.showForm)
+        assertEquals("请求头只使用第一把 Key", listOf("sk-ab"), listCalls.map { it.third })
+        val provider = store.providers.value.single()
+        assertEquals(listOf("sk-ab", "cd"), store.providerKeys(provider.id))
+        assertEquals("sk-ab, cd", store.providerKey(provider.id))
+        assertFalse(vm.state.value.showForm)
     }
 
-    /** `\r` 和 `\r\n` 同样留下,不改写,也不崩溃。 */
-    @Test fun crlfInTheKeyIsRejectedAndDoesNotCrash() = runTest {
+    /** CRLF 和单独的 CR 也能分隔 Key,不会被送进请求头。 */
+    @Test fun crlfAndCarriageReturnSeparateKeys() = runTest {
         listing[deepseekUrl] = deepseek
         val store = store()
         val vm = vm(store)
         vm.setApiKey("sk-ab\r\ncd")
-        assertEquals("sk-ab\r\ncd", vm.state.value.form.apiKey)
-        assertEquals(ApiKeyText.Notice.IllegalCharacters, vm.state.value.form.keyNotice)
-        assertFalse(vm.state.value.form.canTest)
-        assertFalse(vm.state.value.form.canSaveUntested)
+        assertEquals(ApiKeyText.Notice.None, vm.state.value.form.keyNotice)
+        assertTrue(vm.state.value.form.canTest)
         vm.testAndSave(); runCurrent()
-        vm.saveWithoutTest(); runCurrent()
-        assertTrue(listCalls.isEmpty())
-        assertTrue(store.providers.value.isEmpty())
-        vm.setApiKey("sk-\rcd")
-        assertEquals("sk-\rcd", vm.state.value.form.apiKey)
-        assertEquals(ApiKeyText.Notice.IllegalCharacters, vm.state.value.form.keyNotice)
-        assertFalse(vm.state.value.form.canSaveUntested)
+        val provider = store.providers.value.single()
+        assertEquals(listOf("sk-ab", "cd"), store.providerKeys(provider.id))
+        val secondStore = store()
+        val second = vm(secondStore)
+        second.setApiKey("sk-\rcd")
+        assertEquals(ApiKeyText.Notice.None, second.state.value.form.keyNotice)
+        assertTrue(second.state.value.form.canSaveUntested)
+        second.saveWithoutTest(); runCurrent()
+        val secondProvider = secondStore.providers.value.single()
+        assertEquals(listOf("sk-", "cd"), secondStore.providerKeys(secondProvider.id))
     }
 
     /** 中文前缀留下,立刻标红,测试和直接保存都不发请求、也不存。改掉之后提示跟着消失。 */
@@ -1212,24 +1249,26 @@ class ModelSetupViewModelTest {
         assertTrue(store.providers.value.isEmpty())
     }
 
-    /** 换 Key 走同一套:换行和中文前缀都不保存、也不重新列模型。零宽去掉后可以换。 */
-    @Test fun changeKeyRefusesNewlinesAndIllegalCharacters() = runTest {
+    /** 换 Key 走同一套:换行可作为池分隔符,中文前缀仍拒绝,零宽去掉后可用。 */
+    @Test fun changeKeyAcceptsPoolsAndRefusesIllegalCharacters() = runTest {
         listing[deepseekUrl] = deepseek
         val store = store()
         val vm = vm(store)
         vm.setApiKey("sk"); vm.testAndSave(); runCurrent()
         val id = store.providers.value.single().id
         val listed = listCalls.size
-        vm.changeKey(id, "sk-\n2"); runCurrent()
-        assertEquals("换行的 Key 不存", "sk", store.providerKey(id))
-        assertEquals("换行的 Key 不重新列模型", listed, listCalls.size)
+        vm.changeKey(id, "sk-1\nsk-2"); runCurrent()
+        assertEquals(listOf("sk-1", "sk-2"), store.providerKeys(id))
+        assertEquals("换行分隔后的第一把 Key 用于刷新列表", "sk-1", listCalls.last().third)
+        val afterPool = listCalls.size
         vm.changeKey(id, "密钥：sk-3"); runCurrent()
-        assertEquals("没存非法的 Key", "sk", store.providerKey(id))
-        assertEquals("非法的 Key 不重新列模型", listed, listCalls.size)
-        vm.changeKey(id, "sk-\u200B2"); runCurrent()
-        assertEquals("sk-2", store.providerKey(id))
-        assertEquals(listed + 1, listCalls.size)
-        assertEquals("sk-2", listCalls.last().third)
+        assertEquals("没存非法的 Key", "sk-1, sk-2", store.providerKey(id))
+        assertEquals("非法的 Key 不重新列模型", afterPool, listCalls.size)
+        vm.changeKey(id, "sk-\u200B3"); runCurrent()
+        assertEquals(listOf("sk-3"), store.providerKeys(id))
+        assertEquals(afterPool + 1, listCalls.size)
+        assertEquals("sk-3", listCalls.last().third)
+        assertEquals(listed + 2, listCalls.size)
     }
 
     /** 列模型时头值仍抛异常:收成失败,不打掉协程,也不把异常原文(可能含 Key)露出去。 */

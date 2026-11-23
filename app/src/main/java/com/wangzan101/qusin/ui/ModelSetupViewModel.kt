@@ -118,7 +118,7 @@ data class AddForm(
     val baseUrl: String,
     val apiKey: String,
     /**
-     * 最近一次改 Key 的提示:零宽被去掉,或还留着放不进请求头的字符(含换行)。
+     * 最近一次改 Key 的提示:零宽被去掉,或池里的某一项还含有放不进请求头的字符。
      * [ApiKeyText.Notice.IllegalCharacters] 时不能测试、也不能保存。
      */
     val keyNotice: ApiKeyText.Notice = ApiKeyText.Notice.None,
@@ -164,7 +164,7 @@ data class AddForm(
     /** 自己跑的服务和自定义的 OpenAI 兼容接口(多半是本地服务)可以不填 Key,其余都要。 */
     val keyRequired: Boolean get() = !isSelfHosted && !(isCustom && kind == ProviderConfig.Kind.OpenAiCompat)
 
-    /** Key 里还有放不进请求头的字符:两个保存动作都不能发请求、也不能把 Key 存下来。 */
+    /** Key 池里还有放不进请求头的字符:两个保存动作都不能发请求、也不能把 Key 存下来。 */
     val keyRejected: Boolean get() = keyNotice == ApiKeyText.Notice.IllegalCharacters
 
     val canTest: Boolean get() =
@@ -471,10 +471,16 @@ class ModelSetupViewModel(
         }
         setBaseUrl(newUrl)
     }
-    /** 粘贴或逐字改 Key:去掉零宽;换行和其它放不进请求头的字符原样留下并立刻标出来。 */
+    /** 粘贴或逐字改 Key:支持单 Key,也支持逗号/分号/换行分隔的 Key 池。每一把 Key 单独检查头值字符。 */
     fun setApiKey(key: String) {
         val accepted = ApiKeyText.accept(key)
-        edit { it.copy(apiKey = accepted.text, keyNotice = accepted.notice) }
+        val notice = when {
+            accepted.notice == ApiKeyText.Notice.InvisibleRemoved -> ApiKeyText.Notice.InvisibleRemoved
+            accepted.text.isBlank() -> ApiKeyText.Notice.None
+            parseProviderKeyPool(accepted.text) != null -> ApiKeyText.Notice.None
+            else -> ApiKeyText.Notice.IllegalCharacters
+        }
+        edit { it.copy(apiKey = accepted.text, keyNotice = notice) }
     }
     fun setModel(model: String) = edit { it.copy(model = model) }
 
@@ -511,13 +517,30 @@ class ModelSetupViewModel(
     fun testAndSave() {
         val f = _state.value.form
         if (!f.canTest) return
-        val key = headerKey(f.apiKey) ?: return rejectKey()
+        val keys = parseProviderKeyPool(f.apiKey) ?: return rejectKey()
+        val keyPool = keys.joinToString(", ")
         testJob?.cancel()
         _state.update { it.copy(form = it.form.copy(test = ListState.Running), probeNote = null, pickToProbe = null) }
         testJob = scope.launch {
             val baseUrl = f.baseUrl.trim()
             val typed = f.typedModel
-            val models = when (val r = listSafely { store.listModels(f.kind, baseUrl, key.ifEmpty { null }, f.sessionHeader) }) {
+            // 用第一个 Key 列表;若它被拒绝或限流,顺序换下一个,绝不把整个池塞进单个请求头。
+            var selectedKeyIndex = 0
+            var listResult = listSafely {
+                store.listModels(f.kind, baseUrl, keys.getOrNull(selectedKeyIndex)?.ifEmpty { null }, f.sessionHeader)
+            }
+            while (listResult is ModelListResult.Failed &&
+                listResult.reason in setOf(ListFailure.Auth, ListFailure.RateLimited) &&
+                selectedKeyIndex + 1 < keys.size
+            ) {
+                selectedKeyIndex++
+                listResult = listSafely {
+                    store.listModels(f.kind, baseUrl, keys[selectedKeyIndex], f.sessionHeader)
+                }
+            }
+            val probeKeys = keys.drop(selectedKeyIndex + 1)
+            val key = keys.getOrNull(selectedKeyIndex).orEmpty()
+            val models = when (val r = listResult) {
                 is ModelListResult.Ok -> r.models
                 is ModelListResult.Failed -> {
                     if (r.reason != ListFailure.NotSupported && typed.isEmpty()) {
@@ -536,10 +559,17 @@ class ModelSetupViewModel(
                 val listed = models.firstOrNull { it.id == typed }
                 val base = (ProviderPresets.forBaseUrl(baseUrl) ?: ProviderPresets.custom).capabilities
                 val caps = listed?.let { ModelOptions.merge(listOf(it), base).firstOrNull()?.capabilities } ?: base
-                val outcome = probeModel(
+                var outcome = probeModel(
                     f.kind, baseUrl, key.ifEmpty { null }, f.sessionHeader, typed, listed?.endpoint, caps, f.exampleKind,
                     listMissing = models.isEmpty() && f.isCustom,
                 )
+                for (fallbackKey in probeKeys) {
+                    if (outcome !is ProbeOutcome.Failed || !outcome.keyRejected) break
+                    outcome = probeModel(
+                        f.kind, baseUrl, fallbackKey, f.sessionHeader, typed, listed?.endpoint, caps, f.exampleKind,
+                        listMissing = models.isEmpty() && f.isCustom,
+                    )
+                }
                 if (outcome is ProbeOutcome.Failed) {
                     _state.update { it.copy(form = it.form.copy(test = ListState.Failed(outcome.message))) }
                     return@launch
@@ -547,7 +577,7 @@ class ModelSetupViewModel(
                 val noTools = outcome is ProbeOutcome.NoToolCall
                 withContext(io) {
                     val p = store.connect(
-                        f.providerName, f.kind, baseUrl, key, models, f.sessionHeader, setOf(typed),
+                        f.providerName, f.kind, baseUrl, keyPool.ifEmpty { null }, models, f.sessionHeader, setOf(typed),
                         typed = if (listed == null) setOf(typed) else emptySet(),
                     )
                     if (!noTools && store.roles.value.main == null) use(ModelRole.Main, p, typed, ModelOptions.ofProvider(p, store.list()))
@@ -556,7 +586,12 @@ class ModelSetupViewModel(
                 _state.update { snapshot(it.copy(form = AddForm.of(ProviderPresets.all.first()), formOpen = false, probeNote = note)) }
                 return@launch
             }
-            val probed = when (val r = probe(f, baseUrl, key.ifEmpty { null }, models)) {
+            var probeResult = probe(f, baseUrl, key.ifEmpty { null }, models)
+            for (fallbackKey in probeKeys) {
+                if (probeResult !is ListProbe.Blocked || !probeResult.keyRejected) break
+                probeResult = probe(f, baseUrl, fallbackKey, models)
+            }
+            val probed = when (val r = probeResult) {
                 is ListProbe.Blocked -> {
                     _state.update { it.copy(form = it.form.copy(test = ListState.Failed(r.message))) }
                     return@launch
@@ -565,7 +600,7 @@ class ModelSetupViewModel(
             }
             val noneUsable = probed.main == null && probed.rejected.isNotEmpty()
             val saved = withContext(io) {
-                val p = store.connect(f.providerName, f.kind, baseUrl, key, models, f.sessionHeader, setOfNotNull(probed.main))
+                val p = store.connect(f.providerName, f.kind, baseUrl, keyPool.ifEmpty { null }, models, f.sessionHeader, setOfNotNull(probed.main))
                 if (!noneUsable && store.roles.value.main == null) {
                     val options = ModelOptions.ofProvider(p, store.list())
                     (probed.main ?: ModelOptions.defaultMain(options, f.familyTokens) ?: options.firstOrNull()?.id)
@@ -596,7 +631,8 @@ class ModelSetupViewModel(
     fun saveWithoutTest() {
         val f = _state.value.form
         if (!f.canSaveUntested) return
-        val key = headerKey(f.apiKey) ?: return rejectKey()
+        val keys = parseProviderKeyPool(f.apiKey) ?: return rejectKey()
+        val keyPool = keys.joinToString(", ")
         testJob?.cancel()
         _state.update { it.copy(form = it.form.copy(test = ListState.Running), probeNote = null, pickToProbe = null) }
         testJob = scope.launch {
@@ -605,7 +641,7 @@ class ModelSetupViewModel(
             val saved = try {
                 withContext(io) {
                     store.connect(
-                        f.providerName, f.kind, baseUrl, key.ifEmpty { null }, emptyList(), f.sessionHeader, untested = true,
+                        f.providerName, f.kind, baseUrl, keyPool.ifEmpty { null }, emptyList(), f.sessionHeader, untested = true,
                     ).also { p -> if (typed.isNotEmpty()) store.markTyped(p.id, typed) }
                 }
             } catch (e: CancellationException) {
@@ -626,16 +662,21 @@ class ModelSetupViewModel(
     }
 
     /**
-     * 拿去放进请求头的 Key:再收一次(零宽去掉),首尾空白去掉。换行算放不进头。
-     * 还含有放不进头的字符时为 null,调用方不能发请求、也不能保存。
+     * Parse the complete input as a key pool. Delimiters separate keys; they are never sent
+     * as part of an HTTP header. Every non-empty entry must be header-safe, and invalid entries
+     * are rejected instead of silently discarded.
      */
-    private fun headerKey(raw: String): String? {
+    private fun parseProviderKeyPool(raw: String): List<String>? {
         val accepted = ApiKeyText.accept(raw)
-        if (accepted.notice == ApiKeyText.Notice.IllegalCharacters) return null
-        val key = accepted.text.trim()
-        if (key.isEmpty()) return ""
-        val parsed = KeyPoolManager.shared.parseKeys(key)
-        return if (parsed.isNotEmpty() && parsed.all { ApiKeyText.isHeaderLegal(it) }) key else null
+        val text = accepted.text.trim()
+        if (text.isEmpty()) return emptyList()
+        val unwrapped = text.trimStart('[', '{', '(').trimEnd(']', '}', ')').trim()
+        val entries = unwrapped.split(Regex("[,;\n\r]+"))
+            .map { it.trim().trim('"', '\'') }
+            .filter { it.isNotBlank() }
+        if (entries.isEmpty() || entries.any { !ApiKeyText.isHeaderLegal(it) }) return null
+        val parsed = KeyPoolManager.shared.parseKeys(text)
+        return parsed.takeIf { it.isNotEmpty() && it.size == entries.distinct().size }
     }
 
     /** 表单上的 Key 放不进请求头:标红,停在表单上,不发请求。 */
@@ -677,6 +718,7 @@ class ModelSetupViewModel(
         data class Failed(
             val message: String, val modelReason: String? = null,
             val notAvailable: Boolean = false, val serverSide: Boolean = false,
+            val keyRejected: Boolean = false,
         ) : ProbeOutcome
     }
 
@@ -691,7 +733,7 @@ class ModelSetupViewModel(
 
     /** 有列表时试调用的结果:[Blocked] 是第一个就因为模型以外的原因失败,不存;[Done] 见 [probe]。 */
     private sealed interface ListProbe {
-        data class Blocked(val message: String) : ListProbe
+        data class Blocked(val message: String, val keyRejected: Boolean = false) : ListProbe
         /** [main] 是通过了的模型;[rejected] 是在它之前试过、没通过的。都为空是没有可试的模型。 */
         data class Done(val main: String?, val rejected: List<Rejected>) : ListProbe
     }
@@ -737,6 +779,7 @@ class ModelSetupViewModel(
                 ProbeOutcome.Passed -> return ListProbe.Done(model, rejected)
                 is ProbeOutcome.NoToolCall -> rejected += Rejected(model, tr(R.string.model_reason_no_tools), notAvailable = false)
                 is ProbeOutcome.Failed -> when {
+                    o.keyRejected -> return ListProbe.Blocked(o.message, keyRejected = true)
                     o.modelReason != null -> {
                         rejected += Rejected(model, o.modelReason, o.notAvailable, o.serverSide)
                         if (o.serverSide && firstServerError == null) firstServerError = o.message
@@ -820,6 +863,8 @@ class ModelSetupViewModel(
                 )
                 // 代理那一段的问题:说是代理,不说成模型或服务商不行
                 is ModelError.Proxy -> ProbeOutcome.Failed(tr(R.string.model_probe_failed, model, proxyReason(e)))
+                is ModelError.Auth -> ProbeOutcome.Failed(tr(R.string.task_model_auth), keyRejected = true)
+                is ModelError.RateLimited -> ProbeOutcome.Failed(tr(R.string.task_model_rate_limited), keyRejected = true)
                 is ModelError.IllegalHeader -> ProbeOutcome.Failed(tr(R.string.model_key_illegal_chars))
                 else -> ProbeOutcome.Failed(tr(R.string.model_probe_failed, model, e.message.orEmpty()))
             }
@@ -1274,10 +1319,11 @@ class ModelSetupViewModel(
     }
 
     /**
-     * 换 Key,然后用新 Key 重新列一次模型。零宽先去掉;换行和其它放不进请求头的字符不保存、不列模型。
+     * 换 Key 池,然后用新池重新列一次模型。换行/逗号/分号是分隔符;每一项单独检查头值字符。
      */
     fun changeKey(providerId: String, apiKey: String) {
-        val k = headerKey(apiKey) ?: return
+        val keys = parseProviderKeyPool(apiKey) ?: return
+        val k = keys.joinToString(", ")
         if (k.isEmpty()) return
         scope.launch {
             try {
@@ -1295,7 +1341,8 @@ class ModelSetupViewModel(
     }
 
     fun addProviderKey(providerId: String, apiKey: String) {
-        val k = headerKey(apiKey) ?: return
+        val keys = parseProviderKeyPool(apiKey) ?: return
+        val k = keys.joinToString(", ")
         if (k.isEmpty()) return
         scope.launch {
             try {

@@ -267,7 +267,7 @@ fun InputRow(
             .heightIn(min = QusinSize.RowMin).padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, Modifier.width(labelWidth), style = QusinType.Body, color = c.ink)
+        Text(label, Modifier.width(labelWidth + 8.dp).padding(end = 8.dp), style = QusinType.Body, color = c.ink)
         Box(Modifier.weight(1f)) {
             if (value.isEmpty()) Text(placeholder, style = QusinType.Body, color = c.ink3, maxLines = 1)
             BasicTextField(

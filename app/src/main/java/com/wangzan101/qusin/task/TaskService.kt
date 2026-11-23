@@ -1386,7 +1386,7 @@ class TaskService : Service() {
             is TaskState.Succeeded ->
                 if (!state.doubtful) tr(R.string.task_done) to state.answer
                 else tr(R.string.chat_unverified) to (state.note?.let { tr(R.string.task_reason, it) + "\n" }.orEmpty() + state.answer)
-            is TaskState.Failed -> tr(R.string.task_not_done) to state.reason
+            is TaskState.Failed -> tr(R.string.task_not_done) to (localizeTaskFailure(state) as TaskState.Failed).reason
             TaskState.Cancelled -> tr(R.string.task_stopped) to tr(R.string.task_stopped_body)
         }
     }

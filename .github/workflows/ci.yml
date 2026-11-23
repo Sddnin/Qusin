@@ -212,7 +212,8 @@ jobs:
           (cd dist/qusin-apk && sha256sum *.apk > SHA256SUMS.txt)
           {
             printf '%s\n' '## Qusin debug APK'
-            printf '%s\n' 'Download the Qusin-debug-APK artifact from this workflow run and install the APK.'
+            printf '%s\n' 'Main-branch builds are also published as a direct download: https://github.com/Sddnin/Qusin/releases/download/nightly/Qusin.apk'
+            printf '%s\n' 'Pull request builds remain available as the Qusin-debug-APK Actions artifact.'
             printf '%s\n' 'This is a debug-signed APK, not a Play Store release build.'
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload Qusin APK
@@ -233,6 +234,59 @@ jobs:
             app/build/reports/tests/testDebugUnitTest
           retention-days: 7
           if-no-files-found: ignore
+
+  publish-apk:
+    name: Publish direct APK download
+    runs-on: ubuntu-latest
+    needs: app
+    # Publish even when the independent JVM job fails, provided the Android build itself passed.
+    if: always() && needs.app.result == 'success' && github.ref == 'refs/heads/main'
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    concurrency:
+      group: qusin-nightly-apk-release
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+      - name: Download the APK built by the app job
+        uses: actions/download-artifact@v8
+        with:
+          name: Qusin-debug-APK
+          path: dist/qusin-apk
+      - name: Prepare stable direct-download files
+        shell: bash
+        run: |
+          set -euo pipefail
+          apk=$(find dist/qusin-apk -maxdepth 1 -type f -name 'Qusin-debug-*.apk' -print -quit)
+          test -n "$apk"
+          cp "$apk" dist/qusin-apk/Qusin.apk
+          (cd dist/qusin-apk && sha256sum Qusin.apk > SHA256SUMS.txt)
+      - name: Create or update the nightly GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view nightly >/dev/null 2>&1; then
+            git tag -f nightly "$GITHUB_SHA"
+            git push --force origin refs/tags/nightly
+          else
+            gh release create nightly \
+              --target "$GITHUB_SHA" \
+              --title "Qusin Nightly" \
+              --notes "Latest Android debug APK built from main. Debug-signed; not a Play Store release." \
+              --prerelease
+          fi
+          gh release upload nightly dist/qusin-apk/Qusin.apk dist/qusin-apk/SHA256SUMS.txt --clobber
+      - name: Publish the direct download link
+        run: |
+          {
+            echo "## Direct APK download"
+            echo "[Download Qusin.apk](https://github.com/${GITHUB_REPOSITORY}/releases/download/nightly/Qusin.apk)"
+            echo
+            echo "Debug-signed build; not a Play Store release."
+          } >> "$GITHUB_STEP_SUMMARY"
 
   relay:
     name: relay (Go)

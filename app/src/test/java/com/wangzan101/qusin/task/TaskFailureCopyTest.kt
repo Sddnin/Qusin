@@ -30,6 +30,22 @@ class TaskFailureCopyTest {
         }
     }
 
+    @Test fun modelAuthUsesTheSelectedLanguageInNotificationsAndResults() {
+        val previous = UiText.source
+        try {
+            val failure = TaskState.Failed("模型服务拒绝了请求:API Key 无效", FailKind.Model, FailureCode.ModelAuth)
+            UiText.source = ResFileTexts("values-vi", Locale.forLanguageTag("vi"))
+            val vietnamese = localizeTaskFailure(failure) as TaskState.Failed
+            assertTrue(vietnamese.reason.contains("Dịch vụ mô hình từ chối API key"))
+            assertEquals(vietnamese.reason, TaskService.describe(failure).second)
+            assertEquals(FailureCode.ModelAuth, vietnamese.code)
+            UiText.source = ResFileTexts.chinese
+            assertTrue((localizeTaskFailure(failure) as TaskState.Failed).reason.contains("模型服务拒绝了 API Key"))
+        } finally {
+            UiText.source = previous
+        }
+    }
+
     @Test fun unstructuredFailuresAndSuccessfulAnswersRemainUntouched() {
         val failure = TaskState.Failed("User-provided explanation", FailKind.GaveUp)
         val success = TaskState.Succeeded("answer")

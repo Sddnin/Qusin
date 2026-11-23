@@ -44,6 +44,15 @@ internal object StopRules {
         is ModelError.DailyBudgetExceeded -> TaskState.Failed(userReason(e), FailKind.TokenLimit)
         is ModelError.ProactiveBudgetExceeded -> TaskState.Failed(userReason(e), FailKind.TokenLimit)
         is ModelError.RateLimited -> TaskState.Failed(userReason(e), FailKind.Model, FailureCode.ModelRateLimited)
+        is ModelError.Auth -> TaskState.Failed(userReason(e), FailKind.Model, FailureCode.ModelAuth)
+        is ModelError.ChainFailed -> TaskState.Failed(
+            userReason(e), FailKind.Model,
+            when (e.primary) {
+                is ModelError.Auth -> FailureCode.ModelAuth
+                is ModelError.RateLimited -> FailureCode.ModelRateLimited
+                else -> null
+            },
+        )
         is ModelError -> TaskState.Failed(userReason(e), FailKind.Model)
         else -> TaskState.Failed("模型调用异常:${e.message ?: e::class.simpleName}", FailKind.Model)
     }

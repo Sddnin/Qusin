@@ -96,7 +96,7 @@ data class GateReason(val code: String, val why: String = "", val resumable: Boo
 }
 
 /** 程序生成的失败原因，供界面选择对应的本地化文案。 */
-enum class FailureCode { ModelRateLimited }
+enum class FailureCode { ModelRateLimited, ModelAuth }
 
 /** 任务失败的来源。 */
 enum class FailKind {

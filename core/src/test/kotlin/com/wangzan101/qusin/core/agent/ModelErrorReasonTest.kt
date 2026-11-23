@@ -11,6 +11,7 @@ class ModelErrorReasonTest {
         val failure = StopRules.modelFailed(ModelError.RateLimited(null))
         assertEquals(FailKind.Model, failure.kind)
         assertEquals(FailureCode.ModelRateLimited, failure.code)
+        assertEquals(FailureCode.ModelAuth, StopRules.modelFailed(ModelError.Auth()).code)
         assertEquals(null, StopRules.modelFailed(ModelError.Network()).code)
     }
 
