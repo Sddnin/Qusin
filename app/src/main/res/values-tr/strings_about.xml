@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">Test ediliyor…</string>
     <string name="about_mirrors_test_ok">Güncelleme denetimleri için çalışıyor.</string>
     <string name="about_mirrors_test_fail">Güncelleme denetimleri bu yansıyı kullanamıyor. İndirmeler yine de çalışabilir.</string>
+    <string name="about_release_latest">En yeni</string>
+    <string name="about_release_prerelease">Ön sürüm</string>
 </resources>

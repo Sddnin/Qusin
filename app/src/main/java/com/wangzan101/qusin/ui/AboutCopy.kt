@@ -23,6 +23,8 @@ object AboutCopy {
     val CHANGELOG_SUB: String get() = tr(R.string.about_changelog_sub)
     val CHANGELOG_EMPTY: String get() = tr(R.string.about_changelog_empty)
     val CHANGELOG_ALL: String get() = tr(R.string.about_changelog_all)
+    val RELEASE_LATEST: String get() = tr(R.string.about_release_latest)
+    val RELEASE_PRERELEASE: String get() = tr(R.string.about_release_prerelease)
 
     val FEEDBACK: String get() = tr(R.string.about_feedback)
     val FEEDBACK_SUB: String get() = tr(R.string.about_feedback_sub)
@@ -56,6 +58,13 @@ object AboutCopy {
 
     fun buildLabel(build: String): String = tr(R.string.about_build, build)
 
+    /** 发布行下面的小字:发布日期(没有时空);滚动发布另写构建编号。 */
+    fun releaseSub(r: com.wangzan101.qusin.about.ReleaseInfo): String? =
+        listOfNotNull(r.date, r.build?.let { buildLabel(it) }).joinToString(" · ").ifEmpty { null }
+
+    /** 发布行右边的标记:预发布(nightly)写「预发布」,正式发布写「最新」。 */
+    fun releaseBadge(r: com.wangzan101.qusin.about.ReleaseInfo): String = if (r.prerelease) RELEASE_PRERELEASE else RELEASE_LATEST
+
     fun available(version: String): String = tr(R.string.about_available, version)
     fun updateTitle(version: String): String = tr(R.string.about_update_title, version)
 
@@ -68,7 +77,7 @@ object AboutCopy {
 
     fun checkValue(s: UpdateState): CheckValue = when {
         s.status == CheckStatus.Checking -> CheckValue(null, spinner = true)
-        s.update != null -> CheckValue(available(s.update.version), dot = true, highlight = true)
+        s.update != null -> CheckValue(available(s.update.label), dot = true, highlight = true)
         s.status == CheckStatus.Failed -> CheckValue(OFFLINE)
         s.latest != null -> CheckValue(UP_TO_DATE)
         else -> CheckValue(null)

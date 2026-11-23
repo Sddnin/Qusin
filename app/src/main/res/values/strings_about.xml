@@ -95,4 +95,6 @@
     <string name="about_mirrors_test_ok">Works for update checks.</string>
     <string name="about_mirrors_test_fail">Update checks can’t use this mirror. Downloads may still work.</string>
     <string name="about_mirrors_count" translatable="false">%1$d</string>
+    <string name="about_release_latest">Latest</string>
+    <string name="about_release_prerelease">Pre-release</string>
 </resources>

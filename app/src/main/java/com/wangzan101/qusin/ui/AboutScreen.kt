@@ -154,6 +154,20 @@ fun AboutScreen(
             }
             ListRow(QusinIcons.Lines, AboutCopy.CHANGELOG, AboutCopy.CHANGELOG_SUB, onClick = { sheet = AboutSheet.Changelog }) { RowChevron() }
         }
+        // 像 GitHub App 那样把最新发布直接摆在页面上:名字、日期、标记;点开看说明,下面一行去 GitHub 看全部发布
+        GroupCard {
+            val latest = update.latest
+            if (latest != null) {
+                ListRow(
+                    QusinIcons.Lines, latest.label, AboutCopy.releaseSub(latest), first = true,
+                    onClick = { sheet = AboutSheet.Changelog }, modifier = Modifier.testTag("about-latest-release"),
+                ) {
+                    RowValue(AboutCopy.releaseBadge(latest), ValueTone.Ok)
+                    RowChevron()
+                }
+            }
+            ListRow(QusinIcons.Code, AboutCopy.CHANGELOG_ALL, first = latest == null, onClick = { onOpenUrl(QusinLinks.RELEASES) }) { ExternalMark() }
+        }
         GroupCard {
             ListRow(QusinIcons.Bug, AboutCopy.FEEDBACK, AboutCopy.FEEDBACK_SUB, first = true, onClick = { sheet = AboutSheet.Feedback }) { RowChevron() }
         }
@@ -289,7 +303,7 @@ private fun NotesBox(notes: String) {
 
 @Composable
 internal fun UpdateSheet(r: ReleaseInfo, current: String, beta: Boolean, onOpenUrl: (String) -> Unit, onDismiss: () -> Unit) {
-    AboutSheetFrame(AboutCopy.updateTitle(r.version), AboutCopy.updateSub(current, beta, r.date), "update-sheet", onDismiss) {
+    AboutSheetFrame(AboutCopy.updateTitle(r.label), AboutCopy.updateSub(current, beta, r.date), "update-sheet", onDismiss) {
         if (r.notes.isNotBlank()) NotesBox(r.notes)
         if (r.apkUrl != null) UpdateDownloadControls(r)
         else QusinButton(AboutCopy.UPDATE_DOWNLOAD, { onOpenUrl(r.pageUrl) }, Modifier.fillMaxWidth().padding(top = 14.dp))
@@ -309,7 +323,7 @@ private fun ChangelogSheet(latest: ReleaseInfo?, onOpenAll: () -> Unit, onDismis
             Text(AboutCopy.CHANGELOG_EMPTY, Modifier.padding(top = 10.dp), style = QusinType.Caption, color = c.ink3)
         } else {
             Text(
-                latest.version + (latest.date?.let { " · $it" } ?: ""), Modifier.padding(top = 10.dp),
+                latest.label + (latest.date?.let { " · $it" } ?: ""), Modifier.padding(top = 10.dp),
                 style = QusinType.Label, color = c.ink,
             )
             if (latest.notes.isNotBlank()) NotesBox(latest.notes)

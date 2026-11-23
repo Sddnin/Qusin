@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">模型服務限制了請求頻率，重試後仍然過於頻繁。請稍後再試，或檢查帳戶的呼叫頻率限制。</string>
     <string name="task_model_auth">模型服務拒絕了 API Key。請檢查金鑰是否正確，以及帳戶是否有權使用此模型。</string>
+    <string name="task_failure_generic">任務在完成前停止了。開啟對話,點「檢視過程」可以看到發生了什麼。</string>
 </resources>

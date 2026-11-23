@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">Проверка…</string>
     <string name="about_mirrors_test_ok">Подходит для проверки обновлений.</string>
     <string name="about_mirrors_test_fail">Это зеркало не подходит для проверки обновлений. Загрузка может работать.</string>
+    <string name="about_release_latest">Последняя</string>
+    <string name="about_release_prerelease">Предварительная</string>
 </resources>

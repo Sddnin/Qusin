@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">Menguji…</string>
     <string name="about_mirrors_test_ok">Berfungsi untuk pemeriksaan pembaruan.</string>
     <string name="about_mirrors_test_fail">Mirror ini tidak bisa dipakai untuk pemeriksaan pembaruan. Unduhan mungkin masih berfungsi.</string>
+    <string name="about_release_latest">Terbaru</string>
+    <string name="about_release_prerelease">Pra-rilis</string>
 </resources>

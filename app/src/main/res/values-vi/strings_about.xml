@@ -110,4 +110,6 @@
     <string name="about_mirrors_testing">Đang kiểm tra…</string>
     <string name="about_mirrors_test_ok">Hoạt động cho việc kiểm tra cập nhật.</string>
     <string name="about_mirrors_test_fail">Không thể dùng máy chủ này để kiểm tra cập nhật. Tải xuống có thể vẫn hoạt động.</string>
+    <string name="about_release_latest">Mới nhất</string>
+    <string name="about_release_prerelease">Bản thử nghiệm</string>
 </resources>

@@ -25,9 +25,19 @@ data class ReleaseInfo(
     val apkDigest: String? = null,
     /** 已读到附件列表，空的 apkUrl 表示列表里没有兼容包。 */
     val apkListKnown: Boolean = false,
+    /** 预发布(如 nightly)。 */
+    val prerelease: Boolean = false,
+    /**
+     * 滚动发布(nightly)的构建编号:发布标签当前指向的提交短哈希。版本号不变、内容却在换的发布靠它判断新旧,
+     * 为空表示按版本号比较的普通发布。
+     */
+    val build: String? = null,
 ) {
     /** 「从 GitHub 下载」打开的地址:有 APK 直链就下 APK,没有就打开发布页。 */
     val downloadUrl: String get() = apkUrl ?: pageUrl
+
+    /** 给用户看的版本:滚动发布写「nightly · 构建哈希」,其余就是版本号。 */
+    val label: String get() = build?.let { "$version · $it" } ?: version
 }
 
 /**
@@ -64,8 +74,26 @@ object Releases {
             apkSize = apk?.size,
             apkDigest = apk?.digest,
             apkListKnown = assets != null,
+            prerelease = (o["prerelease"] as? JsonPrimitive)?.booleanOrNull == true,
         )
     }
+
+    /**
+     * 读 `releases?per_page=N` 的列表:仓库没有正式发布时 `releases/latest` 返回 404(它不认预发布),
+     * 这时取列表里最新的一个非草稿发布。有版本号形标签(v1.2.3)的正式发布优先;只剩 nightly 这类滚动标签时取它。
+     */
+    fun fromGitHubList(text: String, deviceAbis: List<String> = emptyList()): ReleaseInfo? {
+        val items = (json.parseToJsonElement(text) as? JsonArray)?.mapNotNull { it as? JsonObject }.orEmpty()
+            .filter { (it["draft"] as? JsonPrimitive)?.booleanOrNull != true && it.str("tag_name") != null }
+        val pick = items.firstOrNull { !isRollingTag(it.str("tag_name").orEmpty()) && (it["prerelease"] as? JsonPrimitive)?.booleanOrNull != true }
+            ?: items.firstOrNull { !isRollingTag(it.str("tag_name").orEmpty()) }
+            ?: items.firstOrNull()
+            ?: return null
+        return fromGitHub(pick.toString(), deviceAbis)
+    }
+
+    /** 不带数字的标签(nightly、latest)是滚动发布:同一个标签反复指向新提交。 */
+    fun isRollingTag(tag: String): Boolean = AppVersion.normalize(tag).none(Char::isDigit)
 
     /**
      * 从发布页兜底查到的版本:只有 tag,更新说明为空(说明只在 API 里)。
@@ -128,6 +156,8 @@ object Releases {
         r.apkSize?.let { put("apkSize", it) }
         r.apkDigest?.let { put("apkDigest", it) }
         if (r.apkListKnown) put("apkListKnown", true)
+        if (r.prerelease) put("prerelease", true)
+        r.build?.let { put("build", it) }
     }
 
     fun fromJson(o: JsonObject): ReleaseInfo? = runCatching {
@@ -136,6 +166,8 @@ object Releases {
             date = o.str("date"), pageUrl = o.str("pageUrl") ?: QusinLinks.RELEASES, apkUrl = o.str("apkUrl"),
             apkSize = o.strOrNumber("apkSize")?.toLongOrNull(), apkDigest = o.str("apkDigest"),
             apkListKnown = (o["apkListKnown"] as? JsonPrimitive)?.booleanOrNull == true,
+            prerelease = (o["prerelease"] as? JsonPrimitive)?.booleanOrNull == true,
+            build = o.str("build"),
         )
     }.getOrNull()
 

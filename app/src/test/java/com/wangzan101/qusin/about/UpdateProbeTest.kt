@@ -248,4 +248,35 @@ class UpdateProbeTest {
         server.dispatcher = dispatcher { MockResponse().setResponseCode(500) }
         assertNull(UpdateProbe.fetch(UpdateChecker.defaultClient(), mirror, api, releases, emptyList(), "Qusin/test"))
     }
+
+    /** 仓库只有 nightly 预发布:releases/latest 是 404,改读发布列表,并取标签现在指向的提交作为构建号。 */
+    @Test fun repositoryWithOnlyANightlyPrereleaseIsFoundThroughTheList() = runTest {
+        val latestApi = server.url("/repos/o/r/releases/latest").toString()
+        server.dispatcher = dispatcher { path ->
+            when {
+                path.endsWith("/releases/latest") -> MockResponse().setResponseCode(404)
+                path.contains("/releases?per_page=") -> MockResponse().setBody(
+                    """[{"tag_name":"nightly","name":"Qusin Nightly","body":"","prerelease":true,"draft":false,
+                    "published_at":"2026-11-23T06:21:49Z","html_url":"https://github.com/o/r/releases/tag/nightly",
+                    "assets":[{"name":"Qusin.apk","browser_download_url":"https://github.com/o/r/releases/download/nightly/Qusin.apk","size":5}]}]""",
+                )
+                path.endsWith("/git/ref/tags/nightly") -> MockResponse().setBody("""{"object":{"sha":"085fb5c1234567890","type":"commit"}}""")
+                else -> MockResponse().setResponseCode(500)
+            }
+        }
+        val found = UpdateProbe.fetch(UpdateChecker.defaultClient(), "", latestApi, releases, emptyList(), "Qusin/test")
+        assertNotNull(found)
+        assertEquals("nightly", found!!.version)
+        assertEquals("085fb5c", found.build)
+        assertTrue(found.prerelease)
+        assertEquals("https://github.com/o/r/releases/download/nightly/Qusin.apk", found.apkUrl)
+        assertEquals("2026-11-23", found.date)
+    }
+
+    /** 列表里有版本号形标签的发布时优先它,不被更新的 nightly 抢走。 */
+    @Test fun releaseListPrefersNumberedReleasesOverRollingTags() {
+        val list = """[{"tag_name":"nightly","prerelease":true,"assets":[]},{"tag_name":"v0.2.0","assets":[]},{"tag_name":"v0.1.0","assets":[]}]"""
+        assertEquals("0.2.0", Releases.fromGitHubList(list)?.version)
+        assertNull(Releases.fromGitHubList("[]"))
+    }
 }

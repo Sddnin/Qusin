@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">در حال آزمایش…</string>
     <string name="about_mirrors_test_ok">برای بررسی به‌روزرسانی کار می‌کند.</string>
     <string name="about_mirrors_test_fail">این آینه برای بررسی به‌روزرسانی کار نمی‌کند. دانلود ممکن است کار کند.</string>
+    <string name="about_release_latest">جدیدترین</string>
+    <string name="about_release_prerelease">پیش‌انتشار</string>
 </resources>

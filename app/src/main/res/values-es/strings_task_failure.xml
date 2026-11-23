@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">El servicio del modelo limita la frecuencia de solicitudes, incluso después de reintentar. Vuelve a intentarlo más tarde o revisa los límites de tu cuenta.</string>
     <string name="task_model_auth">El servicio del modelo rechazó la clave API. Comprueba que la clave sea correcta y que la cuenta tenga permiso para usar este modelo.</string>
+    <string name="task_failure_generic">La tarea se detuvo antes de terminar. Abre la conversación y usa «Ver cómo fue» para ver qué ocurrió.</string>
 </resources>

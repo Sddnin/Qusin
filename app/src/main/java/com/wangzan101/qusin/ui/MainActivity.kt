@@ -644,7 +644,7 @@ private fun QusinRoot(
                 onOpenPlans = { nav.push(Route.Plans) },
                 onOpenPersonas = if (personasOn) ({ nav.push(Route.Persona) }) else null,
                 autonomous = autonomous, onAutonomous = app.approvalControl::setAutonomous,
-                updateVersion = updateState.update?.version, onOpenAbout = { nav.push(Route.About) },
+                updateVersion = updateState.update?.label, onOpenAbout = { nav.push(Route.About) },
                 mcpServers = app.mcpServers,
                 openPhoneOps = openPhoneOps, onPhoneOpsOpened = { openPhoneOps = false })
         }

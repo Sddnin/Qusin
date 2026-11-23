@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">Dịch vụ mô hình đang giới hạn số yêu cầu, kể cả sau khi thử lại. Vui lòng thử lại sau hoặc kiểm tra hạn mức của tài khoản.</string>
     <string name="task_model_auth">Dịch vụ mô hình từ chối API key. Hãy kiểm tra key có chính xác và tài khoản có quyền sử dụng mô hình này.</string>
+    <string name="task_failure_generic">Tác vụ đã dừng trước khi hoàn tất. Hãy mở cuộc trò chuyện và chọn “Xem quá trình thực hiện” để biết chuyện gì đã xảy ra.</string>
 </resources>

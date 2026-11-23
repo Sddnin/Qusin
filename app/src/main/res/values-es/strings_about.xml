@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">Probando…</string>
     <string name="about_mirrors_test_ok">Sirve para comprobar actualizaciones.</string>
     <string name="about_mirrors_test_fail">Esta réplica no sirve para comprobar actualizaciones. La descarga aún podría funcionar.</string>
+    <string name="about_release_latest">Última</string>
+    <string name="about_release_prerelease">Preliminar</string>
 </resources>

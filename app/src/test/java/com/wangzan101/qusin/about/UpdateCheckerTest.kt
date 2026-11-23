@@ -621,4 +621,12 @@ class UpdateCheckerTest {
         assertTrue(UpdateSchedule.due(1_000, 1_000 + UpdateSchedule.MIN_GAP_MS))
         assertTrue("clock moved back", UpdateSchedule.due(10_000, 5_000))
     }
+
+    /** 滚动发布(nightly)给用户看的版本带上构建号,红点和更新面板里能分清是哪一次构建。 */
+    @Test
+    fun rollingReleaseLabelShowsTheBuild() {
+        val release = ReleaseInfo("nightly", "Qusin Nightly", "", null, "p", null, prerelease = true, build = "085fb5c")
+        assertEquals("nightly · 085fb5c", release.label)
+        assertEquals("0.2.0", ReleaseInfo("0.2.0", "x", "", null, "p", null).label)
+    }
 }

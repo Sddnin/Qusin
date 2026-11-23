@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">模型服务限流，重试后仍然请求太频繁。请稍后再试，或检查账户的调用频率限制。</string>
     <string name="task_model_auth">模型服务拒绝了 API Key。请检查密钥是否正确，以及账号是否有权限使用此模型。</string>
+    <string name="task_failure_generic">任务在完成前停止了。打开对话,点「查看过程」可以看到发生了什么。</string>
 </resources>

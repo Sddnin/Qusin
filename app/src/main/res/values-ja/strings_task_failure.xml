@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">モデルサービスのリクエスト制限に達しました。再試行後も頻度が高すぎます。しばらくしてから再試行するか、アカウントの制限を確認してください。</string>
     <string name="task_model_auth">モデルサービスが API キーを拒否しました。キーが正しく、このモデルを使用する権限がアカウントにあることを確認してください。</string>
+    <string name="task_failure_generic">タスクは完了する前に停止しました。会話を開いて「経過を見る」で何が起きたか確認できます。</string>
 </resources>

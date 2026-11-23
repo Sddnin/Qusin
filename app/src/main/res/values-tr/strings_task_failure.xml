@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">Model hizmeti, yeniden denemelerden sonra bile istekleri hız sınırlıyor. Lütfen daha sonra tekrar deneyin veya hesabınızın hız sınırlarını kontrol edin.</string>
     <string name="task_model_auth">Model hizmeti API anahtarını reddetti. Anahtarın doğru olduğunu ve hesabın bu modeli kullanma yetkisi bulunduğunu kontrol edin.</string>
+    <string name="task_failure_generic">Görev tamamlanmadan durdu. Sohbeti açıp “Nasıl gittiğini gör” ile ne olduğuna bakabilirsiniz.</string>
 </resources>

@@ -46,7 +46,10 @@ class ApkUpdater(
 
     @Synchronized
     fun state(release: ReleaseInfo): ApkDownloadState =
-        if (prefs.getString("url", null) != release.apkUrl) ApkDownloadState() else recorded()
+        if (prefs.getString("url", null) != identity(release)) ApkDownloadState() else recorded()
+
+    /** 下载的身份:官方附件地址;滚动发布(nightly)地址不变、内容在换,再加上构建哈希,免得把旧构建当成新的。 */
+    private fun identity(release: ReleaseInfo): String = release.apkUrl.orEmpty() + (release.build?.let { "#$it" } ?: "")
 
     /** 记下的那个下载任务现在的状态;系统里查不到这个任务算失败。 */
     private fun recorded(): ApkDownloadState {
@@ -78,7 +81,7 @@ class ApkUpdater(
         val proxy = net.proxyFor(Uri.parse(official).host.orEmpty())
         // 下载的「身份」始终是官方地址:镜像开关或顺序变了,已经下好的同一份包不用重下。
         // 「暂停」不算在途:系统下载器有时会卡在暂停不自动恢复,再点下载就取消重下,给用户一个手动续上的口子。
-        if (prefs.getString("url", null) == official && state(release).phase in
+        if (prefs.getString("url", null) == identity(release) && state(release).phase in
             listOf(DownloadPhase.Downloading, DownloadPhase.Ready)) return
         cancel()
         val folder = directory
@@ -89,7 +92,7 @@ class ApkUpdater(
         val target = File(folder, "update-${UUID.randomUUID()}.apk")
         // 镜像可能不止一个,要在一次任务里逐个换;系统下载器做不到,所以开了镜像就由 Qusin 自己下。
         if (wifi != null || proxy != null || sources.size > 1) {
-            check(prefs.edit().putBoolean("viaApp", true).putString("url", official).putString("file", target.name).commit()) { "could not save download" }
+            check(prefs.edit().putBoolean("viaApp", true).putString("url", identity(release)).putString("file", target.name).commit()) { "could not save download" }
             proxied.start(sources, target, wifi) {
                 verifyApk(it, release)
             }
@@ -103,7 +106,7 @@ class ApkUpdater(
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
             .setDestinationUri(Uri.fromFile(target))
         val id = manager.enqueue(request)
-        if (!prefs.edit().putLong("id", id).putString("url", url).putString("file", target.name).commit()) {
+        if (!prefs.edit().putLong("id", id).putString("url", identity(release)).putString("file", target.name).commit()) {
             manager.remove(id)
             error("could not save download")
         }
@@ -154,10 +157,15 @@ class ApkUpdater(
         ApkIntegrity.verify(target, release.apkSize, release.apkDigest)
         val archive = archiveInfo(target, SIGNING_FLAGS) ?: throw ApkRejected(ApkRejected.Reason.Corrupt)
         val installed = installedInfo(SIGNING_FLAGS)
-        if (archive.packageName != context.packageName || archive.longVersionCode <= installed.longVersionCode) {
+        // 滚动发布(nightly)在版本号提高之前,新构建的 versionCode 与已装的相同:只要不降级就行,
+        // 版本名也不必等于标签名(标签叫 nightly)。其余发布仍要求更高的版本并与标签一致。
+        val rolling = release.build != null
+        val notNewer = if (rolling) archive.longVersionCode < installed.longVersionCode
+            else archive.longVersionCode <= installed.longVersionCode
+        if (archive.packageName != context.packageName || notNewer) {
             throw ApkRejected(ApkRejected.Reason.NotNewer)
         }
-        ApkIntegrity.requireReleaseVersion(archive.versionName, release.version)
+        if (!rolling) ApkIntegrity.requireReleaseVersion(archive.versionName, release.version)
         ApkIntegrity.requireSameSigner(installed.signers(), archive.signers(), archive.signerHistory())
     }
 

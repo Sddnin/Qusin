@@ -3,6 +3,9 @@ package com.wangzan101.qusin.about
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -61,6 +64,10 @@ internal object UpdateProbe {
                 null
             }?.let { return it }
         }
+        // 仓库只有预发布(比如每次构建都更新的 nightly)时,releases/latest 恒为 404:改读发布列表。
+        if ((apiFailure as? HttpFailure)?.code == 404) {
+            fromList(client, source, apiUrl, userAgent, deviceAbis)?.let { return it }
+        }
         // 直连时 API 已经给了明确回应(比如限流 403):GitHub 是通的,这次就是没查到,不再多打一次网页。
         // 镜像的 403 通常只是「不代理 API」,还要试发布页。
         if (source.isEmpty() && apiFailure is HttpFailure) return null
@@ -84,6 +91,40 @@ internal object UpdateProbe {
         }
         val assets = assetsPage?.takeIf(String::isNotBlank)?.let { parseAssets(it, tag, base) }
         return Releases.fromPage(tag, assets, deviceAbis, base)
+    }
+
+    /**
+     * 发布列表兜底:取最新的非草稿发布(见 [Releases.fromGitHubList])。滚动标签(nightly)的内容会随构建更换,
+     * 版本号分不出新旧,所以再查一次标签现在指向哪个提交,记成 [ReleaseInfo.build]。
+     */
+    private suspend fun fromList(
+        client: OkHttpClient, source: String, apiUrl: String, userAgent: String, deviceAbis: List<String>,
+    ): ReleaseInfo? {
+        val root = apiUrl.removeSuffix("/latest")
+        val list = try {
+            get(client, "$source$root?per_page=10", userAgent, json = true)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Exception) {
+            return null
+        }
+        val release = try {
+            Releases.fromGitHubList(list, deviceAbis)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Exception) {
+            null
+        } ?: return null
+        if (!Releases.isRollingTag(release.version)) return release
+        val sha = try {
+            val ref = get(client, "$source${root.removeSuffix("/releases")}/git/ref/tags/${release.version}", userAgent, json = true)
+            (Json.parseToJsonElement(ref).jsonObject["object"]?.jsonObject?.get("sha") as? JsonPrimitive)?.content
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: Exception) {
+            null
+        }
+        return release.copy(build = sha?.take(7)?.takeIf { it.isNotEmpty() })
     }
 
     private val testClient by lazy { UpdateChecker.defaultClient() }

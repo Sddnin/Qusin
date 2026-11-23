@@ -375,7 +375,8 @@ class QusinApp : Application(), WebOwner, SandboxOwner, TaskEnvironment.Owner, P
     val updates: com.wangzan101.qusin.about.UpdateChecker by lazy {
         com.wangzan101.qusin.about.UpdateChecker(java.io.File(filesDir, "update-v1.json"), BuildConfig.VERSION_NAME,
             mirrorSettings = updateMirrors::snapshot,
-            deviceAbis = android.os.Build.SUPPORTED_ABIS.toList())
+            deviceAbis = android.os.Build.SUPPORTED_ABIS.toList(),
+            currentBuild = BuildConfig.GIT_HASH)
     }
 
     internal val apkUpdater by lazy {

@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">The model service is rate limiting requests, even after retrying. Please try again later or check your account’s rate limits.</string>
     <string name="task_model_auth">The model service rejected the API key. Check that the key is correct and authorized to use this model.</string>
+    <string name="task_failure_generic">The task stopped before it finished. Open the conversation and use “See how it went” to see what happened.</string>
 </resources>

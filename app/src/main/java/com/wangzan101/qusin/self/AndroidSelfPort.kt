@@ -94,7 +94,7 @@ class AndroidSelfPort(
             taskStep = running?.step,
             otherRuns = app.taskState.runs.value.count { it.conversationId != conversationId },
             plans = TriggerRuntime.list(app).count { it.threadId == conversationId },
-            updateVersion = app.updates.state.value.update?.version,
+            updateVersion = app.updates.state.value.update?.label,
             sandbox = sandboxName(app.sandboxState.status.value),
             mcpInbound = app.mcp.settings.enabled.value || app.mcp.usb.enabled.value,
             mcpServers = app.mcpServers.servers.value.map { it.name },

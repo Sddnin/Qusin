@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">Layanan model membatasi frekuensi permintaan, bahkan setelah dicoba ulang. Coba lagi nanti atau periksa batas permintaan akun Anda.</string>
     <string name="task_model_auth">Layanan model menolak kunci API. Periksa apakah kunci benar dan akun memiliki izin untuk menggunakan model ini.</string>
+    <string name="task_failure_generic">Tugas berhenti sebelum selesai. Buka percakapan dan pilih “Lihat prosesnya” untuk melihat apa yang terjadi.</string>
 </resources>

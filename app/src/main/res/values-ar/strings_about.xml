@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">جارٍ الاختبار…</string>
     <string name="about_mirrors_test_ok">تعمل للتحقق من التحديثات.</string>
     <string name="about_mirrors_test_fail">لا يمكن استخدام هذه المرآة للتحقق من التحديثات. قد يعمل التنزيل.</string>
+    <string name="about_release_latest">الأحدث</string>
+    <string name="about_release_prerelease">إصدار تجريبي</string>
 </resources>

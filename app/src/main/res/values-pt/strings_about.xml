@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">A testar…</string>
     <string name="about_mirrors_test_ok">Funciona para verificar atualizações.</string>
     <string name="about_mirrors_test_fail">Este espelho não serve para verificar atualizações. O download ainda pode funcionar.</string>
+    <string name="about_release_latest">Mais recente</string>
+    <string name="about_release_prerelease">Pré-lançamento</string>
 </resources>

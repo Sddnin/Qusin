@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">테스트 중…</string>
     <string name="about_mirrors_test_ok">업데이트 확인에 사용할 수 있습니다.</string>
     <string name="about_mirrors_test_fail">이 미러로는 업데이트 확인을 할 수 없습니다. 다운로드는 될 수 있습니다.</string>
+    <string name="about_release_latest">최신</string>
+    <string name="about_release_prerelease">사전 출시</string>
 </resources>

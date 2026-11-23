@@ -52,4 +52,24 @@ class TaskFailureCopyTest {
         assertSame(failure, localizeTaskFailure(failure))
         assertSame(success, localizeTaskFailure(success))
     }
+
+    @Test fun chineseReasonsWithoutACodeNeverReachANonChineseUi() {
+        val previous = UiText.source
+        try {
+            UiText.source = ResFileTexts("values-vi", Locale.forLanguageTag("vi"))
+            // 丢了 code 的模型错误:按开头的字认出来
+            val auth = TaskState.Failed("模型服务拒绝了请求:API Key 无效或没有权限。", FailKind.Model)
+            assertTrue((localizeTaskFailure(auth) as TaskState.Failed).reason.contains("Dịch vụ mô hình từ chối API key"))
+            // 别的中文原因:换成越南语的通用说明
+            val guard = TaskState.Failed("已安全停止(repeating_action):同一个操作反复执行仍没有效果。", FailKind.Guard)
+            val generic = (localizeTaskFailure(guard) as TaskState.Failed).reason
+            assertTrue(generic.none { it in '\u4e00'..'\u9fff' })
+            assertTrue(generic.contains("Tác vụ"))
+            // 中文界面保持原文
+            UiText.source = ResFileTexts.chinese
+            assertSame(guard, localizeTaskFailure(guard))
+        } finally {
+            UiText.source = previous
+        }
+    }
 }

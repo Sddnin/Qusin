@@ -94,4 +94,6 @@
     <string name="about_mirrors_testing">テスト中…</string>
     <string name="about_mirrors_test_ok">更新の確認に使えます。</string>
     <string name="about_mirrors_test_fail">このミラーは更新の確認に使えません。ダウンロードは使える場合があります。</string>
+    <string name="about_release_latest">最新</string>
+    <string name="about_release_prerelease">プレリリース</string>
 </resources>

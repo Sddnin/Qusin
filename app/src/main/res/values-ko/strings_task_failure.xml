@@ -2,4 +2,5 @@
 <resources>
     <string name="task_model_rate_limited">모델 서비스의 요청 횟수가 제한되었습니다. 다시 시도한 후에도 요청이 너무 잦습니다. 나중에 다시 시도하거나 계정의 요청 제한을 확인하세요.</string>
     <string name="task_model_auth">모델 서비스에서 API 키를 거부했습니다. 키가 올바른지, 계정에 이 모델을 사용할 권한이 있는지 확인하세요.</string>
+    <string name="task_failure_generic">작업이 끝나기 전에 중단되었습니다. 대화를 열고 “진행 과정 보기”에서 무슨 일이 있었는지 확인하세요.</string>
 </resources>

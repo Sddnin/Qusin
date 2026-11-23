@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -39,8 +40,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wangzan101.qusin.R
@@ -164,8 +168,23 @@ fun ListRow(
             if (!subtitle.isNullOrEmpty()) Text(subtitle, Modifier.padding(top = 2.dp), style = QusinType.Caption, color = c.ink3)
             if (!detail.isNullOrEmpty()) Text(detail, Modifier.padding(top = 2.dp), style = QusinType.Hint, color = detailColor.takeOrElse { c.ink3 })
         }
-        trailing()
+        RowTrailing(trailing)
     }
+}
+
+/**
+ * 行尾内容(值、开关、箭头)的容器。Row 先量不带权重的子项,行尾的值一长(「Tích hợp trong điện thoại」)
+ * 就把带权重的标题列挤成一条缝,标题被逐字折行。这里给行尾设上限(屏宽的 42%),超出的值换行或省略,标题至少有半行宽。
+ */
+@Composable
+private fun RowTrailing(content: @Composable RowScope.() -> Unit) {
+    val cap = (LocalConfiguration.current.screenWidthDp * 0.42f).dp
+    Row(
+        Modifier.widthIn(max = cap),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        content = content,
+    )
 }
 
 enum class ValueTone { Plain, Ok, Warn, Bad, Link }
@@ -184,7 +203,9 @@ fun RowValue(text: String, tone: ValueTone = ValueTone.Plain) {
             ValueTone.Bad -> c.bad
             ValueTone.Link -> c.accent
         },
-        maxLines = 1,
+        textAlign = TextAlign.End,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
     )
 }
 
@@ -224,7 +245,7 @@ fun RadioRow(
             if (!subtitle.isNullOrEmpty()) Text(subtitle, Modifier.padding(top = 2.dp), style = QusinType.Caption, color = c.ink3)
             if (below != null) Box(Modifier.padding(top = 4.dp)) { below() }
         }
-        trailing()
+        RowTrailing(trailing)
     }
 }
 

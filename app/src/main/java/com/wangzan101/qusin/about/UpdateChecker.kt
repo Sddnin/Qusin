@@ -70,6 +70,8 @@ class UpdateChecker(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
     /** 本机支持的 ABI(Build.SUPPORTED_ABIS),用来挑发布里合适的 APK;为空时取全架构包。 */
     private val deviceAbis: List<String> = emptyList(),
+    /** 本机这个构建的提交短哈希(BuildConfig.GIT_HASH);滚动发布(nightly)靠它判断有没有新构建,从源码包编译时是 dev。 */
+    private val currentBuild: String = "",
 ) {
     private val _state = MutableStateFlow(UpdateState())
     val state: StateFlow<UpdateState> = _state.asStateFlow()
@@ -221,7 +223,13 @@ class UpdateChecker(
     }
 
     private fun UpdateState.withLatest(r: ReleaseInfo?): UpdateState =
-        copy(latest = r, update = r?.takeIf { AppVersion.isNewer(it.version, currentVersion) })
+        copy(latest = r, update = r?.takeIf { isUpdate(it) })
+
+    /** 滚动发布看构建哈希(版本号不变),其余看版本号。本机是 dev 构建时不提示:没有可比的哈希。 */
+    private fun isUpdate(r: ReleaseInfo): Boolean {
+        val build = r.build ?: return AppVersion.isNewer(r.version, currentVersion)
+        return currentBuild.isNotEmpty() && currentBuild != "dev" && !build.equals(currentBuild.take(build.length), ignoreCase = true)
+    }
 
     private fun loadLocked() {
         if (loaded) return
