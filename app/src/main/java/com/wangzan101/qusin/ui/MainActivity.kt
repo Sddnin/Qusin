@@ -408,6 +408,8 @@ private fun QusinRoot(
     var focusedCallHistoryId by remember { mutableStateOf<String?>(null) }
     val personalStart = remember { FeatureFlags.get(context).personalStart() }
     val nav = rememberNavStack(if (personalStart && requestedConversation == null) Route.Personal else Route.Chat)
+    // Keep this state above the notification effects that can set it before the chat route is composed.
+    var focusWorkComposer by remember { mutableStateOf(false) }
     var filesFromDrawer by rememberSaveable { mutableStateOf(false) }
     var filesConversation by rememberSaveable { mutableStateOf<String?>(null) }
     // 从设置页「重新配对」进来时先回到配对一步
@@ -554,7 +556,6 @@ private fun QusinRoot(
     val back: () -> Unit = { nav.back() }
     // 聊天页离开组合树时保留列表位置和输入内容，返回设置页等子页面后原样恢复。
     val screenStates = rememberSaveableStateHolder()
-    var focusWorkComposer by remember { mutableStateOf(false) }
     when (nav.current) {
         Route.PhoneSetup -> PhoneSetupScreen(status, setupRepair, onFix, onboarding = onboarding == OnboardingStep.Phone) {
             phoneSetup.markGuideSeen()

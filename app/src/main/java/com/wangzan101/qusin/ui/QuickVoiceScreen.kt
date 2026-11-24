@@ -2,9 +2,6 @@ package com.wangzan101.qusin.ui
 
 import android.Manifest
 import android.content.Intent
-import android.content.Context
-import android.content.ContextWrapper
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
@@ -326,10 +323,4 @@ fun QuickVoiceScreen(
 private fun formatElapsed(milliseconds: Long): String {
     val seconds = (milliseconds / 1000L).coerceAtLeast(0)
     return "%02d:%02d".format(seconds / 60, seconds % 60)
-}
-
-private tailrec fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
 }
