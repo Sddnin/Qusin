@@ -4,8 +4,8 @@
     <color name="widget_border">#FFDDE3EC</color>
     <color name="widget_ink">#FF172235</color>
     <color name="widget_muted">#FF5D6878</color>
-    <color name="widget_accent">#FF3269D7</color>
-    <color name="widget_accent_soft">#FFE8F0FF</color>
+    <color name="widget_accent">#FF0A7CFF</color>
+    <color name="widget_accent_soft">#FFE8F2FF</color>
     <color name="widget_on_accent">#FFFFFFFF</color>
     <color name="widget_secondary">#FFE9EDF4</color>
 </resources>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mode_personal">個人</string>
-    <string name="mode_work">Work</string>
+    <string name="mode_work">仕事</string>
     <string name="widget_quick_voice_title">Qusin に話す</string>
     <string name="widget_quick_voice_prompt">何をお手伝いしましょうか？</string>
     <string name="widget_quick_voice_hint">または Qusin を開いて入力</string>
-    <string name="widget_quick_voice_tap_label">🎙  タップして話す</string>
+    <string name="widget_quick_voice_tap_label">タップして話す</string>
     <string name="widget_quick_voice_type">チャットを開いて入力</string>
     <string name="quick_voice_title">Qusin に話す</string>
     <string name="quick_voice_prompt">何をお手伝いしましょうか？</string>
@@ -30,6 +30,5 @@
     <string name="quick_voice_submit_failed">リクエストを送信できませんでした。入力したテキストはここに残っています。</string>
     <string name="quick_voice_transcript_placeholder">音声から文字起こししたリクエスト</string>
     <string name="widget_quick_voice_description">Qusin で音声リクエストを開始し、送信前に内容を確認できます。</string>
-    <string name="widget_quick_voice_ready">準備完了</string>
     <string name="widget_quick_voice_review_hint">送信前に内容を確認してください。</string>
 </resources>

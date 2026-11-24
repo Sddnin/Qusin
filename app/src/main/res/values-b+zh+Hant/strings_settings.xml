@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_personal_start">啟動時開啟個人助理</string>
-    <string name="settings_personal_start_sub">將個人助理設為 Qusin 的起始畫面</string>
     <string name="language_title">語言</string>
     <string name="language_prompt_title">語言偏好</string>
     <string name="language_prompt_hint">選擇 Qusin 進行思考、執行步驟旁白與回覆的語言。</string>

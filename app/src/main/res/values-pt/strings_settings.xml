@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_personal_start">Abrir o assistente pessoal ao iniciar</string>
-    <string name="settings_personal_start_sub">Usar o assistente pessoal como tela inicial do Qusin</string>
     <string name="language_title">Idioma</string>
     <string name="language_prompt_title">Idioma</string>
     <string name="language_prompt_hint">Escolha o idioma que o Qusin usará para pensar, narrar etapas e responder.</string>

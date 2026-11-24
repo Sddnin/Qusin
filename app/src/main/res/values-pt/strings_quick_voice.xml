@@ -5,7 +5,7 @@
     <string name="widget_quick_voice_title">Fale com o Qusin</string>
     <string name="widget_quick_voice_prompt">O que posso fazer por você?</string>
     <string name="widget_quick_voice_hint">Ou abra o Qusin para digitar</string>
-    <string name="widget_quick_voice_tap_label">🎙  Toque para falar</string>
+    <string name="widget_quick_voice_tap_label">Toque para falar</string>
     <string name="widget_quick_voice_type">Abrir conversa para digitar</string>
     <string name="quick_voice_title">Fale com o Qusin</string>
     <string name="quick_voice_prompt">O que posso fazer por você?</string>
@@ -30,6 +30,5 @@
     <string name="quick_voice_submit_failed">Não foi possível enviar a solicitação. Seu texto continua aqui.</string>
     <string name="quick_voice_transcript_placeholder">Solicitação transcrita</string>
     <string name="widget_quick_voice_description">Inicie uma solicitação por voz com o Qusin e revise o texto antes de enviar.</string>
-    <string name="widget_quick_voice_ready">PRONTO</string>
     <string name="widget_quick_voice_review_hint">Revise o texto antes de enviar.</string>
 </resources>

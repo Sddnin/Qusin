@@ -1,6 +1,6 @@
 name: CI
 
-# 只做 CI：单元测试、Android 打包、CLI 契约和网关集成。发布（CD）仍是手工流程。
+# CI：单元测试、Android 打包、CLI 契约和网关集成；main 上全部检查通过后自动创建尚不存在的版本 Release。
 on:
   pull_request:
   push:
@@ -286,6 +286,64 @@ jobs:
             echo "[Download Qusin.apk](https://github.com/${GITHUB_REPOSITORY}/releases/download/nightly/Qusin.apk)"
             echo
             echo "Debug-signed build; not a Play Store release."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+
+  publish-release:
+    name: Publish versioned GitHub Release
+    runs-on: ubuntu-latest
+    needs: [core, cli, app, relay]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    concurrency:
+      group: qusin-versioned-release
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+      - name: Download the APK built by the app job
+        uses: actions/download-artifact@v8
+        with:
+          name: Qusin-debug-APK
+          path: dist/release
+      - name: Prepare versioned release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(sed -n 's/.*versionName = "\([^"]*\)".*/\1/p' app/build.gradle.kts)
+          test -n "$version"
+          apk=$(find dist/release -maxdepth 1 -type f -name 'Qusin-debug-*.apk' -print -quit)
+          test -n "$apk"
+          cp "$apk" "dist/release/Qusin-v$version.apk"
+          (cd dist/release && sha256sum "Qusin-v$version.apk" > SHA256SUMS.txt)
+      - name: Create a versioned GitHub Release once per version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(sed -n 's/.*versionName = "\([^"]*\)".*/\1/p' app/build.gradle.kts)
+          tag="v$version"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists; no duplicate created."
+            exit 0
+          fi
+          gh release create "$tag" \
+            "dist/release/Qusin-v$version.apk" \
+            dist/release/SHA256SUMS.txt \
+            --target "$GITHUB_SHA" \
+            --title "Qusin $version" \
+            --notes-file "docs/releases/$tag.md"
+      - name: Publish release links
+        run: |
+          version=$(sed -n 's/.*versionName = "\([^"]*\)".*/\1/p' app/build.gradle.kts)
+          {
+            echo "## Qusin $version"
+            echo "[GitHub Release](https://github.com/${GITHUB_REPOSITORY}/releases/tag/v$version)"
+            echo "[Download APK](https://github.com/${GITHUB_REPOSITORY}/releases/download/v$version/Qusin-v$version.apk)"
+            echo
+            echo "The GitHub APK is debug-signed; it is not a Play Store build."
           } >> "$GITHUB_STEP_SUMMARY"
 
   relay:

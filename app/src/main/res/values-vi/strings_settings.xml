@@ -4,8 +4,6 @@
     <string name="language_system">Theo hệ thống</string>
     <string name="language_system_detail">Dùng ngôn ngữ hệ thống nếu Qusin có bản dịch, nếu không sẽ dùng tiếng Anh</string>
     <string name="settings_language_appearance">Ngôn ngữ và giao diện</string>
-    <string name="settings_personal_start">Mở Trợ lý cá nhân khi khởi chạy</string>
-    <string name="settings_personal_start_sub">Dùng Trợ lý cá nhân làm màn hình đầu tiên</string>
     <string name="settings_model">Mô hình</string>
     <string name="settings_model_sub">Mô hình, nhà cung cấp và mức sử dụng token</string>
     <string name="settings_not_set">Chưa thiết lập</string>

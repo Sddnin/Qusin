@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_personal_start">Buka asisten pribadi saat aplikasi dimulai</string>
-    <string name="settings_personal_start_sub">Jadikan asisten pribadi sebagai layar awal Qusin</string>
     <string name="language_title">Bahasa</string>
     <string name="language_prompt_title">Bahasa</string>
     <string name="language_prompt_hint">Pilih bahasa yang digunakan Qusin untuk berpikir, narasi langkah, dan menjawab.</string>

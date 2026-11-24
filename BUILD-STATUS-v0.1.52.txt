@@ -1,0 +1,20 @@
+Qusin 0.1.52 build status
+
+Version: 0.1.52
+versionCode: 53
+
+Automated checks completed:
+- python3 tools/i18n/translations.py check: PASS (3760 resources, 13 UI languages)
+- python3 -m unittest discover -s tools/i18n -v: PASS (12 tests)
+- XML parse: PASS (891 Android resource XML files)
+- Quick Voice locale/resource assertions: PASS (13 locales)
+- Widget visible text resource assertions: PASS
+- Standalone Kotlin ReplyLanguage smoke test: PASS (Chinese reply flagged for English input; English reply accepted)
+
+Not verified:
+- Gradle core unit test, Android unit tests, assembleDebug and lintDebug could not start. Gradle Wrapper needs Gradle 8.11.1 from services.gradle.org, but DNS resolution for that host failed with UnknownHostException.
+- No emulator/device was available to install or verify APK, widget sizes, light/dark screenshots, or screen states.
+- No APK has been built, uploaded, or published as a GitHub Release.
+
+Do not mark 0.1.52 as ready for distribution until Gradle build/tests/lint pass and the APK is installed and tested on a device.
+- Qusin-v0.1.52.patch applied to a clean v0.1.51 source snapshot: PASS (resulting files match prepared v0.1.52 source exactly).

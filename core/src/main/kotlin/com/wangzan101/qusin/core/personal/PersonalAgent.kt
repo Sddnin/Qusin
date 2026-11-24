@@ -1,6 +1,7 @@
 package com.wangzan101.qusin.core.personal
 
 import com.wangzan101.qusin.core.agent.TokenEstimate
+import com.wangzan101.qusin.core.agent.ReplyLanguage
 import com.wangzan101.qusin.core.model.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -188,8 +189,10 @@ class PersonalAgent(
                 val source = batch.last().copy(text = batch.joinToString("\n") { it.text })
                 val receipts = mutableMapOf<String, String>()
                 var answered = false
-                repeat(8) {
-                    if (answered) return@repeat
+                var languageNudged = false
+                var modelTurns = 0
+                while (modelTurns < 8 && !answered) {
+                    modelTurns++
                     val reply = client.complete(system, history, TOOLS)
                     val calls = reply.parts.filterIsInstance<Part.ToolCall>()
                     history += Message(Role.Assistant, reply.parts, Author.Qusin)
@@ -197,6 +200,20 @@ class PersonalAgent(
                         val raw = reply.parts.filterIsInstance<Part.Text>().joinToString("\n") { it.text }.trim()
                         if (raw.isBlank()) throw PersonalSystemException("empty_reply", "模型没有返回可显示的回复，请再试一次。")
                         val text = stripReplyMetadata(raw)
+                        val mismatch = if (!languageNudged) ReplyLanguage.mismatch(batch.last().text, text) else null
+                        if (mismatch != null) {
+                            languageNudged = true
+                            history += Message(
+                                Role.User,
+                                listOf(Part.Text(
+                                    "Your draft reply is mainly in ${mismatch.answer.display}, but the user's latest message is mainly in ${mismatch.user.display}. " +
+                                        "Rewrite the complete reply in the same natural language as the latest real user message. " +
+                                        "Do not default to Chinese unless the user wrote in Chinese."
+                                )),
+                                Author.Qusin,
+                            )
+                            continue
+                        }
                         if (text.isNotBlank()) store.update { it.copy(messages = it.messages + entry("assistant", text)) }
                         answered = true
                     } else {
@@ -322,7 +339,8 @@ class PersonalAgent(
     }
 
     private fun system(s: PersonalState, memory: String, latestMessageAt: Long) = """
-你是 Qusin，是用户长期交流的个人助手。自然、简洁地接话，中文交流时用中文。
+你是 Qusin，是用户长期交流的个人助手。自然、简洁地接话，始终使用用户最近一条真实消息所使用的语言。不要默认中文，也不要因为本提示词、历史记录或工具回执使用中文就改用中文。用户用英语发消息就用英语回答；用户用越南语发消息就用越南语回答；其他语言也同样跟随用户。
+You must reply in the same natural language as the user's most recent message. Do not default to Chinese. Match the language of the latest user message, not the language of this instruction or older conversation history.
 用户可以连续发消息、换话题。讨论、倾诉和构思用聊天回应；明确交代需要上网、操作手机、文件、计算等行动时，调用 delegate_task 交给独立任务。按实际进展接话，避免重复播报任务受理状态，不假装获得未返回的结果。
 消息时间、任务状态、内部编号和工具回执仅用于理解上下文。直接回复用户，不在回复里加这些字段或回执。用户询问时间时用自然语言回答。
 任务在后台运行时，聊天仍然继续。明确补充某项任务才用 revise_task；新话题不要变成任务插话。任务编号以这里的真实编号为准。停止需 cancel_task。需要接管、批准或回答时，引导用户点任务卡进入处理。

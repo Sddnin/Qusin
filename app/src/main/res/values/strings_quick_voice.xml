@@ -6,9 +6,8 @@
     <string name="widget_quick_voice_title">Talk to Qusin</string>
     <string name="widget_quick_voice_prompt">What can I do for you?</string>
     <string name="widget_quick_voice_hint">Or open Qusin to type</string>
-    <string name="widget_quick_voice_tap_label">🎙  Tap to speak</string>
+    <string name="widget_quick_voice_tap_label">Tap to speak</string>
     <string name="widget_quick_voice_type">Open chat to type</string>
-    <string name="widget_quick_voice_ready">READY</string>
     <string name="widget_quick_voice_review_hint">Review your words before sending.</string>
     <string name="quick_voice_title">Talk to Qusin</string>
     <string name="quick_voice_prompt">What can I do for you?</string>

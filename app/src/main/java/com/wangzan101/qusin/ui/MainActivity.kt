@@ -406,8 +406,7 @@ private fun QusinRoot(
 ) {
     val context = LocalContext.current
     var focusedCallHistoryId by remember { mutableStateOf<String?>(null) }
-    val personalStart = remember { FeatureFlags.get(context).personalStart() }
-    val nav = rememberNavStack(if (personalStart && requestedConversation == null) Route.Personal else Route.Chat)
+    val nav = rememberNavStack(Route.Chat)
     // Keep this state above the notification effects that can set it before the chat route is composed.
     var focusWorkComposer by remember { mutableStateOf(false) }
     var filesFromDrawer by rememberSaveable { mutableStateOf(false) }
@@ -582,7 +581,7 @@ private fun QusinRoot(
             onPickSpeech = { nav.push(Route.SpeechModel) },
             onSubmit = { text ->
                 val destination = nav.stack.dropLast(1).lastOrNull { it == Route.Chat || it == Route.Personal }
-                    ?: if (personalStart) Route.Personal else Route.Chat
+                    ?: Route.Chat
                 if (destination == Route.Personal) {
                     app.personal.send(text)
                     nav.show(Route.Personal)

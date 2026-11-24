@@ -9,8 +9,6 @@
     <string name="language_system">Sistemi takip et</string>
     <string name="language_system_detail">Qusin\'da varsa sistem dilinizi kullanır, yoksa İngilizce</string>
     <string name="settings_language_appearance">Dil ve görünüm</string>
-    <string name="settings_personal_start">Başlangıçta Kişisel Asistanı aç</string>
-    <string name="settings_personal_start_sub">Kişisel Asistanı ilk ekranınız olarak kullanın</string>
     <string name="settings_model">Model</string>
     <string name="settings_model_sub">Modeller, sağlayıcılar ve Token kullanımı</string>
     <string name="settings_not_set">Ayarlanmadı</string>

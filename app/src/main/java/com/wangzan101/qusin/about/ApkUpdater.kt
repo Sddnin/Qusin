@@ -25,6 +25,12 @@ data class ApkDownloadState(
     val percent: Int? get() = if (total > 0) ((bytes.toDouble() / total) * 100).toInt().coerceIn(0, 100) else null
 }
 
+/** Restore a completed download when Android no longer exposes the DownloadManager row. */
+internal fun restoredApkDownloadState(file: File?): ApkDownloadState {
+    val apk = file?.takeIf { it.isFile && it.length() > 0 } ?: return ApkDownloadState(DownloadPhase.Failed)
+    return ApkDownloadState(DownloadPhase.Ready, apk.length(), apk.length())
+}
+
 /**
  * 手动直连下载交给系统;保存任务编号,进程重启后仍能查询、取消或安装。方法在 IO 线程调用。
  * 文件放在本应用的外部专属目录(别的 App 读写不到),同一时间只留一个;换版本、删除、装好后都清掉。
@@ -51,7 +57,7 @@ class ApkUpdater(
     /** 下载的身份:官方附件地址;滚动发布(nightly)地址不变、内容在换,再加上构建哈希,免得把旧构建当成新的。 */
     private fun identity(release: ReleaseInfo): String = release.apkUrl.orEmpty() + (release.build?.let { "#$it" } ?: "")
 
-    /** 记下的那个下载任务现在的状态;系统里查不到这个任务算失败。 */
+    /** 下载状态；记录缺失时从仍保存的 APK 文件恢复完成状态，安装前仍会完整校验。 */
     private fun recorded(): ApkDownloadState {
         if (viaApp) return file?.let(proxied::state) ?: ApkDownloadState(DownloadPhase.Failed)
         val id = prefs.getLong("id", -1)
@@ -67,7 +73,9 @@ class ApkUpdater(
                 return ApkDownloadState(phase, number(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR), number(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
             }
         }
-        return ApkDownloadState(DownloadPhase.Failed)
+        // DownloadManager records may disappear after completion on some devices. Recover
+        // from the app-private file; installIntent still verifies size, digest, package and signer.
+        return restoredApkDownloadState(file)
     }
 
     @Synchronized
@@ -147,8 +155,12 @@ class ApkUpdater(
             cancel()
             throw e
         }
-        val uri = if (viaApp) FileProvider.getUriForFile(context, "${context.packageName}.updatefiles", target)
-            else manager.getUriForDownloadedFile(prefs.getLong("id", -1)) ?: error("missing APK")
+        val uri = if (viaApp) {
+            FileProvider.getUriForFile(context, "${context.packageName}.updatefiles", target)
+        } else {
+            manager.getUriForDownloadedFile(prefs.getLong("id", -1))
+                ?: FileProvider.getUriForFile(context, "${context.packageName}.updatefiles", target)
+        }
         return Intent(Intent.ACTION_VIEW).setDataAndType(uri, "application/vnd.android.package-archive")
             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }

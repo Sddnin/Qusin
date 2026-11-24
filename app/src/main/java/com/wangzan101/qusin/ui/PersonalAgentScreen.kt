@@ -509,7 +509,7 @@ internal fun PersonalHeader(
                 personal = true,
                 onWork = onOpenWork,
                 onPersonal = {},
-                modifier = Modifier.padding(top = 8.dp).width(176.dp).testTag("personal-mode-switch"),
+                modifier = Modifier.padding(top = 8.dp).widthIn(min = 200.dp, max = 250.dp).testTag("personal-mode-switch"),
             )
             val task = previewTask ?: active.firstOrNull()
             if (task != null) {

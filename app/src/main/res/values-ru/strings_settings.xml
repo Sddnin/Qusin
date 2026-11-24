@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_personal_start">Открывать личного помощника при запуске</string>
-    <string name="settings_personal_start_sub">Сделать личного помощника стартовым экраном Qusin</string>
     <string name="language_title">Язык</string>
     <string name="language_prompt_title">Язык</string>
     <string name="language_prompt_hint">Выберите язык, который Qusin будет использовать для размышлений, пояснений и ответов.</string>

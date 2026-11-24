@@ -36,12 +36,6 @@ class FeatureFlags(private val prefs: SharedPreferences) {
         prefs.edit().putString(SCHEDULED_QUIET_HOURS, "${hours.enabled},${hours.start},${hours.end}").apply()
     }
 
-    fun personalStart(): Boolean = prefs.getBoolean(PERSONAL_START, false)
-
-    fun setPersonalStart(on: Boolean) {
-        prefs.edit().putBoolean(PERSONAL_START, on).apply()
-    }
-
     /** 还没做过的默认值升级(见 [SPEED_UPGRADES])各做一次;升级之后用户手动关掉就保持关闭。 */
     fun speedFlags(): SpeedFlags {
         val flags = prefs.getString(SPEED_FLAGS, null)?.let { runCatching { SpeedFlags.parse(it) }.getOrNull() } ?: SpeedFlags.OFF
@@ -463,7 +457,6 @@ class FeatureFlags(private val prefs: SharedPreferences) {
         private const val PROACTIVE = "proactive"
         private const val PERSONA = "persona"
         private const val THEME_MODE = "theme_mode"
-        private const val PERSONAL_START = "personal_start"
         private const val THEME_ACCENT = "theme_accent"
         private const val SKIN_VERSION = "skin_version"
         private const val SKIN_SCRIM = "skin_scrim"

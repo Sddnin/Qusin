@@ -5,7 +5,7 @@
     <string name="widget_quick_voice_title">تحدث مع Qusin</string>
     <string name="widget_quick_voice_prompt">ماذا تريد مني أن أفعل؟</string>
     <string name="widget_quick_voice_hint">أو افتح Qusin للكتابة</string>
-    <string name="widget_quick_voice_tap_label">🎙  اضغط للتحدث</string>
+    <string name="widget_quick_voice_tap_label">اضغط للتحدث</string>
     <string name="widget_quick_voice_type">افتح المحادثة للكتابة</string>
     <string name="quick_voice_title">تحدث مع Qusin</string>
     <string name="quick_voice_prompt">ماذا تريد مني أن أفعل؟</string>
@@ -30,6 +30,5 @@
     <string name="quick_voice_submit_failed">تعذّر إرسال الطلب. ما زال النص محفوظًا هنا.</string>
     <string name="quick_voice_transcript_placeholder">النص المحوّل من كلامك</string>
     <string name="widget_quick_voice_description">ابدأ طلبًا صوتيًا باستخدام Qusin، وراجع النص قبل الإرسال.</string>
-    <string name="widget_quick_voice_ready">جاهز</string>
     <string name="widget_quick_voice_review_hint">راجع النص قبل الإرسال.</string>
 </resources>

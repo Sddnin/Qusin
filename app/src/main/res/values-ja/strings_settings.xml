@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_personal_start">起動時にパーソナルアシスタントを開く</string>
-    <string name="settings_personal_start_sub">Qusin の最初の画面をパーソナルアシスタントにする</string>
     <string name="language_title">言語</string>
     <string name="language_prompt_title">言語設定</string>
     <string name="language_prompt_hint">Qusin が思考、手順の解説、回答に使用する言語を選択してください。</string>

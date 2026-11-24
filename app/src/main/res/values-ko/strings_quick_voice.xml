@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mode_personal">개인</string>
-    <string name="mode_work">Work</string>
+    <string name="mode_work">업무</string>
     <string name="widget_quick_voice_title">Qusin에게 말하기</string>
     <string name="widget_quick_voice_prompt">무엇을 도와드릴까요?</string>
     <string name="widget_quick_voice_hint">또는 Qusin을 열어 입력</string>
-    <string name="widget_quick_voice_tap_label">🎙  눌러서 말하기</string>
+    <string name="widget_quick_voice_tap_label">눌러서 말하기</string>
     <string name="widget_quick_voice_type">채팅을 열어 입력</string>
     <string name="quick_voice_title">Qusin에게 말하기</string>
     <string name="quick_voice_prompt">무엇을 도와드릴까요?</string>
@@ -30,6 +30,5 @@
     <string name="quick_voice_submit_failed">요청을 보내지 못했습니다. 입력한 텍스트는 여기에 남아 있습니다.</string>
     <string name="quick_voice_transcript_placeholder">음성 인식으로 변환된 요청</string>
     <string name="widget_quick_voice_description">Qusin에서 음성 요청을 시작하고 보내기 전에 내용을 확인하세요.</string>
-    <string name="widget_quick_voice_ready">준비됨</string>
     <string name="widget_quick_voice_review_hint">보내기 전에 내용을 확인하세요.</string>
 </resources>

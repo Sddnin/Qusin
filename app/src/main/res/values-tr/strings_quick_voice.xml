@@ -5,7 +5,7 @@
     <string name="widget_quick_voice_title">Qusin ile konuş</string>
     <string name="widget_quick_voice_prompt">Senin için ne yapabilirim?</string>
     <string name="widget_quick_voice_hint">Ya da yazmak için Qusin’i aç</string>
-    <string name="widget_quick_voice_tap_label">🎙  Konuşmak için dokun</string>
+    <string name="widget_quick_voice_tap_label">Konuşmak için dokun</string>
     <string name="widget_quick_voice_type">Yazmak için sohbeti aç</string>
     <string name="quick_voice_title">Qusin ile konuş</string>
     <string name="quick_voice_prompt">Senin için ne yapabilirim?</string>
@@ -30,6 +30,5 @@
     <string name="quick_voice_submit_failed">İstek gönderilemedi. Metniniz burada duruyor.</string>
     <string name="quick_voice_transcript_placeholder">Sese dönüştürülen istek</string>
     <string name="widget_quick_voice_description">Qusin ile sesli istek başlatın. Göndermeden önce metni gözden geçirin.</string>
-    <string name="widget_quick_voice_ready">HAZIR</string>
     <string name="widget_quick_voice_review_hint">Göndermeden önce metni gözden geçirin.</string>
 </resources>

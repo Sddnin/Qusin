@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mode_personal">Cá nhân</string>
-    <string name="mode_work">Work</string>
+    <string name="mode_work">Công việc</string>
     <string name="widget_quick_voice_description">Bắt đầu nói yêu cầu với Qusin và xem lại trước khi gửi.</string>
     <string name="widget_quick_voice_title">Nói với Qusin</string>
     <string name="widget_quick_voice_prompt">Bạn cần mình làm gì?</string>
     <string name="widget_quick_voice_hint">Hoặc mở Qusin để nhập bằng bàn phím</string>
-    <string name="widget_quick_voice_tap_label">🎙  Chạm để nói</string>
-    <string name="widget_quick_voice_type">Mở chat để nhập</string>
-    <string name="widget_quick_voice_ready">SẴN SÀNG</string>
+    <string name="widget_quick_voice_tap_label">Chạm để nói</string>
+    <string name="widget_quick_voice_type">Gõ yêu cầu</string>
     <string name="widget_quick_voice_review_hint">Bạn sẽ xem lại yêu cầu trước khi gửi.</string>
     <string name="quick_voice_title">Nói với Qusin</string>
     <string name="quick_voice_prompt">Bạn cần mình làm gì?</string>

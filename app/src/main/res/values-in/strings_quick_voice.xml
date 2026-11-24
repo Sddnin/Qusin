@@ -5,7 +5,7 @@
     <string name="widget_quick_voice_title">Bicara dengan Qusin</string>
     <string name="widget_quick_voice_prompt">Apa yang bisa saya bantu?</string>
     <string name="widget_quick_voice_hint">Atau buka Qusin untuk mengetik</string>
-    <string name="widget_quick_voice_tap_label">🎙  Ketuk untuk bicara</string>
+    <string name="widget_quick_voice_tap_label">Ketuk untuk bicara</string>
     <string name="widget_quick_voice_type">Buka chat untuk mengetik</string>
     <string name="quick_voice_title">Bicara dengan Qusin</string>
     <string name="quick_voice_prompt">Apa yang bisa saya bantu?</string>
@@ -30,6 +30,5 @@
     <string name="quick_voice_submit_failed">Permintaan tidak dapat dikirim. Teks Anda masih ada di sini.</string>
     <string name="quick_voice_transcript_placeholder">Teks permintaan hasil transkripsi</string>
     <string name="widget_quick_voice_description">Mulai permintaan suara dengan Qusin. Periksa teks sebelum mengirim.</string>
-    <string name="widget_quick_voice_ready">SIAP</string>
     <string name="widget_quick_voice_review_hint">Periksa teks sebelum mengirim.</string>
 </resources>

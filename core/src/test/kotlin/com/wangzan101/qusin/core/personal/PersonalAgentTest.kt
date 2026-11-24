@@ -49,6 +49,32 @@ class PersonalAgentTest {
         assertTrue(store.state.value.messages.none { it.systemType != null })
     }
 
+    @Test fun personalAssistantMatchesTheLatestUserLanguageInsteadOfDefaultingToChinese() = runTest {
+        val store = Store()
+        val systems = mutableListOf<String>()
+        var calls = 0
+        val model = object : ChatModel {
+            override val capabilities = Capabilities(true, false, 128_000, false)
+            override suspend fun complete(system: String, messages: List<Message>, tools: List<ToolSpec>): ModelReply {
+                systems += system
+                return if (calls++ == 0) {
+                    text("这是一个较长的中文回答，用来模拟模型忽略英语用户消息并错误地使用中文回复。这段内容足够长，可以触发语言不匹配检测。")
+                } else {
+                    text("The Personal Assistant should answer in the same language as the latest message. This reply is written in English, matching the user's question.")
+                }
+            }
+        }
+        val agent = PersonalAgent(store, backgroundScope, { model }, Actions())
+        agent.send("请一直使用我这条中文消息的语言回答，不要切换到其他语言，也不要只因为系统提示词使用中文就改变回答语言。")
+        agent.send("Can you explain how the Personal Assistant should respond when I write in English?")
+        runCurrent()
+
+        assertEquals(2, calls)
+        assertTrue(systems.first().contains("same natural language as the user's most recent message"))
+        assertTrue(store.state.value.messages.last().text.startsWith("The Personal Assistant"))
+        assertFalse(store.state.value.messages.last().text.any { it in '一'..'鿿' })
+    }
+
     @Test fun replyMetadataIsKeptOutOfConversationText() = runTest {
         val prefix = "[发送时间：2026-11-05T05:30:00+08:00[Asia/Shanghai]]\n任务已受理 [task-id]：\n"
         val previous = PersonalMessage("previous", "assistant", prefix + "上次找到两篇。", 1L)

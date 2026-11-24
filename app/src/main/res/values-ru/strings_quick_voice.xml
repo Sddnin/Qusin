@@ -5,7 +5,7 @@
     <string name="widget_quick_voice_title">Сказать Qusin</string>
     <string name="widget_quick_voice_prompt">Что нужно сделать?</string>
     <string name="widget_quick_voice_hint">Или откройте Qusin для ввода</string>
-    <string name="widget_quick_voice_tap_label">🎙  Нажмите, чтобы говорить</string>
+    <string name="widget_quick_voice_tap_label">Нажмите, чтобы говорить</string>
     <string name="widget_quick_voice_type">Открыть чат для ввода</string>
     <string name="quick_voice_title">Сказать Qusin</string>
     <string name="quick_voice_prompt">Что нужно сделать?</string>
@@ -30,6 +30,5 @@
     <string name="quick_voice_submit_failed">Не удалось отправить запрос. Ваш текст остался здесь.</string>
     <string name="quick_voice_transcript_placeholder">Распознанный текст запроса</string>
     <string name="widget_quick_voice_description">Начните голосовой запрос в Qusin и проверьте текст перед отправкой.</string>
-    <string name="widget_quick_voice_ready">ГОТОВО</string>
     <string name="widget_quick_voice_review_hint">Проверьте текст перед отправкой.</string>
 </resources>

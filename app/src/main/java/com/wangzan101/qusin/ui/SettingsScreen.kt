@@ -143,7 +143,6 @@ fun SettingsScreen(
     val wechat = remember { (context.applicationContext as com.wangzan101.qusin.QusinApp).wechat }
     val wechatState by wechat.state.collectAsState()
     val flags = remember { FeatureFlags.get(context) }
-    var personalStart by remember { mutableStateOf(flags.personalStart()) }
     var parallelMax by remember { mutableIntStateOf(flags.parallelMax()) }
     var keepScreenOn by remember { mutableStateOf(flags.keepScreenOn()) }
     val pocketPrefs = remember { context.getSharedPreferences(com.wangzan101.qusin.pocket.PocketGuardManager.PREFS, 0) }
@@ -236,8 +235,6 @@ fun SettingsScreen(
             capsuleMode = capsuleMode, onOpenCapsule = { page = SettingsPage.Capsule },
             onOpenNotifications = { page = SettingsPage.Notifications },
             language = language, onOpenLanguage = { page = SettingsPage.Language },
-            personalStart = personalStart,
-            onPersonalStart = { flags.setPersonalStart(it); personalStart = it },
             autoArchiveDays = autoArchiveDays,
             onOpenAutoArchive = { editingAutoArchive = true },
             onOpenMemory = onOpenMemory,
@@ -462,8 +459,6 @@ fun SettingsContent(
     versionName: String = "",
     updateVersion: String? = null,
     onOpenAbout: () -> Unit = {},
-    personalStart: Boolean = false,
-    onPersonalStart: ((Boolean) -> Unit)? = null,
     /** 自动归档:多久没有新消息的对话自动归档;0 表示关闭。 */
     autoArchiveDays: Int = 0,
     onOpenAutoArchive: () -> Unit = {},
@@ -495,9 +490,7 @@ fun SettingsContent(
                 RowChevron()
             }
             ListRow(QusinIcons.Ripple, stringResource(R.string.proactive_title), stringResource(R.string.proactive_entry_sub), onClick = onOpenProactive) { RowChevron() }
-            if (personalStart) {
-                ListRow(QusinIcons.Message, stringResource(R.string.drawer_personal), onClick = onOpenPersonal) { RowChevron() }
-            }
+            ListRow(QusinIcons.Message, stringResource(R.string.drawer_personal), onClick = onOpenPersonal) { RowChevron() }
         }
 
         GroupLabel(stringResource(R.string.settings_preferences))
@@ -515,12 +508,6 @@ fun SettingsContent(
             ListRow(QusinIcons.Bell, StatusCopy.NOTIFICATIONS, stringResource(R.string.settings_notif_sub), onClick = onOpenNotifications) {
                 RowValue(notifText, notifTone)
                 RowChevron()
-            }
-            onPersonalStart?.let { change ->
-                val label = stringResource(R.string.settings_personal_start)
-                ListRow(QusinIcons.Spark, label, stringResource(R.string.settings_personal_start_sub)) {
-                    QusinSwitch(personalStart, change, Modifier.semantics { contentDescription = label })
-                }
             }
         }
 

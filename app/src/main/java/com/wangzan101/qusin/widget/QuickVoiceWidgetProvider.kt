@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import kotlin.math.roundToInt
 import android.widget.RemoteViews
 import com.wangzan101.qusin.R
 import com.wangzan101.qusin.ui.MainActivity
@@ -40,8 +41,20 @@ class QuickVoiceWidgetProvider : AppWidgetProvider() {
         val height = maxOf(minHeight, maxHeight)
         val large = width >= 220 && height >= 90
         val wide = !large && width >= 210
+        val micro = width < 150
         val views = RemoteViews(context.packageName, R.layout.widget_quick_voice)
+        val horizontalPadding = if (large) 16 else if (micro) 8 else 12
+        // A 4x1 widget can be only 48dp tall too: leave 40dp for its action pill.
+        val verticalPadding = if (large) 16 else if (wide) 4 else 8
+        views.setViewPadding(
+            R.id.widget_root,
+            horizontalPadding.dp(context),
+            verticalPadding.dp(context),
+            horizontalPadding.dp(context),
+            verticalPadding.dp(context),
+        )
         views.setViewVisibility(R.id.widget_compact, if (!wide && !large) View.VISIBLE else View.GONE)
+        views.setViewVisibility(R.id.widget_compact_title, if (micro) View.GONE else View.VISIBLE)
         views.setViewVisibility(R.id.widget_wide, if (wide) View.VISIBLE else View.GONE)
         views.setViewVisibility(R.id.widget_large, if (large) View.VISIBLE else View.GONE)
 
@@ -53,6 +66,8 @@ class QuickVoiceWidgetProvider : AppWidgetProvider() {
         views.setOnClickPendingIntent(R.id.widget_large_type, type)
         manager.updateAppWidget(appWidgetId, views)
     }
+
+    private fun Int.dp(context: Context): Int = (this * context.resources.displayMetrics.density).roundToInt()
 
     private fun pendingActivity(context: Context, requestCode: Int, intent: Intent): PendingIntent =
         PendingIntent.getActivity(
