@@ -84,7 +84,10 @@ class PersonalAgentTest {
         val model = Model { messages ->
             if (calls++ == 0) call("file-task", "delegate_task", """{"title":"PDF 报告","goal":"Create a PDF report and export the finished file"}""")
             else {
-                assertTrue(flatten(messages).contains("创建文件"))
+                val blocked = messages.flatMap { it.parts }
+                    .filterIsInstance<com.wangzan101.qusin.core.model.Part.ToolResult>()
+                    .any { it.content.contains("文件创建功能已在设置中关闭") }
+                assertTrue("disabled file creation must return a tool error", blocked)
                 text("文件创建功能已关闭，请先在设置中启用。")
             }
         }

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Create a basic EPUB 3 book from a UTF-8 text/Markdown file.
 Usage: create_epub.py INPUT.txt OUTPUT.epub --title TITLE [--author AUTHOR] [--language vi]
 This helper intentionally creates a simple text-first EPUB, not a publishing layout engine.

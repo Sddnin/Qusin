@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Create and verify ZIP/TAR/GZIP archives using Python's standard library.
 
 Usage:

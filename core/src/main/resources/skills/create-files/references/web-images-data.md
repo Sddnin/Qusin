@@ -44,11 +44,11 @@ import os
 import sys
 
 sys.path.insert(0, "/opt/qusin/skills/create-files/scripts")
-from find_font import find_font
+import find_font as font_finder
 from PIL import Image, ImageDraw, ImageFont
 
 title, sub = "Xin chào, Việt Nam", "Thẻ chào mừng"
-font = find_font(title + sub)
+font = font_finder.find_font(title + sub)
 if not font:
     raise SystemExit("no installed font has all these characters")
 W, H = 1080, 1080

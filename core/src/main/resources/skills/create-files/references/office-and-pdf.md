@@ -61,7 +61,7 @@ for c in ws[1]:
     c.alignment = Alignment(horizontal="center")
 ws.freeze_panes = "A2"
 for col in range(1, ws.max_column + 1):
-    ws.column_dimensions[get_column_letter(col)].width = 16
+    ws.column_dimensions[openpyxl.utils.get_column_letter(col)].width = 16
 for (cell,) in ws.iter_rows(min_row=2, min_col=3, max_col=3):
     cell.number_format = "#,##0"
 last = ws.max_row
@@ -120,7 +120,7 @@ import sys
 from xml.sax.saxutils import escape
 
 sys.path.insert(0, "/opt/qusin/skills/create-files/scripts")
-from find_font import find_font
+import find_font as font_finder
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
@@ -134,7 +134,7 @@ paragraphs = ["Đoạn một: tóm tắt kết quả chính.", "Đoạn hai: vi�
 rows = [["Tên", "Số lượng", "Giá"], ["Cà phê", "2", "45.000"], ["Bánh mì", "1", "20.000"]]
 
 text = title + "".join(paragraphs) + "".join("".join(r) for r in rows)
-font = find_font(text)
+font = font_finder.find_font(text)
 if not font:
     raise SystemExit("no installed font has all these characters")
 pdfmetrics.registerFont(TTFont("Body", font["path"], subfontIndex=font["index"]))
@@ -184,7 +184,7 @@ blank = prs.slide_layouts[6]
 INK, ACCENT = RGBColor(0x1B, 0x2A, 0x41), RGBColor(0x32, 0x69, 0xD7)
 
 
-def add_text(slide, text, left, top, width, height, size, color=INK, bold=False):
+def addText(slide, text, left, top, width, height, size, color=INK, bold=False):
     box = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
     tf = box.text_frame
     tf.word_wrap = True
@@ -198,12 +198,12 @@ def add_text(slide, text, left, top, width, height, size, color=INK, bold=False)
 
 
 s = prs.slides.add_slide(blank)
-add_text(s, "Kế hoạch quý 4", 0.9, 2.6, 11.5, 1.4, 44, ACCENT, bold=True)
-add_text(s, "Trình bày bởi nhóm sản phẩm", 0.9, 4.1, 11.5, 0.8, 20)
+addText(s, "Kế hoạch quý 4", 0.9, 2.6, 11.5, 1.4, 44, ACCENT, bold=True)
+addText(s, "Trình bày bởi nhóm sản phẩm", 0.9, 4.1, 11.5, 0.8, 20)
 
 s = prs.slides.add_slide(blank)
-add_text(s, "Ba ưu tiên", 0.9, 0.6, 11.5, 1.0, 32, ACCENT, bold=True)
-add_text(s, ["• Ra mắt tính năng giọng nói", "• Giảm thời gian khởi động", "• Hoàn thiện bản dịch"], 0.9, 1.9, 11.5, 4.5, 24)
+addText(s, "Ba ưu tiên", 0.9, 0.6, 11.5, 1.0, 32, ACCENT, bold=True)
+addText(s, ["• Ra mắt tính năng giọng nói", "• Giảm thời gian khởi động", "• Hoàn thiện bản dịch"], 0.9, 1.9, 11.5, 4.5, 24)
 # s.shapes.add_picture("/workspace/out/chart.png", Inches(7), Inches(1.8), width=Inches(5.5))
 
 os.makedirs("/workspace/out", exist_ok=True)

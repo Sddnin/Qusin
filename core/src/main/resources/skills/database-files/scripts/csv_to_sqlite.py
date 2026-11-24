@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
 """Import a CSV file into a new SQLite database, preserving values as TEXT.
 Usage: csv_to_sqlite.py INPUT.csv OUTPUT.sqlite [--table TABLE]
 """

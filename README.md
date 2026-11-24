@@ -36,7 +36,7 @@ The pool is for supported API-key protocols. OAuth sessions such as ChatGPT and 
 |---|---|
 | **Apps** | 阿里巴巴, 支付宝, Amazon, Android 设置, 百度, 百家号, 哔哩哔哩, BOSS直聘, ChatGPT, Chrome, 得到, 大众点评, Discord, 抖音, 飞书, GitHub, Gmail, Google Calendar, Google Maps, Instagram, 京东, 即刻, 快手, 领英, 美团, 美团外卖, Netflix, 拼多多, QQ, QQ邮箱, QQ音乐, Reddit, Slack, Spotify, 淘宝, Telegram, TikTok, 今日头条, Uber, Uber Eats, 微信, 微博, WhatsApp, X, 闲鱼, 小黑盒, 小红书, YouTube, 知乎 |
 | **Websites** | 铁路12306, 1688, Amazon, 百度搜索, 哔哩哔哩, Google Calendar, 携程旅行, 大众点评, 豆瓣, 抖音, GitHub, Instagram, 京东, Gmail, Google Maps, 美团, 淘宝网, Telegram, 百度贴吧, 百度热搜, 微博, 搜狗微信, WhatsApp, 小红书, 小宇宙, QQ音乐, YouTube, 知乎, BOSS直聘 |
-| **How-to skills** | 改 Qusin 自己的设置, 把内容整理成文字, 处理 PDF 文档, 查清一件事, 消息与邮件, 写技能 |
+| **How-to skills** | Tạo tệp mô hình 3D cơ bản, Tạo và quản lý gói tệp nén, Xử lý hàng loạt tệp, Bản vẽ CAD kỹ thuật, Tạo lịch và danh bạ, Tạo và đóng gói dự án mã nguồn, 改 Qusin 自己的设置, 把内容整理成文字, Tạo file, Phân tích dữ liệu và bảng tính, Tạo và xử lý tệp cơ sở dữ liệu, Tạo sơ đồ và biểu đồ kỹ thuật, So sánh tài liệu và phiên bản, 处理 PDF 文档, Tạo sách điện tử, Tạo tệp email EML, Gom bộ tài liệu và tạo manifest, Chuyển đổi định dạng tệp, Tạo và xuất nhiều loại tệp, Chỉnh sửa tệp có sẵn, Kiểm tra tính hợp lệ của tệp, Tệp phông chữ, Biểu mẫu và mẫu tài liệu, Tệp dữ liệu địa lý, Tạo tệp hình ảnh, 查清一件事, Tệp bản địa hóa, Log và tệp kỹ thuật văn bản, Tạo và chuyển đổi âm thanh video, 消息与邮件, OCR và trích xuất tài liệu, Tài liệu OpenDocument và RTF, Tạo bài trình chiếu PowerPoint, Dữ liệu khoa học và dạng cột, 写技能, Tạo bảng tính Excel, Tạo tệp dữ liệu có cấu trúc, Phụ đề và bản chép lời, Tạo tệp web và giao diện, Tạo tài liệu Word |
 <!-- generated:knowledge:end -->
 
 ## Provider presets

@@ -29,7 +29,7 @@ Nếu người dùng chưa chọn định dạng, chọn theo mục đích và n
 3. Tệp nhị phân như DOCX, XLSX, PPTX, PDF, EPUB hoặc ZIP phải được tạo bằng thư viện/script phù hợp. Ghi script vào `/workspace/tmp/`, sau đó chạy `run_command` hoặc script đã đăng ký bằng `run_bundled_script`.
 4. Dùng tài liệu trong `references/office-and-pdf.md` hoặc `references/web-images-data.md` để tra mẫu mã. Với định dạng đặc biệt, đọc skill tương ứng trước khi tạo.
 5. Kiểm tra tệp bằng parser hoặc script xác thực. Có thể chạy `scripts/check_file.py` của skill này qua `run_bundled_script` với `source: "skills/create-files"` và đường dẫn đầu ra tương đối workspace. Xem cảnh báo và xử lý trước khi giao.
-6. Với PDF, ảnh hoặc slide, xem trước nếu thiết bị có công cụ render/hiển thị phù hợp. Kiểm tra font tiếng Việt, trang/slide rỗng, nội dung bị cắt và hình ảnh sai.
+6. Với PDF, ảnh hoặc slide, xem trước nếu thiết bị có công cụ render/hiển thị phù hợp. Dùng helper `scripts/find_font.py` để chọn font có đủ ký tự tiếng Việt. Kiểm tra font, trang/slide rỗng, nội dung bị cắt và hình ảnh sai.
 7. Chỉ dùng `share_file` khi người dùng muốn lưu vào Download/thư mục trên điện thoại. Nếu không, trả đường dẫn workspace thực tế để người dùng mở trong cuộc trò chuyện.
 8. Trong câu trả lời, nói rõ tệp nào đã tạo và điều gì đã được kiểm tra. Nêu giới hạn nếu chưa thể render hoặc xác thực hoàn toàn.
 

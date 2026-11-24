@@ -239,11 +239,12 @@ fun PersonalAgentScreen(
                         if (task != null) TextButton(onClick = { selectedTask = task.id }) { Text(stringResource(R.string.personal_view_task), style = QusinType.Hint) }
                     }
                 }
-                visibleLiveReply?.let { live ->
+                val liveReply = visibleLiveReply
+                if (liveReply != null) {
                     item("live-reply") {
                         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
                             PersonalReply(
-                                live.text,
+                                liveReply.text,
                                 error = false,
                                 bubble = Modifier.fillMaxWidth()
                                     .background(c.answer, QusinShapes.AnswerBubble)
@@ -251,7 +252,7 @@ fun PersonalAgentScreen(
                             )
                         }
                     }
-                } ?: if (activeThreadPending) {
+                } else if (activeThreadPending) {
                     item("reply-pending") {
                         Row(Modifier.fillMaxWidth().padding(start = 6.dp, top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                             CircularProgressIndicator(Modifier.size(14.dp), strokeWidth = 1.7.dp, color = c.ink3)
