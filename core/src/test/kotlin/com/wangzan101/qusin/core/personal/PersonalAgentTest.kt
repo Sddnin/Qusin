@@ -49,6 +49,52 @@ class PersonalAgentTest {
         assertTrue(store.state.value.messages.none { it.systemType != null })
     }
 
+    @Test fun legacySingleConversationMigratesIntoMainHistoryWithoutLosingSummary() {
+        val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
+        val legacy = """{"messages":[{"id":"u1","role":"user","text":"old conversation title","at":10},{"id":"a1","role":"assistant","text":"old reply","at":20}],"tasks":[],"summary":"kept summary","covered":1}"""
+        val migrated = decodePersonalState(json, legacy)
+        assertEquals("main", migrated.activeConversationId)
+        assertEquals("main", migrated.messages.first().threadId)
+        assertEquals("old conversation title", migrated.conversations.single().title)
+        assertEquals("kept summary", migrated.conversations.single().summary)
+        assertEquals(1, migrated.conversations.single().covered)
+    }
+
+    @Test fun personalConversationsKeepTheirMessagesAndTasksSeparate() = runTest {
+        val store = Store()
+        val agent = PersonalAgent(store, backgroundScope, { Model { text("reply") } }, Actions())
+        agent.send("message in first chat")
+        runCurrent()
+        val first = store.state.value.activeConversationId
+        val second = agent.newConversation()
+        agent.send("message in second chat")
+        runCurrent()
+        assertNotEquals(first, second)
+        assertTrue(store.state.value.messages.filter { it.threadId == first }.any { it.text == "message in first chat" })
+        assertTrue(store.state.value.messages.filter { it.threadId == second }.any { it.text == "message in second chat" })
+        assertEquals(2, store.state.value.conversations.size)
+        agent.selectConversation(first)
+        assertEquals(first, store.state.value.activeConversationId)
+    }
+
+    @Test fun disabledFileCreationSettingBlocksDelegatingFileOutputTasks() = runTest {
+        val store = Store()
+        val actions = Actions()
+        var calls = 0
+        val model = Model { messages ->
+            if (calls++ == 0) call("file-task", "delegate_task", """{"title":"PDF 报告","goal":"Create a PDF report and export the finished file"}""")
+            else {
+                assertTrue(flatten(messages).contains("创建文件"))
+                text("文件创建功能已关闭，请先在设置中启用。")
+            }
+        }
+        PersonalAgent(store, backgroundScope, { model }, actions, fileCreationEnabled = { false }).send("Create a PDF report for me")
+        runCurrent()
+        assertTrue(actions.started.isEmpty())
+        assertTrue(store.state.value.tasks.isEmpty())
+        assertTrue(store.state.value.messages.last().text.contains("关闭"))
+    }
+
     @Test fun personalAssistantMatchesTheLatestUserLanguageInsteadOfDefaultingToChinese() = runTest {
         val store = Store()
         val systems = mutableListOf<String>()

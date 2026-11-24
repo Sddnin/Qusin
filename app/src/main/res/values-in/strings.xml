@@ -152,4 +152,10 @@
     <string name="drawer_project_delete_body">Semua obrolan dan berkas ruang kerja bersama di "%1$s" akan dihapus dan tidak dapat dipulihkan.</string>
     <string name="drawer_project_actions">Tindakan proyek</string>
     <string name="chat_project_shared">Proyek</string>
+    <string name="settings_create_files">Buat file</string>
+    <string name="settings_create_files_sub">Izinkan Qusin membuat dan mengekspor file di chat Pribadi dan Kerja</string>
+    <string name="personal_history">Riwayat chat</string>
+    <string name="personal_new_chat">Percakapan baru</string>
+    <string name="personal_history_empty">Belum ada percakapan</string>
+    <string name="personal_untitled_chat">Percakapan baru</string>
 </resources>

@@ -170,4 +170,10 @@
     <string name="drawer_project_delete_body">All chats and shared workspace files in "%1$s" will be deleted and cannot be recovered.</string>
     <string name="drawer_project_actions">Project actions</string>
     <string name="chat_project_shared">Project</string>
+    <string name="settings_create_files">Create files</string>
+    <string name="settings_create_files_sub">Let Qusin create and export files in Personal and Work chats</string>
+    <string name="personal_history">Chat history</string>
+    <string name="personal_new_chat">New conversation</string>
+    <string name="personal_history_empty">No conversations yet</string>
+    <string name="personal_untitled_chat">New conversation</string>
 </resources>

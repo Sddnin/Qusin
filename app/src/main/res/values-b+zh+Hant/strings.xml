@@ -152,4 +152,10 @@
     <string name="drawer_project_delete_body">專案「%1$s」內的全部對話與共用工作區檔案都會被刪除，無法復原。</string>
     <string name="drawer_project_actions">專案操作</string>
     <string name="chat_project_shared">專案</string>
+    <string name="settings_create_files">建立檔案</string>
+    <string name="settings_create_files_sub">允許 Qusin 在個人與工作對話中建立及匯出檔案</string>
+    <string name="personal_history">聊天記錄</string>
+    <string name="personal_new_chat">新增對話</string>
+    <string name="personal_history_empty">尚無對話</string>
+    <string name="personal_untitled_chat">新對話</string>
 </resources>

@@ -1,0 +1,4 @@
+[
+  {"file": "scripts/check_file.py", "runnable": true, "needs": ["apk:py3-pypdf", "apk:py3-pillow"]},
+  {"file": "scripts/find_font.py", "runnable": true}
+]

@@ -152,4 +152,10 @@
     <string name="drawer_project_delete_body">"%1$s"의 모든 대화와 공유 작업 공간 파일이 삭제되며 복구할 수 없습니다.</string>
     <string name="drawer_project_actions">프로젝트 작업</string>
     <string name="chat_project_shared">프로젝트</string>
+    <string name="settings_create_files">파일 만들기</string>
+    <string name="settings_create_files_sub">개인 및 업무 채팅에서 Qusin이 파일을 만들고 내보내도록 허용합니다</string>
+    <string name="personal_history">채팅 기록</string>
+    <string name="personal_new_chat">새 대화</string>
+    <string name="personal_history_empty">아직 대화가 없습니다</string>
+    <string name="personal_untitled_chat">새 대화</string>
 </resources>

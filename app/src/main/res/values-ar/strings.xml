@@ -152,4 +152,10 @@
     <string name="drawer_project_delete_body">سيتم حذف جميع المحادثات وملفات مساحة العمل المشتركة في "%1$s" ولا يمكن استعادتها.</string>
     <string name="drawer_project_actions">إجراءات المشروع</string>
     <string name="chat_project_shared">مشروع</string>
+    <string name="settings_create_files">إنشاء الملفات</string>
+    <string name="settings_create_files_sub">السماح لـ Qusin بإنشاء الملفات وتصديرها في المحادثات الشخصية ومحادثات العمل</string>
+    <string name="personal_history">سجل المحادثات</string>
+    <string name="personal_new_chat">محادثة جديدة</string>
+    <string name="personal_history_empty">لا توجد محادثات بعد</string>
+    <string name="personal_untitled_chat">محادثة جديدة</string>
 </resources>

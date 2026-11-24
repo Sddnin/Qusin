@@ -14,6 +14,7 @@ import com.wangzan101.qusin.core.run.RunPhase
 import com.wangzan101.qusin.takeover.Takeover
 import com.wangzan101.qusin.task.TaskRun
 import com.wangzan101.qusin.task.TaskService
+import com.wangzan101.qusin.settings.FeatureFlags
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -96,11 +97,18 @@ class PersonalRuntime(private val app: QusinApp) {
             return personalMemoryText(app.memory.store().items.value)
         }
     }
-    val agent = PersonalAgent(store, scope, { app.tasks.modelFactory(app, ModelSession.of("personal-main")) }, actions)
+    val agent = PersonalAgent(
+        store, scope, { app.tasks.modelFactory(app, ModelSession.of("personal-main")) }, actions,
+        fileCreationEnabled = { FeatureFlags.get(app).createFiles() },
+    )
     private val _error = MutableStateFlow<Throwable?>(null)
     val error = _error.asStateFlow()
     fun clearError() { _error.value = null }
     val state get() = agent.state
+    val liveReply get() = agent.liveReply
+    val busy get() = agent.busy
+    fun newConversation(): String = agent.newConversation()
+    fun selectConversation(id: String) = agent.selectConversation(id)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     internal fun phonePreview(conversationIds: List<String>) = app.taskState.runs.flatMapLatest { runs ->

@@ -272,6 +272,13 @@ class FeatureFlags(private val prefs: SharedPreferences) {
         prefs.edit().putBoolean(DEVICE_FILES, on).commit()
     }
 
+    /** Dedicated file creation/export tools are enabled by default in Personal and Work. */
+    fun createFiles(): Boolean = prefs.getBoolean(CREATE_FILES, true)
+
+    fun setCreateFiles(on: Boolean) {
+        prefs.edit().putBoolean(CREATE_FILES, on).commit()
+    }
+
     /** 自动归档:多久没有新消息的对话自动归档;0 表示关闭(默认)。 */
     fun autoArchiveDays(): Int = prefs.getInt(AUTO_ARCHIVE_DAYS, 0).takeIf { it in AutoArchive.DAYS } ?: 0
 
@@ -452,6 +459,7 @@ class FeatureFlags(private val prefs: SharedPreferences) {
         private const val SELF_CONFIG = "self_config"
         private const val SELF_OPERATE = "self_operate"
         private const val DEVICE_FILES = "device_files"
+        private const val CREATE_FILES = "create_files"
         private const val PIP_OPERATE = "pip_operate"
         private const val EXTERNAL_SCHEDULE = "external_schedule"
         private const val PROACTIVE = "proactive"

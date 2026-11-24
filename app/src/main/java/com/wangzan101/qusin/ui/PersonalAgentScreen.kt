@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wangzan101.qusin.R
 import com.wangzan101.qusin.core.personal.PersonalTask
+import com.wangzan101.qusin.core.personal.PersonalConversation
 import com.wangzan101.qusin.core.personal.PersonalSystemException
 import com.wangzan101.qusin.personal.displayText
 import com.wangzan101.qusin.personal.displayDetail
@@ -123,6 +124,7 @@ fun PersonalAgentScreen(
     var draft by rememberSaveable { mutableStateOf("") }
     var voiceHolding by remember { mutableStateOf(false) }
     var profile by rememberSaveable { mutableStateOf(false) }
+    var historyOpen by rememberSaveable { mutableStateOf(false) }
     var selectedTask by rememberSaveable { mutableStateOf<String?>(null) }
     var replayTask by rememberSaveable { mutableStateOf<String?>(null) }
     var openingPreview by remember { mutableStateOf<PersonalPhonePreview?>(null) }
@@ -130,17 +132,22 @@ fun PersonalAgentScreen(
     var followLatest by rememberSaveable { mutableStateOf(true) }
     var composerHeight by remember { mutableIntStateOf(0) }
     var previousComposerHeight by remember { mutableIntStateOf(0) }
-    val messages = remember(state.messages) {
-        state.messages.mapNotNull { message ->
+    val activeConversationId = state.activeConversationId.ifBlank { "main" }
+    val messages = remember(state.messages, activeConversationId) {
+        state.messages.asSequence().filter { it.threadId == activeConversationId }.mapNotNull { message ->
             if (message.role == "task") null else message.conversationText().takeIf { it.isNotBlank() }?.let { text ->
                 if (text == message.text) message else message.copy(text = text)
             }
-        }
+        }.toList()
     }
+    val liveReply by runtime.liveReply.collectAsState()
+    val visibleLiveReply = liveReply?.takeIf { it.threadId == activeConversationId }
+    val isBusy by runtime.busy.collectAsState()
+    val activeThreadPending = isBusy && messages.any { it.role == "user" && !it.handled }
     // The spacer after the last message is the bottom anchor, at index messages.size.
     val list = rememberLazyListState(initialFirstVisibleItemIndex = messages.size)
     var previousMessageCount by rememberSaveable { mutableIntStateOf(messages.size) }
-    val active = state.tasks.filterNot { it.terminal }
+    val active = state.tasks.filter { !it.terminal && it.personalThreadId == activeConversationId }
     val activeIds = active.map { it.conversationId }
     val phonePreview = remember(runtime, activeIds) { runtime.phonePreview(activeIds) }
     val zone = remember { ZoneId.systemDefault() }
@@ -166,10 +173,15 @@ fun PersonalAgentScreen(
             if (scrolling) followLatest = (layout.visibleItemsInfo.lastOrNull()?.index ?: 0) >= layout.totalItemsCount - 3
         }
     }
-    LaunchedEffect(messages.size) {
+    LaunchedEffect(activeConversationId) {
+        followLatest = true
+        previousMessageCount = messages.size
+        list.scrollToItem(messages.size)
+    }
+    LaunchedEffect(messages.size, visibleLiveReply?.text, activeThreadPending) {
         val countChanged = previousMessageCount != messages.size
         previousMessageCount = messages.size
-        if (countChanged && followLatest) list.scrollToItem(messages.size)
+        if ((countChanged || visibleLiveReply != null) && followLatest) list.scrollToItem(messages.size)
     }
     LaunchedEffect(composerHeight) {
         val growth = composerHeight - previousComposerHeight
@@ -184,6 +196,8 @@ fun PersonalAgentScreen(
                 openingPreview = preview
                 replayTask = preview.conversationId
             },
+            onHistory = { historyOpen = true },
+            onNewConversation = { runtime.newConversation(); draft = ""; keyboard?.hide(); followLatest = true },
         )
         Box(Modifier.weight(1f).fillMaxWidth().voiceDim(voiceHolding, reduceMotion)) {
             LazyColumn(state = list, modifier = Modifier.fillMaxSize().testTag("personal-timeline"),
@@ -225,6 +239,25 @@ fun PersonalAgentScreen(
                         if (task != null) TextButton(onClick = { selectedTask = task.id }) { Text(stringResource(R.string.personal_view_task), style = QusinType.Hint) }
                     }
                 }
+                visibleLiveReply?.let { live ->
+                    item("live-reply") {
+                        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+                            PersonalReply(
+                                live.text,
+                                error = false,
+                                bubble = Modifier.fillMaxWidth()
+                                    .background(c.answer, QusinShapes.AnswerBubble)
+                                    .padding(horizontal = 14.dp, vertical = 10.dp),
+                            )
+                        }
+                    }
+                } ?: if (activeThreadPending) {
+                    item("reply-pending") {
+                        Row(Modifier.fillMaxWidth().padding(start = 6.dp, top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                            CircularProgressIndicator(Modifier.size(14.dp), strokeWidth = 1.7.dp, color = c.ink3)
+                        }
+                    }
+                }
                 item("bottom") { Spacer(Modifier.height(4.dp)) }
             }
             if (!followLatest && messages.isNotEmpty()) TextButton(
@@ -245,6 +278,17 @@ fun PersonalAgentScreen(
             onPickSpeech = onPickSpeech,
             onVoiceHolding = { voiceHolding = it },
             sendFromIme = true,
+        )
+    }
+    if (historyOpen) {
+        PersonalHistoryDialog(
+            conversations = state.conversations.filter { conversation ->
+                conversation.title.isNotBlank() || state.messages.any { it.threadId == conversation.id }
+            },
+            activeId = activeConversationId,
+            onDismiss = { historyOpen = false },
+            onSelect = { id -> runtime.selectConversation(id); historyOpen = false; draft = ""; followLatest = true },
+            onNew = { runtime.newConversation(); historyOpen = false; draft = ""; followLatest = true },
         )
     }
     if (profile) {
@@ -455,6 +499,57 @@ internal fun PersonalProfileTabs(selected: PersonalProfileTab, showIcons: Boolea
 }
 
 @Composable
+private fun PersonalHistoryDialog(
+    conversations: List<PersonalConversation>,
+    activeId: String,
+    onDismiss: () -> Unit,
+    onSelect: (String) -> Unit,
+    onNew: () -> Unit,
+) {
+    val sorted = remember(conversations) { conversations.sortedByDescending { it.updatedAt } }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.personal_history)) },
+        text = {
+            Column(Modifier.heightIn(max = 440.dp)) {
+                TextButton(onClick = onNew, modifier = Modifier.fillMaxWidth()) {
+                    Icon(QusinIcons.Plus, null, Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.personal_new_chat))
+                }
+                if (sorted.isEmpty()) {
+                    Text(stringResource(R.string.personal_history_empty), Modifier.padding(vertical = 20.dp), color = QusinTheme.colors.ink2)
+                } else {
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        items(sorted, key = { it.id }) { conversation ->
+                            TextButton(
+                                onClick = { onSelect(conversation.id) },
+                                modifier = Modifier.fillMaxWidth().testTag("personal-history-${conversation.id}"),
+                            ) {
+                                Column(Modifier.fillMaxWidth()) {
+                                    Text(
+                                        conversation.title.ifBlank { stringResource(R.string.personal_untitled_chat) },
+                                        color = if (conversation.id == activeId) QusinTheme.colors.accent else QusinTheme.colors.ink,
+                                        maxLines = 1, overflow = TextOverflow.Ellipsis,
+                                    )
+                                    if (conversation.updatedAt > 0L) {
+                                        Text(
+                                            personalDayFormat().format(Instant.ofEpochMilli(conversation.updatedAt).atZone(ZoneId.systemDefault()).toLocalDate()),
+                                            color = QusinTheme.colors.ink3, style = QusinType.Micro,
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.ok_got_it)) } },
+    )
+}
+
+@Composable
 internal fun PersonalHeader(
     active: List<PersonalTask>,
     phonePreview: Flow<PersonalPhonePreview?>,
@@ -463,6 +558,8 @@ internal fun PersonalHeader(
     onActivity: () -> Unit,
     onTask: (PersonalTask) -> Unit,
     onOpenPreview: (PersonalPhonePreview) -> Unit,
+    onHistory: () -> Unit = {},
+    onNewConversation: () -> Unit = {},
 ) {
     val c = QusinTheme.colors
     val latestPreview by phonePreview.collectAsState(initial = null)
@@ -474,6 +571,13 @@ internal fun PersonalHeader(
     Box(Modifier.fillMaxWidth().padding(horizontal = QusinSpace.Page, vertical = 6.dp)) {
         Box(Modifier.align(Alignment.TopStart).padding(top = 4.dp)) {
             BarIconButton(QusinIcons.Menu, stringResource(R.string.personal_open_sidebar), onOpenDrawer)
+        }
+        Row(
+            Modifier.align(Alignment.TopEnd).padding(top = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            BarIconButton(QusinIcons.Clock, stringResource(R.string.personal_history), onHistory)
+            BarIconButton(QusinIcons.New, stringResource(R.string.personal_new_chat), onNewConversation)
         }
         Column(Modifier.align(Alignment.TopCenter).widthIn(max = 250.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {

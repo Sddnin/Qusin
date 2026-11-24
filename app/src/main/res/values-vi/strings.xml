@@ -169,4 +169,10 @@
     <string name="drawer_project_delete_body">Tất cả cuộc trò chuyện và tệp dùng chung trong không gian làm việc của "%1$s" sẽ bị xóa và không thể khôi phục.</string>
     <string name="drawer_project_actions">Thao tác dự án</string>
     <string name="chat_project_shared">Dự án</string>
+    <string name="settings_create_files">Tạo file</string>
+    <string name="settings_create_files_sub">Cho phép Qusin tạo và xuất file trong cả trò chuyện Cá nhân và Công việc</string>
+    <string name="personal_history">Lịch sử trò chuyện</string>
+    <string name="personal_new_chat">Tạo hội thoại mới</string>
+    <string name="personal_history_empty">Chưa có hội thoại nào</string>
+    <string name="personal_untitled_chat">Hội thoại mới</string>
 </resources>

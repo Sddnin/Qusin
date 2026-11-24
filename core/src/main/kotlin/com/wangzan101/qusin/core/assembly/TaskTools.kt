@@ -166,6 +166,8 @@ fun toolDispatcher(
     pluginScriptRunner: ScriptRunner? = null,
     /** 插件脚本参数临时文件放哪;App 用 cacheDir,JVM 测试用 java.io.tmpdir。 */
     pluginArgsDir: File = File(System.getProperty("java.io.tmpdir"), "qusin-plugin-args"),
+    /** Whether the dedicated workspace file write/export tools are exposed in this task. */
+    fileCreationEnabled: Boolean = true,
 ): ToolDispatcher {
     val screenshotStore = sandbox?.takeIf {
         it.status() !is com.wangzan101.qusin.core.cap.sandbox.SandboxStatus.Unsupported &&
@@ -189,7 +191,8 @@ fun toolDispatcher(
             override fun open(spec: RunSpec) = SandboxCapability(sandbox, workspace, visionEnabled,
                 onSandboxCommand, onSandboxProgress, onSandboxPreparing, onSandboxScript,
                 folderAccess = spec.provenance.origin == com.wangzan101.qusin.core.run.RunOrigin.Ui &&
-                    spec.provenance.attendance != com.wangzan101.qusin.core.run.Attendance.Unattended && !spec.readOnly)
+                    spec.provenance.attendance != com.wangzan101.qusin.core.run.Attendance.Unattended && !spec.readOnly,
+                fileCreationEnabled = fileCreationEnabled)
         },
     ) + listOfNotNull(transcribe?.let { port ->
         object : CapabilityProvider {

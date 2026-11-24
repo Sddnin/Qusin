@@ -27,6 +27,7 @@ internal class SandboxCapability(
     onPreparing: () -> Unit,
     onScript: ((String) -> Unit)?,
     folderAccess: Boolean = false,
+    private val fileCreationEnabled: Boolean = true,
 ) : Capability {
     override val id = SANDBOX
 
@@ -46,7 +47,8 @@ internal class SandboxCapability(
         is SandboxStatus.Broken -> CapabilityStatus.Unavailable(s.reason)
     }
 
-    override fun tools(): List<AgentTool> = SandboxGroup.tools
+    override fun tools(): List<AgentTool> = if (fileCreationEnabled) SandboxGroup.tools
+        else SandboxGroup.tools.filterNot { it.name == "write_file" || it.name == "share_file" }
 
     /** 这次的话带着工作区里的文件(附件一行写着 /workspace/ 下的路径):开局就展开沙箱一组。 */
     override fun preload(task: String): Boolean = available() && "${SandboxPaths.WORKSPACE}/" in task
@@ -56,7 +58,9 @@ internal class SandboxCapability(
         if (!env.isOpen(id) || SandboxGroup.tools.none { it.name in env.offered }) return emptyList()
         val p = port?.takeIf { available() }
         val shared = workspace().startsWith(PROJECT_WORKSPACE_PREFIX)
-        return listOf(env.gate(section(p?.status() ?: SandboxStatus.NotInstalled, p?.networkAllowed() == true, sharedWorkspace = shared)))
+        val fileNote = if (fileCreationEnabled) "File creation and export are enabled; create outputs under /workspace/out and share only when the user asks." else
+            "File creation and export are disabled in Settings. Do not create or export deliverable files. Reading and analyzing existing files is still allowed."
+        return listOf(env.gate(section(p?.status() ?: SandboxStatus.NotInstalled, p?.networkAllowed() == true, sharedWorkspace = shared) + "\n- " + fileNote))
     }
 
     override val scripts = object : BundledScripts {

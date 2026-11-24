@@ -152,4 +152,10 @@
     <string name="drawer_project_delete_body">「%1$s」のすべてのチャットと共有ワークスペースのファイルが削除され、元に戻せません。</string>
     <string name="drawer_project_actions">プロジェクトの操作</string>
     <string name="chat_project_shared">プロジェクト</string>
+    <string name="settings_create_files">ファイルを作成</string>
+    <string name="settings_create_files_sub">個人用と仕事用のチャットで Qusin にファイルの作成と書き出しを許可します</string>
+    <string name="personal_history">チャット履歴</string>
+    <string name="personal_new_chat">新しい会話</string>
+    <string name="personal_history_empty">会話はまだありません</string>
+    <string name="personal_untitled_chat">新しい会話</string>
 </resources>

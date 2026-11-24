@@ -412,6 +412,7 @@ fun DuringWorkScreen(
     triggerRunMinutes: Int? = null, onTriggerRunMinutes: (Int?) -> Unit = {},
     tokenBudget: Long? = null, onTokenBudget: (Long?) -> Unit = {},
     showTaskCost: Boolean = false, onShowTaskCost: (Boolean) -> Unit = {},
+    createFiles: Boolean = true, onCreateFiles: (Boolean) -> Unit = {},
 ) {
     val context = LocalContext.current
     var editingLimit by remember { mutableStateOf(false) }
@@ -424,6 +425,14 @@ fun DuringWorkScreen(
         GroupCard {
             ListRow(null, AutonomyCopy.TITLE, AutonomyCopy.SUBTITLE, first = true, onClick = { onAutonomous(!autonomous) }) {
                 QusinSwitch(autonomous, onAutonomous, Modifier.testTag("work-autonomous"))
+            }
+        }
+        GroupCard {
+            ListRow(
+                null, stringResource(R.string.settings_create_files), stringResource(R.string.settings_create_files_sub),
+                first = true, onClick = { onCreateFiles(!createFiles) },
+            ) {
+                QusinSwitch(createFiles, onCreateFiles, Modifier.testTag("settings-create-files"))
             }
         }
         GroupCard {

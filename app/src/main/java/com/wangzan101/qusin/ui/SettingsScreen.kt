@@ -157,6 +157,7 @@ fun SettingsScreen(
     var selfConfig by remember { mutableStateOf(flags.selfConfig()) }
     var selfOperate by remember { mutableStateOf(flags.selfOperate()) }
     var deviceFiles by remember { mutableStateOf(flags.deviceFiles()) }
+    var createFiles by remember { mutableStateOf(flags.createFiles()) }
     var pipOperate by remember { mutableStateOf(flags.pipOperate()) }
     var externalSchedule by remember { mutableStateOf(flags.externalSchedule()) }
     var autoArchiveDays by remember { mutableStateOf(flags.autoArchiveDays()) }
@@ -296,6 +297,7 @@ fun SettingsScreen(
             pipOperate = pipOperate, onPipOperate = { flags.setPipOperate(it); pipOperate = it },
             externalSchedule = externalSchedule, onExternalSchedule = { flags.setExternalSchedule(it); externalSchedule = it },
             onOpenAppPace = { page = SettingsPage.AppPace },
+            createFiles = createFiles, onCreateFiles = { flags.setCreateFiles(it); createFiles = it },
         )
         SettingsPage.AppPace -> AppPaceScreen(operatingPace, flags, onBack = { page = SettingsPage.DuringWork })
         SettingsPage.Language -> LanguageScreen(language, onLanguage = { AppLanguage.set(context, it) }, onBack = toHome)
