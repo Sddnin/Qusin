@@ -42,7 +42,7 @@ internal fun UpdateDownloadControls(release: ReleaseInfo) {
     val app = context.applicationContext as QusinApp
     val updater = app.apkUpdater
     val scope = rememberCoroutineScope()
-    var state by remember(release.apkUrl) { mutableStateOf(ApkDownloadState()) }
+    var state by remember(release.version, release.build) { mutableStateOf(ApkDownloadState()) }
     var busy by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<Int?>(null) }
     var refresh by remember { mutableIntStateOf(0) }
@@ -81,7 +81,7 @@ internal fun UpdateDownloadControls(release: ReleaseInfo) {
         if (context.packageManager.canRequestPackageInstalls()) install()
     }
 
-    LaunchedEffect(release.apkUrl, refresh) {
+    LaunchedEffect(release.version, release.build, refresh) {
         try {
             do {
                 state = withContext(Dispatchers.IO) { updater.state(release) }

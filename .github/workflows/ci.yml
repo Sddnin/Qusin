@@ -138,6 +138,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
         with:
           cache-provider: basic
+      # PR 不暴露签名密钥；push/main 和手动运行才从 Actions Secrets 解码持久化 keystore。
+      - name: Decode release keystore
+        if: github.event_name != 'pull_request'
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$ANDROID_KEYSTORE_BASE64" || { echo "::error::Missing ANDROID_KEYSTORE_BASE64 secret"; exit 1; }
+          KEYSTORE_PATH="$RUNNER_TEMP/qusin-release.jks"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_PATH"
+          test -s "$KEYSTORE_PATH"
+          echo "ANDROID_KEYSTORE_PATH=$KEYSTORE_PATH" >> "$GITHUB_ENV"
       # assembleDebug 验证单测碰不到的打包路径：31MB 的 rootfs、jniLibs 旧式解压、AIDL、Compose。
       # 编译设备测试以检查设置交互等回归用例；这里没有连接设备，不执行 instrumentation。
       # BundledRuntimeTest 读的是检出后的 rootfs.tar.xz；先把它的大小、哈希、文件头和代码里的常量并排打出来，
@@ -201,6 +214,10 @@ jobs:
           xz -t "$f"
           test "$got_bytes" = "$want_bytes" && test "$got_sha" = "$want_sha"
       - name: Unit tests, debug build, and device test compilation
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:compileDebugAndroidTestKotlin --stacktrace
       - name: Prepare Qusin APK artifact
         shell: bash

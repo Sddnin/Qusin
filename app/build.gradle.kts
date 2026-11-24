@@ -11,9 +11,23 @@ val gitHash: String = runCatching {
     providers.exec { commandLine("git", "rev-parse", "--short=7", "HEAD") }.standardOutput.asText.get().trim()
 }.getOrNull()?.takeIf { it.isNotEmpty() } ?: "dev"
 
+// CI 仅在成功解码 GitHub Actions Secret 后设置此路径；本地构建和 PR 仍使用默认 debug 签名。
+val ciKeystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
+
 android {
     namespace = "com.wangzan101.qusin"
     compileSdk = 36
+
+    signingConfigs {
+        if (!ciKeystorePath.isNullOrBlank()) {
+            create("ciRelease") {
+                storeFile = file(ciKeystorePath)
+                storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+            }
+        }
+    }
 
     defaultConfig {
         applicationId = "com.wangzan101.qusin"
@@ -56,6 +70,12 @@ android {
     sourceSets.getByName("androidTest").assets.srcDir(rootProject.file("eval/tasks"))
 
     buildTypes {
+        // main 分支 CI 使用持久化签名，允许同一签名的后续 APK 覆盖安装；PR/本地仍走默认 debug key。
+        getByName("debug") {
+            if (!ciKeystorePath.isNullOrBlank()) {
+                signingConfig = signingConfigs.getByName("ciRelease")
+            }
+        }
         // 真机验收时并排安装,保留发行版和用户数据;默认构建标识不变。
         if (providers.gradleProperty("devInstall").isPresent) getByName("debug") {
             applicationIdSuffix = ".dev"

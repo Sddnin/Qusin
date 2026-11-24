@@ -31,6 +31,10 @@ internal fun restoredApkDownloadState(file: File?): ApkDownloadState {
     return ApkDownloadState(DownloadPhase.Ready, apk.length(), apk.length())
 }
 
+/** A release is the download identity; GitHub may expose the same asset through a changed URL. */
+internal fun apkReleaseIdentity(release: ReleaseInfo): String =
+    "release:${release.version}#${release.build.orEmpty()}"
+
 /**
  * 手动直连下载交给系统;保存任务编号,进程重启后仍能查询、取消或安装。方法在 IO 线程调用。
  * 文件放在本应用的外部专属目录(别的 App 读写不到),同一时间只留一个;换版本、删除、装好后都清掉。
@@ -52,10 +56,41 @@ class ApkUpdater(
 
     @Synchronized
     fun state(release: ReleaseInfo): ApkDownloadState =
-        if (prefs.getString("url", null) != identity(release)) ApkDownloadState() else recorded()
+        if (matchesSavedRelease(release)) recorded() else ApkDownloadState()
 
-    /** 下载的身份:官方附件地址;滚动发布(nightly)地址不变、内容在换,再加上构建哈希,免得把旧构建当成新的。 */
-    private fun identity(release: ReleaseInfo): String = release.apkUrl.orEmpty() + (release.build?.let { "#$it" } ?: "")
+    /**
+     * URL is deliberately not part of the identity. GitHub can replace a guessed/fallback asset URL
+     * with the canonical API asset URL while the same release is open in the sheet. Keying the
+     * state to that URL made a completed download look like Idle and offered Download again.
+     */
+    private fun identity(release: ReleaseInfo): String = apkReleaseIdentity(release)
+
+    private fun legacyIdentity(release: ReleaseInfo): String =
+        release.apkUrl.orEmpty() + (release.build?.let { "#$it" } ?: "")
+
+    /**
+     * New downloads persist version/build explicitly. Migrate old stable-release records too: if
+     * the old URL changed but the saved APK is for this package/version, keep its state and let
+     * installIntent perform the full size, digest and signer verification before installation.
+     */
+    private fun matchesSavedRelease(release: ReleaseInfo): Boolean {
+        val saved = prefs.getString("url", null) ?: return false
+        val savedVersion = prefs.getString("version", null)
+        if (savedVersion != null) {
+            return savedVersion == release.version && prefs.getString("build", null) == release.build
+        }
+        if (saved == identity(release) || saved == legacyIdentity(release)) return true
+        if (release.build != null) return false
+        val apk = file?.takeIf { it.isFile && it.length() > 0 } ?: return false
+        val archive = archiveInfo(apk, 0) ?: return false
+        if (archive.packageName != context.packageName || archive.versionName != release.version) return false
+        val migrated = prefs.edit()
+            .putString("url", identity(release))
+            .putString("version", release.version)
+            .putString("build", release.build)
+            .commit()
+        return migrated
+    }
 
     /** 下载状态；记录缺失时从仍保存的 APK 文件恢复完成状态，安装前仍会完整校验。 */
     private fun recorded(): ApkDownloadState {
@@ -87,10 +122,9 @@ class ApkUpdater(
         val sources = UpdateMirrors.candidates(official, settings)
         sources.forEach { ApkIntegrity.requireTrustedDownloadUrl(it, official, settings.mirrors) }
         val proxy = net.proxyFor(Uri.parse(official).host.orEmpty())
-        // 下载的「身份」始终是官方地址:镜像开关或顺序变了,已经下好的同一份包不用重下。
+        // 下载身份按 release version/build,镜像或资产 URL 的刷新不应让同一版本重新下载。
         // 「暂停」不算在途:系统下载器有时会卡在暂停不自动恢复,再点下载就取消重下,给用户一个手动续上的口子。
-        if (prefs.getString("url", null) == identity(release) && state(release).phase in
-            listOf(DownloadPhase.Downloading, DownloadPhase.Ready)) return
+        if (state(release).phase in listOf(DownloadPhase.Downloading, DownloadPhase.Ready)) return
         cancel()
         val folder = directory
         check(folder.mkdirs() || folder.isDirectory)
@@ -100,7 +134,13 @@ class ApkUpdater(
         val target = File(folder, "update-${UUID.randomUUID()}.apk")
         // 镜像可能不止一个,要在一次任务里逐个换;系统下载器做不到,所以开了镜像就由 Qusin 自己下。
         if (wifi != null || proxy != null || sources.size > 1) {
-            check(prefs.edit().putBoolean("viaApp", true).putString("url", identity(release)).putString("file", target.name).commit()) { "could not save download" }
+            check(prefs.edit()
+                .putBoolean("viaApp", true)
+                .putString("url", identity(release))
+                .putString("version", release.version)
+                .putString("build", release.build)
+                .putString("file", target.name)
+                .commit()) { "could not save download" }
             proxied.start(sources, target, wifi) {
                 verifyApk(it, release)
             }
@@ -114,7 +154,13 @@ class ApkUpdater(
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
             .setDestinationUri(Uri.fromFile(target))
         val id = manager.enqueue(request)
-        if (!prefs.edit().putLong("id", id).putString("url", identity(release)).putString("file", target.name).commit()) {
+        if (!prefs.edit()
+                .putLong("id", id)
+                .putString("url", identity(release))
+                .putString("version", release.version)
+                .putString("build", release.build)
+                .putString("file", target.name)
+                .commit()) {
             manager.remove(id)
             error("could not save download")
         }
