@@ -21,4 +21,15 @@
     <string name="quick_voice_submit">ارسال درخواست</string>
     <string name="quick_voice_again">دوباره صحبت کنید</string>
     <string name="quick_voice_empty">چیزی شنیده نشد. دوباره تلاش کنید یا درخواست را تایپ کنید.</string>
+    <string name="quick_voice_back">بازگشت</string>
+    <string name="quick_voice_listening">در حال گوش دادن…</string>
+    <string name="quick_voice_listening_hint">کلمات شما اینجا نمایش داده می‌شوند. پس از پایان، «توقف» را بزنید.</string>
+    <string name="quick_voice_permission_settings">باز کردن تنظیمات مجوز برنامه</string>
+    <string name="quick_voice_processing_hint">در حال تکمیل پیاده‌سازی گفتار به متن…</string>
+    <string name="quick_voice_review_hint">گفتار شما را به متن تبدیل می‌کنم تا پیش از ارسال آن را بررسی کنید.</string>
+    <string name="quick_voice_submit_failed">ارسال درخواست ممکن نشد. متن شما هنوز اینجاست.</string>
+    <string name="quick_voice_transcript_placeholder">متن درخواست تبدیل‌شده</string>
+    <string name="widget_quick_voice_description">با Qusin یک درخواست صوتی آغاز کنید و پیش از ارسال آن را بازبینی کنید.</string>
+    <string name="widget_quick_voice_ready">آماده</string>
+    <string name="widget_quick_voice_review_hint">پیش از ارسال، متن را بازبینی کنید.</string>
 </resources>

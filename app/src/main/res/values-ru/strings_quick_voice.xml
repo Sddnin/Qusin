@@ -21,4 +21,15 @@
     <string name="quick_voice_submit">Отправить запрос</string>
     <string name="quick_voice_again">Повторить</string>
     <string name="quick_voice_empty">Не удалось распознать речь. Попробуйте ещё раз или введите запрос.</string>
+    <string name="quick_voice_back">Назад</string>
+    <string name="quick_voice_listening">Слушаю…</string>
+    <string name="quick_voice_listening_hint">Здесь появится ваша речь. Нажмите «Остановить», когда закончите.</string>
+    <string name="quick_voice_permission_settings">Открыть настройки разрешений приложения</string>
+    <string name="quick_voice_processing_hint">Завершаем распознавание речи…</string>
+    <string name="quick_voice_review_hint">Я преобразую вашу речь в текст, чтобы вы могли проверить его перед отправкой.</string>
+    <string name="quick_voice_submit_failed">Не удалось отправить запрос. Ваш текст остался здесь.</string>
+    <string name="quick_voice_transcript_placeholder">Распознанный текст запроса</string>
+    <string name="widget_quick_voice_description">Начните голосовой запрос в Qusin и проверьте текст перед отправкой.</string>
+    <string name="widget_quick_voice_ready">ГОТОВО</string>
+    <string name="widget_quick_voice_review_hint">Проверьте текст перед отправкой.</string>
 </resources>

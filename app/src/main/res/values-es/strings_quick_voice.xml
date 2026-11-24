@@ -21,4 +21,15 @@
     <string name="quick_voice_submit">Enviar solicitud</string>
     <string name="quick_voice_again">Volver a hablar</string>
     <string name="quick_voice_empty">No se ha detectado voz. Inténtalo de nuevo o escribe tu solicitud.</string>
+    <string name="quick_voice_back">Volver</string>
+    <string name="quick_voice_listening">Escuchando…</string>
+    <string name="quick_voice_listening_hint">Tus palabras aparecerán aquí. Pulsa «Detener» cuando termines.</string>
+    <string name="quick_voice_permission_settings">Abrir ajustes de permisos de la aplicación</string>
+    <string name="quick_voice_processing_hint">Finalizando la transcripción…</string>
+    <string name="quick_voice_review_hint">Transcribiré tus palabras para que puedas revisarlas antes de enviarlas.</string>
+    <string name="quick_voice_submit_failed">No se pudo enviar la solicitud. Tu texto sigue aquí.</string>
+    <string name="quick_voice_transcript_placeholder">Tu solicitud transcrita</string>
+    <string name="widget_quick_voice_description">Inicia una solicitud por voz con Qusin y revísala antes de enviarla.</string>
+    <string name="widget_quick_voice_ready">LISTO</string>
+    <string name="widget_quick_voice_review_hint">Revisa el texto antes de enviarlo.</string>
 </resources>

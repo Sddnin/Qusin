@@ -21,4 +21,15 @@
     <string name="quick_voice_submit">إرسال الطلب</string>
     <string name="quick_voice_again">تحدث مرة أخرى</string>
     <string name="quick_voice_empty">لم أسمع أي شيء. حاول مجدداً أو اكتب طلبك.</string>
+    <string name="quick_voice_back">رجوع</string>
+    <string name="quick_voice_listening">جارٍ الاستماع…</string>
+    <string name="quick_voice_listening_hint">ستظهر كلماتك هنا. اضغط على «إيقاف» عند الانتهاء.</string>
+    <string name="quick_voice_permission_settings">فتح إعدادات أذونات التطبيق</string>
+    <string name="quick_voice_processing_hint">جارٍ إنهاء تحويل الكلام إلى نص…</string>
+    <string name="quick_voice_review_hint">سأحوّل كلامك إلى نص لتراجعه قبل الإرسال.</string>
+    <string name="quick_voice_submit_failed">تعذّر إرسال الطلب. ما زال النص محفوظًا هنا.</string>
+    <string name="quick_voice_transcript_placeholder">النص المحوّل من كلامك</string>
+    <string name="widget_quick_voice_description">ابدأ طلبًا صوتيًا باستخدام Qusin، وراجع النص قبل الإرسال.</string>
+    <string name="widget_quick_voice_ready">جاهز</string>
+    <string name="widget_quick_voice_review_hint">راجع النص قبل الإرسال.</string>
 </resources>

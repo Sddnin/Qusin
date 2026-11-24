@@ -21,4 +21,15 @@
     <string name="quick_voice_submit">发送请求</string>
     <string name="quick_voice_again">重新说一次</string>
     <string name="quick_voice_empty">没有听到内容，请重试或输入请求。</string>
+    <string name="quick_voice_back">返回</string>
+    <string name="quick_voice_listening">正在聆听…</string>
+    <string name="quick_voice_listening_hint">你的语音会显示在这里。说完后请点击“停止”。</string>
+    <string name="quick_voice_permission_settings">打开应用权限设置</string>
+    <string name="quick_voice_processing_hint">正在完成语音转写…</string>
+    <string name="quick_voice_review_hint">我会将你的语音转成文字，供你发送前检查。</string>
+    <string name="quick_voice_submit_failed">无法发送请求。你的文字仍保留在这里。</string>
+    <string name="quick_voice_transcript_placeholder">语音转写内容</string>
+    <string name="widget_quick_voice_description">使用 Qusin 发起语音请求，并在发送前检查内容。</string>
+    <string name="widget_quick_voice_ready">就绪</string>
+    <string name="widget_quick_voice_review_hint">发送前请检查转写内容。</string>
 </resources>

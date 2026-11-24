@@ -21,4 +21,15 @@
     <string name="quick_voice_submit">Kirim permintaan</string>
     <string name="quick_voice_again">Bicara lagi</string>
     <string name="quick_voice_empty">Tidak ada ucapan yang terdengar. Coba lagi atau ketik permintaan.</string>
+    <string name="quick_voice_back">Kembali</string>
+    <string name="quick_voice_listening">Mendengarkan…</string>
+    <string name="quick_voice_listening_hint">Ucapan Anda akan muncul di sini. Tekan “Berhenti” setelah selesai.</string>
+    <string name="quick_voice_permission_settings">Buka setelan izin aplikasi</string>
+    <string name="quick_voice_processing_hint">Menyelesaikan transkripsi…</string>
+    <string name="quick_voice_review_hint">Saya akan mengubah ucapan Anda menjadi teks agar dapat diperiksa sebelum dikirim.</string>
+    <string name="quick_voice_submit_failed">Permintaan tidak dapat dikirim. Teks Anda masih ada di sini.</string>
+    <string name="quick_voice_transcript_placeholder">Teks permintaan hasil transkripsi</string>
+    <string name="widget_quick_voice_description">Mulai permintaan suara dengan Qusin. Periksa teks sebelum mengirim.</string>
+    <string name="widget_quick_voice_ready">SIAP</string>
+    <string name="widget_quick_voice_review_hint">Periksa teks sebelum mengirim.</string>
 </resources>

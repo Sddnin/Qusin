@@ -21,4 +21,15 @@
     <string name="quick_voice_submit">İsteği gönder</string>
     <string name="quick_voice_again">Tekrar konuş</string>
     <string name="quick_voice_empty">Ses algılanmadı. Tekrar dene veya isteğini yaz.</string>
+    <string name="quick_voice_back">Geri</string>
+    <string name="quick_voice_listening">Dinleniyor…</string>
+    <string name="quick_voice_listening_hint">Söyledikleriniz burada görünecek. Bitirdiğinizde “Durdur”a dokunun.</string>
+    <string name="quick_voice_permission_settings">Uygulama izin ayarlarını aç</string>
+    <string name="quick_voice_processing_hint">Yazıya dönüştürme tamamlanıyor…</string>
+    <string name="quick_voice_review_hint">Göndermeden önce kontrol edebilmeniz için konuşmanızı metne dönüştüreceğim.</string>
+    <string name="quick_voice_submit_failed">İstek gönderilemedi. Metniniz burada duruyor.</string>
+    <string name="quick_voice_transcript_placeholder">Sese dönüştürülen istek</string>
+    <string name="widget_quick_voice_description">Qusin ile sesli istek başlatın. Göndermeden önce metni gözden geçirin.</string>
+    <string name="widget_quick_voice_ready">HAZIR</string>
+    <string name="widget_quick_voice_review_hint">Göndermeden önce metni gözden geçirin.</string>
 </resources>
