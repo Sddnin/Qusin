@@ -1,0 +1,23 @@
+Qusin translation CI patch
+
+Base commit used to prepare this patch:
+abfd2023af0fc10aae10d225f7b90962da443d9b (Sddnin/Qusin main, 2026-11-24)
+
+What it changes:
+- Adds the 11 missing Quick Voice / widget strings to each of 11 locale resource files.
+- Keeps existing translations and all app/source code unchanged.
+- Expected number of additions: 121 string resources in 11 files.
+
+Apply from the Qusin repository root:
+  git apply --check Qusin-translation-fix.patch
+  git apply Qusin-translation-fix.patch
+  python3 tools/i18n/translations.py check
+  ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:compileDebugAndroidTestKotlin
+
+Then commit and push:
+  git add app/src/main/res/values-*/strings_quick_voice.xml
+  git commit -m "Add missing Quick Voice translations"
+  git push
+
+The patch was prepared against the exact file layout at the base commit above. If main has moved,
+run git apply --check first and do not force-apply it if the check fails.

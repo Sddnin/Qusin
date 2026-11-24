@@ -1,0 +1,197 @@
+diff --git a/app/src/main/res/values-zh/strings_quick_voice.xml b/app/src/main/res/values-zh/strings_quick_voice.xml
+index ef305f2cc3f605e648070331859bd95d11c2e7d9..0000000 100644
+--- a/app/src/main/res/values-zh/strings_quick_voice.xml
++++ b/app/src/main/res/values-zh/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">返回</string>
++    <string name="quick_voice_listening">正在聆听…</string>
++    <string name="quick_voice_listening_hint">你的语音会显示在这里。说完后请点击“停止”。</string>
++    <string name="quick_voice_permission_settings">打开应用权限设置</string>
++    <string name="quick_voice_processing_hint">正在完成语音转写…</string>
++    <string name="quick_voice_review_hint">我会将你的语音转成文字，供你发送前检查。</string>
++    <string name="quick_voice_submit_failed">无法发送请求。你的文字仍保留在这里。</string>
++    <string name="quick_voice_transcript_placeholder">语音转写内容</string>
++    <string name="widget_quick_voice_description">使用 Qusin 发起语音请求，并在发送前检查内容。</string>
++    <string name="widget_quick_voice_ready">就绪</string>
++    <string name="widget_quick_voice_review_hint">发送前请检查转写内容。</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-b+zh+Hant/strings_quick_voice.xml b/app/src/main/res/values-b+zh+Hant/strings_quick_voice.xml
+index 9b4892710bf1fea4c07b521b676e322055319f64..0000000 100644
+--- a/app/src/main/res/values-b+zh+Hant/strings_quick_voice.xml
++++ b/app/src/main/res/values-b+zh+Hant/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">返回</string>
++    <string name="quick_voice_listening">正在聆聽…</string>
++    <string name="quick_voice_listening_hint">你的語音會顯示在這裡。說完後請點擊「停止」。</string>
++    <string name="quick_voice_permission_settings">開啟應用程式權限設定</string>
++    <string name="quick_voice_processing_hint">正在完成語音轉寫…</string>
++    <string name="quick_voice_review_hint">我會將你的語音轉成文字，供你傳送前檢查。</string>
++    <string name="quick_voice_submit_failed">無法傳送要求。你的文字仍保留在這裡。</string>
++    <string name="quick_voice_transcript_placeholder">語音轉寫內容</string>
++    <string name="widget_quick_voice_description">使用 Qusin 發起語音要求，並在傳送前檢查內容。</string>
++    <string name="widget_quick_voice_ready">就緒</string>
++    <string name="widget_quick_voice_review_hint">傳送前請檢查轉寫內容。</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-ar/strings_quick_voice.xml b/app/src/main/res/values-ar/strings_quick_voice.xml
+index 632bad08273cf9dde3a773a5a809ba4f918fc78e..0000000 100644
+--- a/app/src/main/res/values-ar/strings_quick_voice.xml
++++ b/app/src/main/res/values-ar/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">رجوع</string>
++    <string name="quick_voice_listening">جارٍ الاستماع…</string>
++    <string name="quick_voice_listening_hint">ستظهر كلماتك هنا. اضغط على «إيقاف» عند الانتهاء.</string>
++    <string name="quick_voice_permission_settings">فتح إعدادات أذونات التطبيق</string>
++    <string name="quick_voice_processing_hint">جارٍ إنهاء تحويل الكلام إلى نص…</string>
++    <string name="quick_voice_review_hint">سأحوّل كلامك إلى نص لتراجعه قبل الإرسال.</string>
++    <string name="quick_voice_submit_failed">تعذّر إرسال الطلب. ما زال النص محفوظًا هنا.</string>
++    <string name="quick_voice_transcript_placeholder">النص المحوّل من كلامك</string>
++    <string name="widget_quick_voice_description">ابدأ طلبًا صوتيًا باستخدام Qusin، وراجع النص قبل الإرسال.</string>
++    <string name="widget_quick_voice_ready">جاهز</string>
++    <string name="widget_quick_voice_review_hint">راجع النص قبل الإرسال.</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-es/strings_quick_voice.xml b/app/src/main/res/values-es/strings_quick_voice.xml
+index 182a0e7d0eede6a12c5169327a39c7075fed126f..0000000 100644
+--- a/app/src/main/res/values-es/strings_quick_voice.xml
++++ b/app/src/main/res/values-es/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">Volver</string>
++    <string name="quick_voice_listening">Escuchando…</string>
++    <string name="quick_voice_listening_hint">Tus palabras aparecerán aquí. Pulsa «Detener» cuando termines.</string>
++    <string name="quick_voice_permission_settings">Abrir ajustes de permisos de la aplicación</string>
++    <string name="quick_voice_processing_hint">Finalizando la transcripción…</string>
++    <string name="quick_voice_review_hint">Transcribiré tus palabras para que puedas revisarlas antes de enviarlas.</string>
++    <string name="quick_voice_submit_failed">No se pudo enviar la solicitud. Tu texto sigue aquí.</string>
++    <string name="quick_voice_transcript_placeholder">Tu solicitud transcrita</string>
++    <string name="widget_quick_voice_description">Inicia una solicitud por voz con Qusin y revísala antes de enviarla.</string>
++    <string name="widget_quick_voice_ready">LISTO</string>
++    <string name="widget_quick_voice_review_hint">Revisa el texto antes de enviarlo.</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-fa/strings_quick_voice.xml b/app/src/main/res/values-fa/strings_quick_voice.xml
+index 9eb64373305162a73a34f48f862f33e75ca54f23..0000000 100644
+--- a/app/src/main/res/values-fa/strings_quick_voice.xml
++++ b/app/src/main/res/values-fa/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">بازگشت</string>
++    <string name="quick_voice_listening">در حال گوش دادن…</string>
++    <string name="quick_voice_listening_hint">کلمات شما اینجا نمایش داده می‌شوند. پس از پایان، «توقف» را بزنید.</string>
++    <string name="quick_voice_permission_settings">باز کردن تنظیمات مجوز برنامه</string>
++    <string name="quick_voice_processing_hint">در حال تکمیل پیاده‌سازی گفتار به متن…</string>
++    <string name="quick_voice_review_hint">گفتار شما را به متن تبدیل می‌کنم تا پیش از ارسال آن را بررسی کنید.</string>
++    <string name="quick_voice_submit_failed">ارسال درخواست ممکن نشد. متن شما هنوز اینجاست.</string>
++    <string name="quick_voice_transcript_placeholder">متن درخواست تبدیل‌شده</string>
++    <string name="widget_quick_voice_description">با Qusin یک درخواست صوتی آغاز کنید و پیش از ارسال آن را بازبینی کنید.</string>
++    <string name="widget_quick_voice_ready">آماده</string>
++    <string name="widget_quick_voice_review_hint">پیش از ارسال، متن را بازبینی کنید.</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-in/strings_quick_voice.xml b/app/src/main/res/values-in/strings_quick_voice.xml
+index 8e22e8b4b70944be1164f9a9c8ec7ca6200023cc..0000000 100644
+--- a/app/src/main/res/values-in/strings_quick_voice.xml
++++ b/app/src/main/res/values-in/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">Kembali</string>
++    <string name="quick_voice_listening">Mendengarkan…</string>
++    <string name="quick_voice_listening_hint">Ucapan Anda akan muncul di sini. Tekan “Berhenti” setelah selesai.</string>
++    <string name="quick_voice_permission_settings">Buka setelan izin aplikasi</string>
++    <string name="quick_voice_processing_hint">Menyelesaikan transkripsi…</string>
++    <string name="quick_voice_review_hint">Saya akan mengubah ucapan Anda menjadi teks agar dapat diperiksa sebelum dikirim.</string>
++    <string name="quick_voice_submit_failed">Permintaan tidak dapat dikirim. Teks Anda masih ada di sini.</string>
++    <string name="quick_voice_transcript_placeholder">Teks permintaan hasil transkripsi</string>
++    <string name="widget_quick_voice_description">Mulai permintaan suara dengan Qusin. Periksa teks sebelum mengirim.</string>
++    <string name="widget_quick_voice_ready">SIAP</string>
++    <string name="widget_quick_voice_review_hint">Periksa teks sebelum mengirim.</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-ja/strings_quick_voice.xml b/app/src/main/res/values-ja/strings_quick_voice.xml
+index c2751b86f77d8325961df1937e9d9cacf63493ea..0000000 100644
+--- a/app/src/main/res/values-ja/strings_quick_voice.xml
++++ b/app/src/main/res/values-ja/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">戻る</string>
++    <string name="quick_voice_listening">聞き取り中…</string>
++    <string name="quick_voice_listening_hint">話した内容がここに表示されます。終わったら「停止」を押してください。</string>
++    <string name="quick_voice_permission_settings">アプリの権限設定を開く</string>
++    <string name="quick_voice_processing_hint">音声認識を仕上げています…</string>
++    <string name="quick_voice_review_hint">送信前に確認できるよう、音声をテキストに変換します。</string>
++    <string name="quick_voice_submit_failed">リクエストを送信できませんでした。入力したテキストはここに残っています。</string>
++    <string name="quick_voice_transcript_placeholder">音声から文字起こししたリクエスト</string>
++    <string name="widget_quick_voice_description">Qusin で音声リクエストを開始し、送信前に内容を確認できます。</string>
++    <string name="widget_quick_voice_ready">準備完了</string>
++    <string name="widget_quick_voice_review_hint">送信前に内容を確認してください。</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-ko/strings_quick_voice.xml b/app/src/main/res/values-ko/strings_quick_voice.xml
+index 47ebbeafe7edcb256abb1d8879ba521a0391df0a..0000000 100644
+--- a/app/src/main/res/values-ko/strings_quick_voice.xml
++++ b/app/src/main/res/values-ko/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">뒤로</string>
++    <string name="quick_voice_listening">듣는 중…</string>
++    <string name="quick_voice_listening_hint">말한 내용이 여기에 표시됩니다. 완료되면 “중지”를 누르세요.</string>
++    <string name="quick_voice_permission_settings">앱 권한 설정 열기</string>
++    <string name="quick_voice_processing_hint">음성 변환을 마무리하는 중…</string>
++    <string name="quick_voice_review_hint">보내기 전에 확인할 수 있도록 음성을 텍스트로 변환합니다.</string>
++    <string name="quick_voice_submit_failed">요청을 보내지 못했습니다. 입력한 텍스트는 여기에 남아 있습니다.</string>
++    <string name="quick_voice_transcript_placeholder">음성 인식으로 변환된 요청</string>
++    <string name="widget_quick_voice_description">Qusin에서 음성 요청을 시작하고 보내기 전에 내용을 확인하세요.</string>
++    <string name="widget_quick_voice_ready">준비됨</string>
++    <string name="widget_quick_voice_review_hint">보내기 전에 내용을 확인하세요.</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-pt/strings_quick_voice.xml b/app/src/main/res/values-pt/strings_quick_voice.xml
+index b717e5e9b888dc50c9b13456b8b79cd21163609..0000000 100644
+--- a/app/src/main/res/values-pt/strings_quick_voice.xml
++++ b/app/src/main/res/values-pt/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">Voltar</string>
++    <string name="quick_voice_listening">Ouvindo…</string>
++    <string name="quick_voice_listening_hint">Suas palavras aparecerão aqui. Toque em “Parar” quando terminar.</string>
++    <string name="quick_voice_permission_settings">Abrir configurações de permissões do app</string>
++    <string name="quick_voice_processing_hint">Finalizando a transcrição…</string>
++    <string name="quick_voice_review_hint">Vou transcrever sua fala para que você possa revisá-la antes de enviar.</string>
++    <string name="quick_voice_submit_failed">Não foi possível enviar a solicitação. Seu texto continua aqui.</string>
++    <string name="quick_voice_transcript_placeholder">Solicitação transcrita</string>
++    <string name="widget_quick_voice_description">Inicie uma solicitação por voz com o Qusin e revise o texto antes de enviar.</string>
++    <string name="widget_quick_voice_ready">PRONTO</string>
++    <string name="widget_quick_voice_review_hint">Revise o texto antes de enviar.</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-ru/strings_quick_voice.xml b/app/src/main/res/values-ru/strings_quick_voice.xml
+index 9578a414e8ac1f4b037000a435f6fc4ea2b75ffe..0000000 100644
+--- a/app/src/main/res/values-ru/strings_quick_voice.xml
++++ b/app/src/main/res/values-ru/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">Назад</string>
++    <string name="quick_voice_listening">Слушаю…</string>
++    <string name="quick_voice_listening_hint">Здесь появится ваша речь. Нажмите «Остановить», когда закончите.</string>
++    <string name="quick_voice_permission_settings">Открыть настройки разрешений приложения</string>
++    <string name="quick_voice_processing_hint">Завершаем распознавание речи…</string>
++    <string name="quick_voice_review_hint">Я преобразую вашу речь в текст, чтобы вы могли проверить его перед отправкой.</string>
++    <string name="quick_voice_submit_failed">Не удалось отправить запрос. Ваш текст остался здесь.</string>
++    <string name="quick_voice_transcript_placeholder">Распознанный текст запроса</string>
++    <string name="widget_quick_voice_description">Начните голосовой запрос в Qusin и проверьте текст перед отправкой.</string>
++    <string name="widget_quick_voice_ready">ГОТОВО</string>
++    <string name="widget_quick_voice_review_hint">Проверьте текст перед отправкой.</string>
+ </resources>
+
+diff --git a/app/src/main/res/values-tr/strings_quick_voice.xml b/app/src/main/res/values-tr/strings_quick_voice.xml
+index c331a510d731ac458ab5ab46fd1a2f5684ccf661..0000000 100644
+--- a/app/src/main/res/values-tr/strings_quick_voice.xml
++++ b/app/src/main/res/values-tr/strings_quick_voice.xml
+@@ -24,1 +24,12 @@
++    <string name="quick_voice_back">Geri</string>
++    <string name="quick_voice_listening">Dinleniyor…</string>
++    <string name="quick_voice_listening_hint">Söyledikleriniz burada görünecek. Bitirdiğinizde “Durdur”a dokunun.</string>
++    <string name="quick_voice_permission_settings">Uygulama izin ayarlarını aç</string>
++    <string name="quick_voice_processing_hint">Yazıya dönüştürme tamamlanıyor…</string>
++    <string name="quick_voice_review_hint">Göndermeden önce kontrol edebilmeniz için konuşmanızı metne dönüştüreceğim.</string>
++    <string name="quick_voice_submit_failed">İstek gönderilemedi. Metniniz burada duruyor.</string>
++    <string name="quick_voice_transcript_placeholder">Sese dönüştürülen istek</string>
++    <string name="widget_quick_voice_description">Qusin ile sesli istek başlatın. Göndermeden önce metni gözden geçirin.</string>
++    <string name="widget_quick_voice_ready">HAZIR</string>
++    <string name="widget_quick_voice_review_hint">Göndermeden önce metni gözden geçirin.</string>
+ </resources>
