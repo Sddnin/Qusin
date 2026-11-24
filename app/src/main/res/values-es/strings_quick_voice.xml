@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">Personal</string>
+    <string name="mode_work">Trabajo</string>
+    <string name="widget_quick_voice_title">Habla con Qusin</string>
+    <string name="widget_quick_voice_prompt">¿Qué necesitas?</string>
+    <string name="widget_quick_voice_hint">O abre Qusin para escribir</string>
+    <string name="widget_quick_voice_tap_label">🎙  Toca para hablar</string>
+    <string name="widget_quick_voice_type">Abrir chat para escribir</string>
+    <string name="quick_voice_title">Habla con Qusin</string>
+    <string name="quick_voice_prompt">¿Qué necesitas?</string>
+    <string name="quick_voice_start">Empezar a escuchar</string>
+    <string name="quick_voice_type">Escribir en su lugar</string>
+    <string name="quick_voice_permission_title">Qusin necesita acceso al micrófono</string>
+    <string name="quick_voice_permission_body">Permite el micrófono para convertir tu voz en texto. Solo se activará cuando pulses «Empezar a escuchar».</string>
+    <string name="quick_voice_allow_mic">Permitir micrófono</string>
+    <string name="quick_voice_stop">Detener</string>
+    <string name="quick_voice_cancel">Cancelar</string>
+    <string name="quick_voice_review_title">Revisa tu solicitud</string>
+    <string name="quick_voice_edit_hint">Toca el texto para corregirlo antes de enviarlo.</string>
+    <string name="quick_voice_submit">Enviar solicitud</string>
+    <string name="quick_voice_again">Volver a hablar</string>
+    <string name="quick_voice_empty">No se ha detectado voz. Inténtalo de nuevo o escribe tu solicitud.</string>
+</resources>

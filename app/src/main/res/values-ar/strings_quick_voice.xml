@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">شخصي</string>
+    <string name="mode_work">العمل</string>
+    <string name="widget_quick_voice_title">تحدث مع Qusin</string>
+    <string name="widget_quick_voice_prompt">ماذا تريد مني أن أفعل؟</string>
+    <string name="widget_quick_voice_hint">أو افتح Qusin للكتابة</string>
+    <string name="widget_quick_voice_tap_label">🎙  اضغط للتحدث</string>
+    <string name="widget_quick_voice_type">افتح المحادثة للكتابة</string>
+    <string name="quick_voice_title">تحدث مع Qusin</string>
+    <string name="quick_voice_prompt">ماذا تريد مني أن أفعل؟</string>
+    <string name="quick_voice_start">ابدأ الاستماع</string>
+    <string name="quick_voice_type">اكتب بدلاً من ذلك</string>
+    <string name="quick_voice_permission_title">يحتاج Qusin إلى إذن الميكروفون</string>
+    <string name="quick_voice_permission_body">اسمح باستخدام الميكروفون لتحويل كلامك إلى نص. لن يبدأ الميكروفون إلا بعد الضغط على «ابدأ الاستماع».</string>
+    <string name="quick_voice_allow_mic">السماح بالميكروفون</string>
+    <string name="quick_voice_stop">إيقاف</string>
+    <string name="quick_voice_cancel">إلغاء</string>
+    <string name="quick_voice_review_title">راجع طلبك</string>
+    <string name="quick_voice_edit_hint">اضغط على النص لتعديله قبل الإرسال.</string>
+    <string name="quick_voice_submit">إرسال الطلب</string>
+    <string name="quick_voice_again">تحدث مرة أخرى</string>
+    <string name="quick_voice_empty">لم أسمع أي شيء. حاول مجدداً أو اكتب طلبك.</string>
+</resources>

@@ -108,6 +108,7 @@ fun PersonalAgentScreen(
     runtime: PersonalRuntime,
     voice: VoiceSource,
     onOpenDrawer: () -> Unit,
+    onOpenWork: () -> Unit,
     onOpenTask: (String) -> Unit,
     memoryRuntime: MemoryRuntime,
     onModels: () -> Unit,
@@ -178,7 +179,7 @@ fun PersonalAgentScreen(
 
     Column(Modifier.fillMaxSize().background(c.bg).statusBarsPadding().testTag("personal-screen")) {
         PersonalHeader(
-            active, phonePreview, onOpenDrawer, { profile = true }, { selectedTask = it.id },
+            active, phonePreview, onOpenDrawer, onOpenWork, { profile = true }, { selectedTask = it.id },
             onOpenPreview = { preview ->
                 openingPreview = preview
                 replayTask = preview.conversationId
@@ -458,6 +459,7 @@ internal fun PersonalHeader(
     active: List<PersonalTask>,
     phonePreview: Flow<PersonalPhonePreview?>,
     onOpenDrawer: () -> Unit,
+    onOpenWork: () -> Unit = {},
     onActivity: () -> Unit,
     onTask: (PersonalTask) -> Unit,
     onOpenPreview: (PersonalPhonePreview) -> Unit,
@@ -503,6 +505,12 @@ internal fun PersonalHeader(
                     )
                 }
             }
+            ConversationModeSwitcher(
+                personal = true,
+                onWork = onOpenWork,
+                onPersonal = {},
+                modifier = Modifier.padding(top = 8.dp).width(176.dp).testTag("personal-mode-switch"),
+            )
             val task = previewTask ?: active.firstOrNull()
             if (task != null) {
                 val tone = personalTaskTone(task)

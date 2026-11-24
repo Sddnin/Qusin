@@ -85,6 +85,8 @@ class MainActivity : ComponentActivity() {
     private var requestedConversation by mutableStateOf<String?>(null)
     private var requestedCalls by mutableStateOf(false)
     private var requestedCallHistoryId by mutableStateOf<String?>(null)
+    private var requestedQuickVoice by mutableStateOf(false)
+    private var requestedWork by mutableStateOf(false)
     private var openTeach by mutableStateOf(false)
     private var requestedSharedDraft by mutableStateOf<SharedDraftRequest?>(null)
     private var shareJob: Job? = null
@@ -112,6 +114,8 @@ class MainActivity : ComponentActivity() {
         requestedConversation = intent.getStringExtra(EXTRA_OPEN_CONVERSATION)
         requestedCalls = intent.getBooleanExtra(EXTRA_OPEN_CALLS, false)
         requestedCallHistoryId = intent.getStringExtra(EXTRA_CALL_HISTORY_ID)
+        requestedQuickVoice = intent.getBooleanExtra(EXTRA_OPEN_QUICK_VOICE, false)
+        requestedWork = intent.getBooleanExtra(EXTRA_OPEN_WORK, false)
         takeTeach(intent)
         shareInCurrent = savedInstanceState?.getBoolean(STATE_SHARE_IN_CURRENT, false) ?: false
         shareHandled = savedInstanceState?.getBoolean(STATE_SHARE_HANDLED, false) ?: false
@@ -131,6 +135,8 @@ class MainActivity : ComponentActivity() {
                     QusinRoot(
                         store, monitor, ::perform, requestedConversation, { requestedConversation = null },
                         requestedCalls, requestedCallHistoryId, { requestedCalls = false; requestedCallHistoryId = null },
+                        requestedQuickVoice, { requestedQuickVoice = false; intent.removeExtra(EXTRA_OPEN_QUICK_VOICE) },
+                        requestedWork, { requestedWork = false; intent.removeExtra(EXTRA_OPEN_WORK) },
                         requestedSharedDraft,
                         onSharedDraftOpened = { accepted, draft ->
                             requestedSharedDraft = null
@@ -158,6 +164,8 @@ class MainActivity : ComponentActivity() {
         requestedConversation = intent.getStringExtra(EXTRA_OPEN_CONVERSATION)
         requestedCalls = intent.getBooleanExtra(EXTRA_OPEN_CALLS, false)
         requestedCallHistoryId = intent.getStringExtra(EXTRA_CALL_HISTORY_ID)
+        requestedQuickVoice = intent.getBooleanExtra(EXTRA_OPEN_QUICK_VOICE, false)
+        requestedWork = intent.getBooleanExtra(EXTRA_OPEN_WORK, false)
         if (requestedConversation != null || intent.getBooleanExtra(EXTRA_OPEN_TEACH, false)) {
             app.chat.cancelPendingSharedDraft()
         }
@@ -345,6 +353,9 @@ class MainActivity : ComponentActivity() {
         const val EXTRA_OPEN_CONVERSATION = "open_conversation"
         const val EXTRA_OPEN_CALLS = "open_calls"
         const val EXTRA_CALL_HISTORY_ID = "call_history_id"
+        const val EXTRA_OPEN_QUICK_VOICE = "open_quick_voice"
+        const val EXTRA_OPEN_WORK = "open_work"
+        const val ACTION_QUICK_VOICE = "com.wangzan101.qusin.action.QUICK_VOICE"
         const val EXTRA_OPEN_TEACH = "open_teach"
         const val EXTRA_TEACH_GOAL = "teach_goal"
         private const val STATE_SHARE_IN_CURRENT = "share_in_current"
@@ -384,6 +395,10 @@ private fun QusinRoot(
     requestedCalls: Boolean,
     requestedCallHistoryId: String?,
     onCallsOpened: () -> Unit,
+    requestedQuickVoice: Boolean,
+    onQuickVoiceOpened: () -> Unit,
+    requestedWork: Boolean,
+    onWorkOpened: () -> Unit,
     sharedDraft: SharedDraftRequest?,
     onSharedDraftOpened: (Boolean, SharedDraft) -> Unit,
     openTeach: Boolean,
@@ -447,6 +462,19 @@ private fun QusinRoot(
             focusedCallHistoryId = requestedCallHistoryId
             nav.push(Route.Calls)
             onCallsOpened()
+        }
+    }
+    LaunchedEffect(requestedWork) {
+        if (requestedWork) {
+            focusWorkComposer = true
+            nav.show(Route.Chat)
+            onWorkOpened()
+        }
+    }
+    LaunchedEffect(requestedQuickVoice) {
+        if (requestedQuickVoice) {
+            nav.push(Route.QuickVoice)
+            onQuickVoiceOpened()
         }
     }
     LaunchedEffect(sharedDraft) {
@@ -516,7 +544,7 @@ private fun QusinRoot(
         }
     }
     LaunchedEffect(Unit) {
-        if (onboarding == null && requestedConversation == null && nav.current != Route.Personal) {
+        if (onboarding == null && requestedConversation == null && !requestedQuickVoice && nav.current != Route.Personal && nav.current != Route.QuickVoice) {
             Onboarding.start(onboardingInputs())?.let(::goOnboarding)
         }
     }
@@ -526,6 +554,7 @@ private fun QusinRoot(
     val back: () -> Unit = { nav.back() }
     // 聊天页离开组合树时保留列表位置和输入内容，返回设置页等子页面后原样恢复。
     val screenStates = rememberSaveableStateHolder()
+    var focusWorkComposer by remember { mutableStateOf(false) }
     when (nav.current) {
         Route.PhoneSetup -> PhoneSetupScreen(status, setupRepair, onFix, onboarding = onboarding == OnboardingStep.Phone) {
             phoneSetup.markGuideSeen()
@@ -545,6 +574,26 @@ private fun QusinRoot(
                 },
             )
         }
+        Route.QuickVoice -> QuickVoiceScreen(
+            voice = app.voice,
+            onBack = back,
+            onOpenChat = { focusWorkComposer = true; nav.show(Route.Chat) },
+            onPickSpeech = { nav.push(Route.SpeechModel) },
+            onSubmit = { text ->
+                val destination = nav.stack.dropLast(1).lastOrNull { it == Route.Chat || it == Route.Personal }
+                    ?: if (personalStart) Route.Personal else Route.Chat
+                if (destination == Route.Personal) {
+                    app.personal.send(text)
+                    nav.show(Route.Personal)
+                    true
+                } else {
+                    // Send the reviewed transcript without replacing a draft already in the Work composer.
+                    val sent = app.chat.send(text, check)
+                    if (sent) nav.show(Route.Chat)
+                    sent
+                }
+            },
+        )
         Route.Chat, Route.Personal -> screenStates.SaveableStateProvider(nav.current.name) {
             // 对话页重新看得见(回到前台、从别的页面回来):补上别处存进来的轮次,接上别处开始的任务
             LifecycleStartEffect(Unit) {
@@ -576,6 +625,7 @@ private fun QusinRoot(
                             runtime = app.personal,
                             voice = app.voice,
                             onOpenDrawer = openDrawer,
+                            onOpenWork = { nav.show(Route.Chat) },
                             onOpenTask = { id -> app.chat.openPersonalTask(id); nav.reset() },
                             memoryRuntime = memoryRuntime,
                             onModels = { nav.push(Route.Models) },
@@ -590,6 +640,9 @@ private fun QusinRoot(
                             pipOperateEnabled = FeatureFlags.get(context).pipOperate(),
                             reduceMotion = QusinTheme.reduceMotion,
                             onOpenDrawer = openDrawer,
+                            onOpenPersonal = { nav.show(Route.Personal) },
+                            focusComposer = focusWorkComposer,
+                            onFocusComposerHandled = { focusWorkComposer = false },
                             openSettings = { nav.push(Route.Settings) },
                             openRun = { runId = it; nav.push(Route.Run) },
                             openReport = { reportRunId = it; nav.push(Route.Report) },

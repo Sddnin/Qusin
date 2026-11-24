@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">Cá nhân</string>
+    <string name="mode_work">Work</string>
+    <string name="widget_quick_voice_description">Bắt đầu nói yêu cầu với Qusin và xem lại trước khi gửi.</string>
+    <string name="widget_quick_voice_title">Nói với Qusin</string>
+    <string name="widget_quick_voice_prompt">Bạn cần mình làm gì?</string>
+    <string name="widget_quick_voice_hint">Hoặc mở Qusin để nhập bằng bàn phím</string>
+    <string name="widget_quick_voice_tap_label">🎙  Chạm để nói</string>
+    <string name="widget_quick_voice_type">Mở chat để nhập</string>
+    <string name="widget_quick_voice_ready">SẴN SÀNG</string>
+    <string name="widget_quick_voice_review_hint">Bạn sẽ xem lại yêu cầu trước khi gửi.</string>
+    <string name="quick_voice_title">Nói với Qusin</string>
+    <string name="quick_voice_prompt">Bạn cần mình làm gì?</string>
+    <string name="quick_voice_review_hint">Qusin sẽ chép lời để bạn xem lại trước khi gửi.</string>
+    <string name="quick_voice_start">Bắt đầu nghe</string>
+    <string name="quick_voice_type">Gõ yêu cầu</string>
+    <string name="quick_voice_permission_title">Qusin cần quyền sử dụng micrô</string>
+    <string name="quick_voice_permission_body">Cho phép Qusin sử dụng micrô để chuyển lời nói thành văn bản. Micrô chỉ bắt đầu hoạt động sau khi bạn nhấn “Bắt đầu nghe”.</string>
+    <string name="quick_voice_permission_settings">Mở cài đặt quyền ứng dụng</string>
+    <string name="quick_voice_allow_mic">Cho phép micrô</string>
+    <string name="quick_voice_listening">Đang nghe…</string>
+    <string name="quick_voice_listening_hint">Lời nói sẽ hiện ở đây. Nhấn Dừng khi bạn nói xong.</string>
+    <string name="quick_voice_stop">Dừng</string>
+    <string name="quick_voice_cancel">Hủy</string>
+    <string name="quick_voice_processing_hint">Đang hoàn tất bản chép lời…</string>
+    <string name="quick_voice_review_title">Xem lại yêu cầu</string>
+    <string name="quick_voice_edit_hint">Chạm vào nội dung để chỉnh sửa trước khi gửi.</string>
+    <string name="quick_voice_transcript_placeholder">Nội dung đã nhận dạng</string>
+    <string name="quick_voice_submit">Gửi yêu cầu</string>
+    <string name="quick_voice_again">Nói lại</string>
+    <string name="quick_voice_empty">Mình chưa nghe được nội dung. Hãy thử lại hoặc nhập yêu cầu.</string>
+    <string name="quick_voice_submit_failed">Không thể gửi yêu cầu. Nội dung của bạn vẫn được giữ lại.</string>
+    <string name="quick_voice_back">Quay lại</string>
+</resources>

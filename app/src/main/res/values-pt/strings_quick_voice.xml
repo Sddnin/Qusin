@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">Pessoal</string>
+    <string name="mode_work">Trabalho</string>
+    <string name="widget_quick_voice_title">Fale com o Qusin</string>
+    <string name="widget_quick_voice_prompt">O que posso fazer por você?</string>
+    <string name="widget_quick_voice_hint">Ou abra o Qusin para digitar</string>
+    <string name="widget_quick_voice_tap_label">🎙  Toque para falar</string>
+    <string name="widget_quick_voice_type">Abrir conversa para digitar</string>
+    <string name="quick_voice_title">Fale com o Qusin</string>
+    <string name="quick_voice_prompt">O que posso fazer por você?</string>
+    <string name="quick_voice_start">Começar a ouvir</string>
+    <string name="quick_voice_type">Digitar em vez disso</string>
+    <string name="quick_voice_permission_title">O Qusin precisa de acesso ao microfone</string>
+    <string name="quick_voice_permission_body">Permita o microfone para converter sua fala em texto. Ele só será iniciado depois que você tocar em “Começar a ouvir”.</string>
+    <string name="quick_voice_allow_mic">Permitir microfone</string>
+    <string name="quick_voice_stop">Parar</string>
+    <string name="quick_voice_cancel">Cancelar</string>
+    <string name="quick_voice_review_title">Revise sua solicitação</string>
+    <string name="quick_voice_edit_hint">Toque no texto para corrigir antes de enviar.</string>
+    <string name="quick_voice_submit">Enviar solicitação</string>
+    <string name="quick_voice_again">Falar novamente</string>
+    <string name="quick_voice_empty">Não foi possível ouvir. Tente novamente ou digite sua solicitação.</string>
+</resources>

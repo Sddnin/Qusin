@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">شخصی</string>
+    <string name="mode_work">کار</string>
+    <string name="widget_quick_voice_title">با Qusin صحبت کنید</string>
+    <string name="widget_quick_voice_prompt">چه کاری برایتان انجام دهم؟</string>
+    <string name="widget_quick_voice_hint">یا برای تایپ Qusin را باز کنید</string>
+    <string name="widget_quick_voice_tap_label">🎙  برای صحبت لمس کنید</string>
+    <string name="widget_quick_voice_type">باز کردن گفتگو برای تایپ</string>
+    <string name="quick_voice_title">با Qusin صحبت کنید</string>
+    <string name="quick_voice_prompt">چه کاری برایتان انجام دهم؟</string>
+    <string name="quick_voice_start">شروع گوش دادن</string>
+    <string name="quick_voice_type">به‌جای آن تایپ کنید</string>
+    <string name="quick_voice_permission_title">Qusin به دسترسی میکروفون نیاز دارد</string>
+    <string name="quick_voice_permission_body">برای تبدیل گفتار به متن، اجازه استفاده از میکروفون را بدهید. میکروفون فقط پس از فشردن «شروع گوش دادن» فعال می‌شود.</string>
+    <string name="quick_voice_allow_mic">اجازه میکروفون</string>
+    <string name="quick_voice_stop">توقف</string>
+    <string name="quick_voice_cancel">لغو</string>
+    <string name="quick_voice_review_title">درخواست خود را مرور کنید</string>
+    <string name="quick_voice_edit_hint">برای ویرایش پیش از ارسال، متن را لمس کنید.</string>
+    <string name="quick_voice_submit">ارسال درخواست</string>
+    <string name="quick_voice_again">دوباره صحبت کنید</string>
+    <string name="quick_voice_empty">چیزی شنیده نشد. دوباره تلاش کنید یا درخواست را تایپ کنید.</string>
+</resources>

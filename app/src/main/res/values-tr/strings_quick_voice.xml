@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">Kişisel</string>
+    <string name="mode_work">İş</string>
+    <string name="widget_quick_voice_title">Qusin ile konuş</string>
+    <string name="widget_quick_voice_prompt">Senin için ne yapabilirim?</string>
+    <string name="widget_quick_voice_hint">Ya da yazmak için Qusin’i aç</string>
+    <string name="widget_quick_voice_tap_label">🎙  Konuşmak için dokun</string>
+    <string name="widget_quick_voice_type">Yazmak için sohbeti aç</string>
+    <string name="quick_voice_title">Qusin ile konuş</string>
+    <string name="quick_voice_prompt">Senin için ne yapabilirim?</string>
+    <string name="quick_voice_start">Dinlemeyi başlat</string>
+    <string name="quick_voice_type">Yazarak devam et</string>
+    <string name="quick_voice_permission_title">Qusin mikrofon izni istiyor</string>
+    <string name="quick_voice_permission_body">Konuşmanı metne çevirmek için mikrofona izin ver. Mikrofon yalnızca “Dinlemeyi başlat” düğmesine bastığında açılır.</string>
+    <string name="quick_voice_allow_mic">Mikrofona izin ver</string>
+    <string name="quick_voice_stop">Durdur</string>
+    <string name="quick_voice_cancel">İptal</string>
+    <string name="quick_voice_review_title">İsteğini gözden geçir</string>
+    <string name="quick_voice_edit_hint">Göndermeden önce düzeltmek için metne dokun.</string>
+    <string name="quick_voice_submit">İsteği gönder</string>
+    <string name="quick_voice_again">Tekrar konuş</string>
+    <string name="quick_voice_empty">Ses algılanmadı. Tekrar dene veya isteğini yaz.</string>
+</resources>

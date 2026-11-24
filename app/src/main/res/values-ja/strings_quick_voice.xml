@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">個人</string>
+    <string name="mode_work">Work</string>
+    <string name="widget_quick_voice_title">Qusin に話す</string>
+    <string name="widget_quick_voice_prompt">何をお手伝いしましょうか？</string>
+    <string name="widget_quick_voice_hint">または Qusin を開いて入力</string>
+    <string name="widget_quick_voice_tap_label">🎙  タップして話す</string>
+    <string name="widget_quick_voice_type">チャットを開いて入力</string>
+    <string name="quick_voice_title">Qusin に話す</string>
+    <string name="quick_voice_prompt">何をお手伝いしましょうか？</string>
+    <string name="quick_voice_start">聞き取りを開始</string>
+    <string name="quick_voice_type">文字で入力</string>
+    <string name="quick_voice_permission_title">Qusin にマイクの許可が必要です</string>
+    <string name="quick_voice_permission_body">音声をテキストに変換するため、マイクを許可してください。「聞き取りを開始」を押すまでマイクは起動しません。</string>
+    <string name="quick_voice_allow_mic">マイクを許可</string>
+    <string name="quick_voice_stop">停止</string>
+    <string name="quick_voice_cancel">キャンセル</string>
+    <string name="quick_voice_review_title">リクエストを確認</string>
+    <string name="quick_voice_edit_hint">送信前にテキストをタップして修正できます。</string>
+    <string name="quick_voice_submit">リクエストを送信</string>
+    <string name="quick_voice_again">もう一度話す</string>
+    <string name="quick_voice_empty">音声を認識できませんでした。再試行するか入力してください。</string>
+</resources>

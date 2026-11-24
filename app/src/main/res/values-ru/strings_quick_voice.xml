@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">Личное</string>
+    <string name="mode_work">Работа</string>
+    <string name="widget_quick_voice_title">Сказать Qusin</string>
+    <string name="widget_quick_voice_prompt">Что нужно сделать?</string>
+    <string name="widget_quick_voice_hint">Или откройте Qusin для ввода</string>
+    <string name="widget_quick_voice_tap_label">🎙  Нажмите, чтобы говорить</string>
+    <string name="widget_quick_voice_type">Открыть чат для ввода</string>
+    <string name="quick_voice_title">Сказать Qusin</string>
+    <string name="quick_voice_prompt">Что нужно сделать?</string>
+    <string name="quick_voice_start">Начать слушать</string>
+    <string name="quick_voice_type">Ввести текст</string>
+    <string name="quick_voice_permission_title">Qusin нужен доступ к микрофону</string>
+    <string name="quick_voice_permission_body">Разрешите микрофон для преобразования речи в текст. Запись начнётся только после нажатия «Начать слушать».</string>
+    <string name="quick_voice_allow_mic">Разрешить микрофон</string>
+    <string name="quick_voice_stop">Остановить</string>
+    <string name="quick_voice_cancel">Отмена</string>
+    <string name="quick_voice_review_title">Проверьте запрос</string>
+    <string name="quick_voice_edit_hint">Нажмите на текст, чтобы исправить его перед отправкой.</string>
+    <string name="quick_voice_submit">Отправить запрос</string>
+    <string name="quick_voice_again">Повторить</string>
+    <string name="quick_voice_empty">Не удалось распознать речь. Попробуйте ещё раз или введите запрос.</string>
+</resources>

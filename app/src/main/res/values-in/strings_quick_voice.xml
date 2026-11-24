@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">Pribadi</string>
+    <string name="mode_work">Kerja</string>
+    <string name="widget_quick_voice_title">Bicara dengan Qusin</string>
+    <string name="widget_quick_voice_prompt">Apa yang bisa saya bantu?</string>
+    <string name="widget_quick_voice_hint">Atau buka Qusin untuk mengetik</string>
+    <string name="widget_quick_voice_tap_label">🎙  Ketuk untuk bicara</string>
+    <string name="widget_quick_voice_type">Buka chat untuk mengetik</string>
+    <string name="quick_voice_title">Bicara dengan Qusin</string>
+    <string name="quick_voice_prompt">Apa yang bisa saya bantu?</string>
+    <string name="quick_voice_start">Mulai mendengarkan</string>
+    <string name="quick_voice_type">Ketik sebagai gantinya</string>
+    <string name="quick_voice_permission_title">Qusin memerlukan akses mikrofon</string>
+    <string name="quick_voice_permission_body">Izinkan mikrofon untuk mengubah ucapan menjadi teks. Mikrofon hanya akan aktif setelah Anda menekan “Mulai mendengarkan”.</string>
+    <string name="quick_voice_allow_mic">Izinkan mikrofon</string>
+    <string name="quick_voice_stop">Berhenti</string>
+    <string name="quick_voice_cancel">Batal</string>
+    <string name="quick_voice_review_title">Periksa permintaan</string>
+    <string name="quick_voice_edit_hint">Ketuk teks untuk mengedit sebelum mengirim.</string>
+    <string name="quick_voice_submit">Kirim permintaan</string>
+    <string name="quick_voice_again">Bicara lagi</string>
+    <string name="quick_voice_empty">Tidak ada ucapan yang terdengar. Coba lagi atau ketik permintaan.</string>
+</resources>

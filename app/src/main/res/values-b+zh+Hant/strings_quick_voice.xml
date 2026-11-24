@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">個人</string>
+    <string name="mode_work">工作</string>
+    <string name="widget_quick_voice_title">與 Qusin 說話</string>
+    <string name="widget_quick_voice_prompt">需要我為你做什麼？</string>
+    <string name="widget_quick_voice_hint">或開啟 Qusin 輸入文字</string>
+    <string name="widget_quick_voice_tap_label">🎙  點選說話</string>
+    <string name="widget_quick_voice_type">開啟聊天並輸入</string>
+    <string name="quick_voice_title">與 Qusin 說話</string>
+    <string name="quick_voice_prompt">需要我為你做什麼？</string>
+    <string name="quick_voice_start">開始聆聽</string>
+    <string name="quick_voice_type">改用文字輸入</string>
+    <string name="quick_voice_permission_title">Qusin 需要麥克風權限</string>
+    <string name="quick_voice_permission_body">允許使用麥克風將語音轉成文字。只有點選「開始聆聽」後才會啟動麥克風。</string>
+    <string name="quick_voice_allow_mic">允許麥克風</string>
+    <string name="quick_voice_stop">停止</string>
+    <string name="quick_voice_cancel">取消</string>
+    <string name="quick_voice_review_title">檢查你的要求</string>
+    <string name="quick_voice_edit_hint">傳送前可點選文字進行修改。</string>
+    <string name="quick_voice_submit">傳送要求</string>
+    <string name="quick_voice_again">重新說一次</string>
+    <string name="quick_voice_empty">沒有聽到內容，請重試或輸入要求。</string>
+</resources>

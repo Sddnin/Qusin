@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">Personal</string>
+    <string name="mode_work">Work</string>
+    <string name="widget_quick_voice_description">Start a voice request with Qusin. Review it before sending.</string>
+    <string name="widget_quick_voice_title">Talk to Qusin</string>
+    <string name="widget_quick_voice_prompt">What can I do for you?</string>
+    <string name="widget_quick_voice_hint">Or open Qusin to type</string>
+    <string name="widget_quick_voice_tap_label">🎙  Tap to speak</string>
+    <string name="widget_quick_voice_type">Open chat to type</string>
+    <string name="widget_quick_voice_ready">READY</string>
+    <string name="widget_quick_voice_review_hint">Review your words before sending.</string>
+    <string name="quick_voice_title">Talk to Qusin</string>
+    <string name="quick_voice_prompt">What can I do for you?</string>
+    <string name="quick_voice_review_hint">I’ll transcribe your words so you can review them before sending.</string>
+    <string name="quick_voice_start">Start listening</string>
+    <string name="quick_voice_type">Type instead</string>
+    <string name="quick_voice_permission_title">Qusin needs microphone access</string>
+    <string name="quick_voice_permission_body">Allow microphone access so Qusin can turn your speech into text. The microphone will only start after you press “Start listening”.</string>
+    <string name="quick_voice_permission_settings">Open app permission settings</string>
+    <string name="quick_voice_allow_mic">Allow microphone</string>
+    <string name="quick_voice_listening">Listening…</string>
+    <string name="quick_voice_listening_hint">Your words will appear here. Press Stop when you are done.</string>
+    <string name="quick_voice_stop">Stop</string>
+    <string name="quick_voice_cancel">Cancel</string>
+    <string name="quick_voice_processing_hint">Finishing the transcription…</string>
+    <string name="quick_voice_review_title">Review your request</string>
+    <string name="quick_voice_edit_hint">Tap the text to make corrections before sending.</string>
+    <string name="quick_voice_transcript_placeholder">Your transcribed request</string>
+    <string name="quick_voice_submit">Send request</string>
+    <string name="quick_voice_again">Speak again</string>
+    <string name="quick_voice_empty">I didn’t hear anything. Try again or type your request.</string>
+    <string name="quick_voice_submit_failed">Could not send the request. Your text is still here.</string>
+    <string name="quick_voice_back">Back</string>
+</resources>

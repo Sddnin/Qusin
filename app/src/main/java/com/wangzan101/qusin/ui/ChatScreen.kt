@@ -199,6 +199,11 @@ fun ChatScreen(
     reduceMotion: Boolean,
     /** 左上角菜单:打开侧栏。 */
     onOpenDrawer: () -> Unit,
+    /** Switch from the existing Work chat to the long-lived Personal assistant. */
+    onOpenPersonal: () -> Unit = {},
+    /** Request keyboard focus when entering Work from the quick-voice widget. */
+    focusComposer: Boolean = false,
+    onFocusComposerHandled: () -> Unit = {},
     /** 被拦下的提示里的「去设置」。 */
     openSettings: () -> Unit,
     openRun: (String) -> Unit = {},
@@ -292,6 +297,12 @@ fun ChatScreen(
     var retryFailures by remember { mutableStateOf<Pair<String, String>?>(null) }
     var voiceHolding by remember { mutableStateOf(false) }
     var editRequest by remember { mutableIntStateOf(0) }
+    LaunchedEffect(focusComposer) {
+        if (focusComposer) {
+            editRequest++
+            onFocusComposerHandled()
+        }
+    }
     var composerHeight by rememberSaveable { mutableIntStateOf(0) }
     var topHeight by rememberSaveable { mutableIntStateOf(0) }
     val density = LocalDensity.current
@@ -500,10 +511,24 @@ fun ChatScreen(
                         }
                     }
                     GlassSurface(backdrop = backdrop) {
-                        Row(Modifier.clickable(role = Role.Button, onClickLabel = stringResource(R.string.chat_usage_title)) { showUsage = true }
-                            .testTag("chat-usage-title").padding(horizontal = 14.dp, vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Text(ChatCopy.APP_TITLE, style = QusinType.Title, color = c.ink, maxLines = 1)
+                        Column(
+                            Modifier.width(184.dp).padding(horizontal = 4.dp, vertical = 4.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                        ) {
+                            Text(
+                                ChatCopy.APP_TITLE,
+                                Modifier.clickable(role = Role.Button, onClickLabel = stringResource(R.string.chat_usage_title)) { showUsage = true },
+                                style = QusinType.Caption,
+                                color = c.ink2,
+                                maxLines = 1,
+                            )
+                            ConversationModeSwitcher(
+                                personal = false,
+                                onWork = {},
+                                onPersonal = onOpenPersonal,
+                                modifier = Modifier.fillMaxWidth().testTag("chat-mode-switch"),
+                            )
                         }
                     }
                     GlassSurface(modifier = Modifier.size(QusinSize.IconButton), backdrop = backdrop, shape = CircleShape) {

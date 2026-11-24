@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_personal">개인</string>
+    <string name="mode_work">Work</string>
+    <string name="widget_quick_voice_title">Qusin에게 말하기</string>
+    <string name="widget_quick_voice_prompt">무엇을 도와드릴까요?</string>
+    <string name="widget_quick_voice_hint">또는 Qusin을 열어 입력</string>
+    <string name="widget_quick_voice_tap_label">🎙  눌러서 말하기</string>
+    <string name="widget_quick_voice_type">채팅을 열어 입력</string>
+    <string name="quick_voice_title">Qusin에게 말하기</string>
+    <string name="quick_voice_prompt">무엇을 도와드릴까요?</string>
+    <string name="quick_voice_start">듣기 시작</string>
+    <string name="quick_voice_type">텍스트로 입력</string>
+    <string name="quick_voice_permission_title">Qusin에 마이크 권한이 필요합니다</string>
+    <string name="quick_voice_permission_body">음성을 텍스트로 변환하려면 마이크를 허용하세요. “듣기 시작”을 누르기 전에는 마이크가 켜지지 않습니다.</string>
+    <string name="quick_voice_allow_mic">마이크 허용</string>
+    <string name="quick_voice_stop">중지</string>
+    <string name="quick_voice_cancel">취소</string>
+    <string name="quick_voice_review_title">요청 확인</string>
+    <string name="quick_voice_edit_hint">보내기 전에 텍스트를 눌러 수정할 수 있습니다.</string>
+    <string name="quick_voice_submit">요청 보내기</string>
+    <string name="quick_voice_again">다시 말하기</string>
+    <string name="quick_voice_empty">음성을 듣지 못했습니다. 다시 시도하거나 입력하세요.</string>
+</resources>

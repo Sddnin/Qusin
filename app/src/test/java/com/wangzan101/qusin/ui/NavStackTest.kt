@@ -45,6 +45,20 @@ class NavStackTest {
         assertEquals(listOf(Route.Chat), NavStack(emptyList()).stack)
     }
 
+    @Test fun quickVoiceReturnsToTheActiveConversationMode() {
+        val nav = NavStack(listOf(Route.Personal))
+        nav.push(Route.QuickVoice)
+        assertEquals(Route.QuickVoice, nav.current)
+        assertEquals(listOf(Route.Chat, Route.Personal, Route.QuickVoice), nav.stack)
+        assertTrue(nav.back())
+        assertEquals(Route.Personal, nav.current)
+
+        nav.show(Route.Chat)
+        nav.push(Route.QuickVoice)
+        assertTrue(nav.back())
+        assertEquals(Route.Chat, nav.current)
+    }
+
     @Test fun backFromAPageOpenedInTheDrawerReopensTheDrawer() {
         val nav = NavStack()
         nav.pushFromDrawer(Route.Settings)
