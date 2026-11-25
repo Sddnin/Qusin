@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.sp
 import com.wangzan101.qusin.R
 import com.wangzan101.qusin.core.personal.PersonalTask
 import com.wangzan101.qusin.core.personal.PersonalConversation
+import com.wangzan101.qusin.core.personal.PersonalAttachment
 import com.wangzan101.qusin.core.personal.PersonalSystemException
 import com.wangzan101.qusin.personal.displayText
 import com.wangzan101.qusin.personal.displayDetail
@@ -110,6 +111,7 @@ fun PersonalAgentScreen(
     voice: VoiceSource,
     onOpenDrawer: () -> Unit,
     onOpenWork: () -> Unit,
+    onHandoffToWork: (String) -> Unit,
     onOpenTask: (String) -> Unit,
     memoryRuntime: MemoryRuntime,
     onModels: () -> Unit,
@@ -129,6 +131,11 @@ fun PersonalAgentScreen(
     var replayTask by rememberSaveable { mutableStateOf<String?>(null) }
     var openingPreview by remember { mutableStateOf<PersonalPhonePreview?>(null) }
     var sendError by remember { mutableStateOf<String?>(null) }
+    var attachments by remember { mutableStateOf(emptyList<PendingAttachment>()) }
+    var importingAttachments by remember { mutableStateOf(false) }
+    var overLimit by remember { mutableIntStateOf(0) }
+    var confirmDeleteConversation by rememberSaveable { mutableStateOf<String?>(null) }
+    var confirmClearHistory by rememberSaveable { mutableStateOf(false) }
     var followLatest by rememberSaveable { mutableStateOf(true) }
     var composerHeight by remember { mutableIntStateOf(0) }
     var previousComposerHeight by remember { mutableIntStateOf(0) }
@@ -143,6 +150,12 @@ fun PersonalAgentScreen(
     val liveReply by runtime.liveReply.collectAsState()
     val visibleLiveReply = liveReply?.takeIf { it.threadId == activeConversationId }
     val isBusy by runtime.busy.collectAsState()
+    val workHandoff by runtime.workHandoff.collectAsState()
+    LaunchedEffect(workHandoff) {
+        val instruction = workHandoff ?: return@LaunchedEffect
+        runtime.consumeWorkHandoff()
+        onHandoffToWork(instruction)
+    }
     val activeThreadPending = isBusy && messages.any { it.role == "user" && !it.handled }
     // The spacer after the last message is the bottom anchor, at index messages.size.
     val list = rememberLazyListState(initialFirstVisibleItemIndex = messages.size)
@@ -154,16 +167,47 @@ fun PersonalAgentScreen(
     val dayFormat = personalDayFormat()
     val context = LocalContext.current
     val sendFailed = stringResource(R.string.personal_send_failed)
+    val attachmentOnlyPrompt = stringResource(R.string.personal_attachment_only_prompt)
+    fun addAttachments(uris: List<String>) {
+        if (uris.isEmpty() || importingAttachments) return
+        importingAttachments = true
+        scope.launch {
+            uris.forEach { raw ->
+                // SAF/photo-picker grants may be temporary; keep readable access for queued Personal tasks.
+                runCatching {
+                    context.contentResolver.takePersistableUriPermission(
+                        android.net.Uri.parse(raw), android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION,
+                    )
+                }
+            }
+            val items = runCatching { AttachFiles.describe(context, uris) }.getOrDefault(emptyList())
+            val (merged, dropped) = AttachTray.add(attachments, items)
+            attachments = merged
+            overLimit += dropped
+            importingAttachments = false
+        }
+    }
+    fun toggleAttachment(item: PendingAttachment): Boolean {
+        val toggled = AttachTray.toggle(attachments, item)
+        if (toggled.full) return false
+        attachments = toggled.items
+        return true
+    }
     fun send() {
-        val text = draft.trim()
-        if (text.isEmpty()) return
+        if (!AttachTray.canSend(draft, attachments, importingAttachments)) return
+        val typedText = draft.trim()
+        val text = typedText.ifBlank { attachmentOnlyPrompt }
+        val sentAttachments = attachments.map { PersonalAttachment(it.uri, it.name, it.size, it.photo) }
         draft = ""
+        attachments = emptyList()
+        overLimit = 0
         keyboard?.hide()
         followLatest = true
         scope.launch {
-            runCatching { runtime.send(text) }
+            runCatching { runtime.send(text, sentAttachments) }
                 .onFailure {
-                    draft = text
+                    draft = typedText
+                    attachments = attachments + sentAttachments.map { PendingAttachment(it.uri, it.name, it.size, it.photo) }
                     sendError = personalSystemText(context, (it as? PersonalSystemException)?.systemType, it.message ?: sendFailed)
                 }
         }
@@ -232,6 +276,24 @@ fun PersonalAgentScreen(
                             .padding(horizontal = 14.dp, vertical = 10.dp)
                         if (user) {
                             Text(message.text, bubble, style = QusinType.Body, color = c.onAccent)
+                            if (message.attachments.isNotEmpty()) {
+                                Column(Modifier.fillMaxWidth(0.8f).padding(top = 5.dp), horizontalAlignment = Alignment.End,
+                                    verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    message.attachments.forEach { attachment ->
+                                        Row(
+                                            Modifier.clip(QusinShapes.Tile).background(c.surface).border(0.5.dp, c.edge, QusinShapes.Tile)
+                                                .padding(horizontal = 10.dp, vertical = 7.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(7.dp),
+                                        ) {
+                                            Icon(if (attachment.photo) QusinIcons.Photo else QusinIcons.Doc, null,
+                                                Modifier.size(16.dp), tint = c.ink2)
+                                            Text(attachment.name, color = c.ink, style = QusinType.Caption,
+                                                maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                        }
+                                    }
+                                }
+                            }
                         } else {
                             PersonalReply(message.displayText(context), message.error, bubble)
                         }
@@ -279,6 +341,18 @@ fun PersonalAgentScreen(
             onPickSpeech = onPickSpeech,
             onVoiceHolding = { voiceHolding = it },
             sendFromIme = true,
+            attachPanel = {
+                AttachPanelHost(
+                    selected = attachments,
+                    onPicked = ::addAttachments,
+                    onToggle = ::toggleAttachment,
+                )
+            },
+            attachments = attachments,
+            importing = importingAttachments,
+            overLimit = overLimit,
+            onRemove = { uri -> attachments = attachments.filterNot { it.uri == uri } },
+            onDismissRejected = { overLimit = 0 },
         )
     }
     if (historyOpen) {
@@ -288,8 +362,48 @@ fun PersonalAgentScreen(
             },
             activeId = activeConversationId,
             onDismiss = { historyOpen = false },
-            onSelect = { id -> runtime.selectConversation(id); historyOpen = false; draft = ""; followLatest = true },
-            onNew = { runtime.newConversation(); historyOpen = false; draft = ""; followLatest = true },
+            onSelect = { id -> runtime.selectConversation(id); historyOpen = false; draft = ""; attachments = emptyList(); followLatest = true },
+            onNew = { runtime.newConversation(); historyOpen = false; draft = ""; attachments = emptyList(); followLatest = true },
+            onDelete = { id -> confirmDeleteConversation = id },
+            onClearHistory = { confirmClearHistory = true },
+        )
+    }
+    confirmDeleteConversation?.let { id ->
+        AlertDialog(
+            onDismissRequest = { confirmDeleteConversation = null },
+            title = { Text(stringResource(R.string.personal_delete_chat_title)) },
+            text = { Text(stringResource(R.string.personal_delete_chat_body)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    confirmDeleteConversation = null
+                    scope.launch {
+                        runCatching { runtime.deleteConversation(id) }
+                            .onFailure { sendError = it.message ?: sendFailed }
+                    }
+                    if (id == activeConversationId) { draft = ""; attachments = emptyList() }
+                }) { Text(stringResource(R.string.personal_delete_chat)) }
+            },
+            dismissButton = { TextButton(onClick = { confirmDeleteConversation = null }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
+    if (confirmClearHistory) {
+        AlertDialog(
+            onDismissRequest = { confirmClearHistory = false },
+            title = { Text(stringResource(R.string.personal_delete_history_title)) },
+            text = { Text(stringResource(R.string.personal_delete_history_body)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    confirmClearHistory = false
+                    historyOpen = false
+                    draft = ""
+                    attachments = emptyList()
+                    scope.launch {
+                        runCatching { runtime.clearHistory() }
+                            .onFailure { sendError = it.message ?: sendFailed }
+                    }
+                }) { Text(stringResource(R.string.personal_delete_history)) }
+            },
+            dismissButton = { TextButton(onClick = { confirmClearHistory = false }) { Text(stringResource(R.string.cancel)) } },
         )
     }
     if (profile) {
@@ -506,6 +620,8 @@ private fun PersonalHistoryDialog(
     onDismiss: () -> Unit,
     onSelect: (String) -> Unit,
     onNew: () -> Unit,
+    onDelete: (String) -> Unit,
+    onClearHistory: () -> Unit,
 ) {
     val sorted = remember(conversations) { conversations.sortedByDescending { it.updatedAt } }
     AlertDialog(
@@ -513,32 +629,44 @@ private fun PersonalHistoryDialog(
         title = { Text(stringResource(R.string.personal_history)) },
         text = {
             Column(Modifier.heightIn(max = 440.dp)) {
-                TextButton(onClick = onNew, modifier = Modifier.fillMaxWidth()) {
-                    Icon(QusinIcons.Plus, null, Modifier.size(18.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.personal_new_chat))
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    TextButton(onClick = onNew, modifier = Modifier.weight(1f)) {
+                        Icon(QusinIcons.Plus, null, Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.personal_new_chat))
+                    }
+                    TextButton(onClick = onClearHistory) {
+                        Icon(QusinIcons.Trash, null, Modifier.size(16.dp), tint = QusinTheme.colors.bad)
+                        Spacer(Modifier.width(4.dp))
+                        Text(stringResource(R.string.personal_delete_history), color = QusinTheme.colors.bad)
+                    }
                 }
                 if (sorted.isEmpty()) {
                     Text(stringResource(R.string.personal_history_empty), Modifier.padding(vertical = 20.dp), color = QusinTheme.colors.ink2)
                 } else {
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         items(sorted, key = { it.id }) { conversation ->
-                            TextButton(
-                                onClick = { onSelect(conversation.id) },
-                                modifier = Modifier.fillMaxWidth().testTag("personal-history-${conversation.id}"),
-                            ) {
-                                Column(Modifier.fillMaxWidth()) {
-                                    Text(
-                                        conversation.title.ifBlank { stringResource(R.string.personal_untitled_chat) },
-                                        color = if (conversation.id == activeId) QusinTheme.colors.accent else QusinTheme.colors.ink,
-                                        maxLines = 1, overflow = TextOverflow.Ellipsis,
-                                    )
-                                    if (conversation.updatedAt > 0L) {
+                            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                TextButton(
+                                    onClick = { onSelect(conversation.id) },
+                                    modifier = Modifier.weight(1f).testTag("personal-history-${conversation.id}"),
+                                ) {
+                                    Column(Modifier.fillMaxWidth()) {
                                         Text(
-                                            personalDayFormat().format(Instant.ofEpochMilli(conversation.updatedAt).atZone(ZoneId.systemDefault()).toLocalDate()),
-                                            color = QusinTheme.colors.ink3, style = QusinType.Micro,
+                                            conversation.title.ifBlank { stringResource(R.string.personal_untitled_chat) },
+                                            color = if (conversation.id == activeId) QusinTheme.colors.accent else QusinTheme.colors.ink,
+                                            maxLines = 1, overflow = TextOverflow.Ellipsis,
                                         )
+                                        if (conversation.updatedAt > 0L) {
+                                            Text(
+                                                personalDayFormat().format(Instant.ofEpochMilli(conversation.updatedAt).atZone(ZoneId.systemDefault()).toLocalDate()),
+                                                color = QusinTheme.colors.ink3, style = QusinType.Micro,
+                                            )
+                                        }
                                     }
+                                }
+                                IconButton(onClick = { onDelete(conversation.id) }) {
+                                    Icon(QusinIcons.Trash, stringResource(R.string.personal_delete_chat), tint = QusinTheme.colors.ink2)
                                 }
                             }
                         }

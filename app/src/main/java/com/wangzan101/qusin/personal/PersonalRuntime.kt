@@ -15,6 +15,12 @@ import com.wangzan101.qusin.takeover.Takeover
 import com.wangzan101.qusin.task.TaskRun
 import com.wangzan101.qusin.task.TaskService
 import com.wangzan101.qusin.settings.FeatureFlags
+import com.wangzan101.qusin.chat.WorkspaceResolver
+import com.wangzan101.qusin.cap.sandbox.AndroidSandbox
+import com.wangzan101.qusin.cap.sandbox.Attachments
+import com.wangzan101.qusin.cap.sandbox.SandboxDirs
+import com.wangzan101.qusin.cap.sandbox.SandboxState
+import android.net.Uri
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -74,6 +80,28 @@ class PersonalRuntime(private val app: QusinApp) {
             app.conversations.setTitle(conversationId, goal.take(50))
             TaskService.start(app, goal, conversationId)
         }
+        override suspend fun startWithAttachments(conversationId: String, goal: String, attachments: List<PersonalAttachment>) {
+            if (attachments.isEmpty()) {
+                start(conversationId, goal)
+                return
+            }
+            val key = WorkspaceResolver.resolveFor(app, conversationId)
+            val dirs = SandboxDirs(app)
+            val sandbox = AndroidSandbox(app, SandboxState.get(app))
+            val imported = Attachments.importInto(
+                app, attachments.map { Uri.parse(it.uri) }, dirs.workspace(key), dirs.gate, dirs.tree,
+                sandbox::freeBytes,
+            ) { sandbox.workspaceBytes(key) }
+            if (imported.failures.isNotEmpty() || imported.added.size != attachments.size) {
+                try { dirs.deleteWorkspace(key) } catch (_: Exception) { }
+                val names = imported.failures.joinToString { it.name }.ifBlank { attachments.map { it.name }.joinToString() }
+                throw PersonalSystemException("attachment_import_failed", "Không thể nhập đầy đủ tệp đính kèm: $names. Hãy gửi lại tệp hoặc ảnh.")
+            }
+            val paths = imported.added.joinToString("\n") { (path, _) -> "- $path" }
+            val taskGoal = goal + "\n\nNgười dùng đã gửi các tệp đầu vào sau trong workspace cá nhân:\n" + paths +
+                "\nHãy kiểm tra các tệp này trước khi xử lý. Không ghi đè tệp đầu vào; lưu kết quả mới bằng tên khác."
+            start(conversationId, taskGoal)
+        }
         override fun revise(conversationId: String, instruction: String): String {
             val run = app.taskState.run(conversationId) ?: error("任务还未就绪或已经结束，请先查看任务详情。")
             require(run.state.value !is TaskState.Terminal) { "任务已结束，请明确交代新的任务。" }
@@ -99,6 +127,7 @@ class PersonalRuntime(private val app: QusinApp) {
     }
     val agent = PersonalAgent(
         store, scope, { app.tasks.modelFactory(app, ModelSession.of("personal-main")) }, actions,
+        ids = { "personal-" + UUID.randomUUID().toString() },
         fileCreationEnabled = { FeatureFlags.get(app).createFiles() },
     )
     private val _error = MutableStateFlow<Throwable?>(null)
@@ -109,6 +138,20 @@ class PersonalRuntime(private val app: QusinApp) {
     val busy get() = agent.busy
     fun newConversation(): String = agent.newConversation()
     fun selectConversation(id: String) = agent.selectConversation(id)
+    val workHandoff get() = agent.workHandoff
+    fun consumeWorkHandoff() = agent.consumeWorkHandoff()
+
+    suspend fun deleteConversation(id: String) = withContext(Dispatchers.IO) {
+        val taskIds = state.value.tasks.filter { it.personalThreadId == id }.map { it.conversationId }.distinct()
+        taskIds.forEach { taskId -> app.conversationDeleter.delete(taskId) }
+        agent.deleteConversation(id)
+    }
+
+    suspend fun clearHistory() = withContext(Dispatchers.IO) {
+        val taskIds = state.value.tasks.map { it.conversationId }.distinct()
+        taskIds.forEach { taskId -> app.conversationDeleter.delete(taskId) }
+        agent.clearHistory()
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     internal fun phonePreview(conversationIds: List<String>) = app.taskState.runs.flatMapLatest { runs ->
@@ -161,7 +204,8 @@ class PersonalRuntime(private val app: QusinApp) {
         }
     }
     private val submit = Mutex()
-    suspend fun send(text: String) = submit.withLock { withContext(Dispatchers.IO) { agent.send(text) } }
+    suspend fun send(text: String, attachments: List<PersonalAttachment> = emptyList()) =
+        submit.withLock { withContext(Dispatchers.IO) { agent.send(text, attachments) } }
     fun stop(id: String) {
         scope.launch {
             runCatching {

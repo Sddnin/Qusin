@@ -154,7 +154,7 @@
     <string name="drawer_project_actions">عملیات پروژه</string>
     <string name="chat_project_shared">پروژه</string>
     <string name="settings_create_files">ایجاد فایل</string>
-    <string name="settings_create_files_sub">اجازه دهید Qusin در گفتگوهای شخصی و کاری فایل ایجاد و صادر کند</string>
+    <string name="settings_create_files_sub">اجازه ایجاد و صادر کردن فایل فقط در گفتگوهای شخصی. گفتگوهای کاری برای کنترل دستگاه هستند.</string>
     <string name="personal_history">تاریخچه گفتگو</string>
     <string name="personal_new_chat">گفتگوی جدید</string>
     <string name="personal_history_empty">هنوز گفتگویی وجود ندارد</string>

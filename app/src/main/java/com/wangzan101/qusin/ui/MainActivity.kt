@@ -626,6 +626,11 @@ private fun QusinRoot(
                             voice = app.voice,
                             onOpenDrawer = openDrawer,
                             onOpenWork = { nav.show(Route.Chat) },
+                            onHandoffToWork = { instruction ->
+                                app.chat.input(instruction)
+                                focusWorkComposer = true
+                                nav.show(Route.Chat)
+                            },
                             onOpenTask = { id -> app.chat.openPersonalTask(id); nav.reset() },
                             memoryRuntime = memoryRuntime,
                             onModels = { nav.push(Route.Models) },

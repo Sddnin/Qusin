@@ -171,9 +171,16 @@
     <string name="drawer_project_actions">Project actions</string>
     <string name="chat_project_shared">Project</string>
     <string name="settings_create_files">Create files</string>
-    <string name="settings_create_files_sub">Let Qusin create and export files in Personal and Work chats</string>
+    <string name="settings_create_files_sub">Allow file creation and export only in Personal chats. Work is for device control.</string>
     <string name="personal_history">Chat history</string>
     <string name="personal_new_chat">New conversation</string>
     <string name="personal_history_empty">No conversations yet</string>
+    <string name="personal_delete_chat">Delete chat</string>
+    <string name="personal_delete_history">Clear history</string>
+    <string name="personal_delete_chat_title">Delete this conversation?</string>
+    <string name="personal_delete_chat_body">This removes its messages and personal task records. Work chats are not affected.</string>
+    <string name="personal_delete_history_title">Clear all Personal history?</string>
+    <string name="personal_delete_history_body">All Personal conversations, messages and linked task workspaces will be deleted. Work history will stay untouched.</string>
+    <string name="personal_attachment_only_prompt">Please review the attached files and images, then help me with their contents.</string>
     <string name="personal_untitled_chat">New conversation</string>
 </resources>

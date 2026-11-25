@@ -153,7 +153,7 @@
     <string name="drawer_project_actions">Acciones del proyecto</string>
     <string name="chat_project_shared">Proyecto</string>
     <string name="settings_create_files">Crear archivos</string>
-    <string name="settings_create_files_sub">Permite que Qusin cree y exporte archivos en los chats personales y de trabajo</string>
+    <string name="settings_create_files_sub">Permitir crear y exportar archivos solo en los chats personales. Trabajo se usa para controlar el dispositivo.</string>
     <string name="personal_history">Historial de chats</string>
     <string name="personal_new_chat">Nueva conversación</string>
     <string name="personal_history_empty">Todavía no hay conversaciones</string>

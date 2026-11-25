@@ -153,7 +153,7 @@
     <string name="drawer_project_actions">项目操作</string>
     <string name="chat_project_shared">项目</string>
     <string name="settings_create_files">创建文件</string>
-    <string name="settings_create_files_sub">允许 Qusin 在个人和工作聊天中创建并导出文件</string>
+    <string name="settings_create_files_sub">仅允许在个人聊天中创建和导出文件。工作聊天用于控制设备。</string>
     <string name="personal_history">聊天记录</string>
     <string name="personal_new_chat">新建对话</string>
     <string name="personal_history_empty">暂无对话</string>

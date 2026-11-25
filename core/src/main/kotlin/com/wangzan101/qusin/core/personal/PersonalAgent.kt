@@ -30,6 +30,11 @@ private val fileOutputVerbs = Regex(
 private fun isFileOutputRequest(text: String): Boolean =
     fileOutputTerms.containsMatchIn(text) && fileOutputVerbs.containsMatchIn(text)
 
+private val deviceControlTerms = Regex(
+    """(?iu)(?:\b(?:open|launch)\s+(?:the\s+)?(?:app|application|phone|device settings|settings|camera|bluetooth|wifi|wi-fi|flashlight|youtube|zalo|facebook|messenger|tiktok|chrome)\b|\b(?:tap|click|swipe|scroll|press)\s+(?:the\s+)?(?:phone screen|screen|app|application|button|icon|home button|back button)\b|\b(?:type|enter)\s+(?:text|a message|a password)\s+(?:into|on)\s+(?:the\s+)?(?:phone|screen|app)\b|\b(?:go back|go home|lock the phone|unlock the phone|turn on|turn off|enable|disable)\s+(?:the\s+)?(?:phone|device|wifi|wi-fi|bluetooth|flashlight|location|airplane mode)\b|\b(?:send (?:an? )?(?:sms|text message)|make (?:a )?call|dial a number|install app|uninstall app|change (?:phone|system|device) settings)\b|mở (?:ứng dụng|app|điện thoại|cài đặt|camera|máy ảnh|youtube|zalo|facebook|messenger|tiktok|chrome)|chạm (?:vào )?(?:màn hình|nút|biểu tượng)|nhấn (?:vào|nút|màn hình)|bấm (?:vào|nút)|vuốt màn hình|cuộn màn hình|nhập (?:văn bản|chữ) vào (?:màn hình|ứng dụng|điện thoại)|quay lại màn hình|về màn hình chính|bật (?:wifi|wi-fi|bluetooth|đèn pin|định vị)|tắt (?:wifi|wi-fi|bluetooth|đèn pin|định vị)|tăng (?:âm lượng|độ sáng)|giảm (?:âm lượng|độ sáng)|chụp (?:ảnh|màn hình)|khóa màn hình|mở khóa điện thoại|cài (?:đặt )?ứng dụng|gỡ (?:cài đặt )?ứng dụng|xóa ứng dụng|đặt báo thức|gửi (?:tin nhắn|sms)|gọi điện|điều khiển điện thoại|điều khiển máy|cài đặt hệ thống)""",
+)
+private fun isDeviceControlRequest(text: String): Boolean = deviceControlTerms.containsMatchIn(text)
+
 class PersonalSystemException(val systemType: String, message: String) : IllegalArgumentException(message)
 
 @Serializable
@@ -43,6 +48,14 @@ data class PersonalConversation(
 )
 
 @Serializable
+data class PersonalAttachment(
+    val uri: String,
+    val name: String,
+    val size: Long = 0L,
+    val photo: Boolean = false,
+)
+
+@Serializable
 data class PersonalMessage(
     val id: String, val role: String, val text: String, val at: Long,
     val taskId: String? = null, val handled: Boolean = true, val error: Boolean = false,
@@ -50,6 +63,7 @@ data class PersonalMessage(
     val systemType: String? = null,
     /** The Personal conversation that owns this message. Legacy records default to `main`. */
     val threadId: String = "main",
+    val attachments: List<PersonalAttachment> = emptyList(),
 ) {
     /** 旧版的模型可能把历史前缀照抄进回复，只清理这类机器格式。 */
     fun conversationText(): String = if (role == "assistant") stripReplyMetadata(text) else text
@@ -120,6 +134,9 @@ interface PersonalStore {
 /** Only the Android adapter operates devices. A personal conversation never occupies the task runner. */
 interface PersonalActions {
     fun start(conversationId: String, goal: String)
+    suspend fun startWithAttachments(conversationId: String, goal: String, attachments: List<PersonalAttachment>) {
+        start(conversationId, goal)
+    }
     fun revise(conversationId: String, instruction: String): String
     fun cancel(conversationId: String): String
     fun remember(text: String, quote: String): String
@@ -139,6 +156,10 @@ class PersonalAgent(
     private val _liveReply = MutableStateFlow<PersonalLiveReply?>(null)
     val liveReply: StateFlow<PersonalLiveReply?> = _liveReply.asStateFlow()
     private val wake = Channel<Unit>(Channel.CONFLATED)
+    private val _workHandoff = MutableStateFlow<String?>(null)
+    val workHandoff: StateFlow<String?> = _workHandoff.asStateFlow()
+
+    fun consumeWorkHandoff() { _workHandoff.value = null }
 
     init {
         // Do not replay a possibly executed action after a process death.
@@ -181,18 +202,55 @@ class PersonalAgent(
         store.update { s -> if (s.conversations.any { it.id == id }) s.copy(activeConversationId = id) else s }
     }
 
-    fun send(text: String) {
+    /** Remove one Personal thread and all of its task/message references. */
+    fun deleteConversation(id: String): List<String> {
+        var taskConversationIds = emptyList<String>()
+        store.update { s ->
+            if (s.conversations.none { it.id == id }) return@update s
+            taskConversationIds = s.tasks.filter { it.personalThreadId == id }.map { it.conversationId }
+            val remaining = s.conversations.filterNot { it.id == id }
+            val nextId = if (s.activeConversationId == id) ids() else s.activeConversationId
+            val conversations = if (s.activeConversationId == id && remaining.none { it.id == nextId }) {
+                remaining + PersonalConversation(nextId, createdAt = clock(), updatedAt = clock())
+            } else remaining
+            s.copy(
+                conversations = conversations,
+                activeConversationId = nextId,
+                messages = s.messages.filterNot { it.threadId == id },
+                tasks = s.tasks.filterNot { it.personalThreadId == id },
+            )
+        }
+        return taskConversationIds
+    }
+
+    /** Clear all Personal history and start a fresh thread. Work conversations are never touched. */
+    fun clearHistory(): List<String> {
+        var taskConversationIds = emptyList<String>()
+        store.update { s ->
+            taskConversationIds = s.tasks.map { it.conversationId }
+            val id = ids()
+            s.copy(
+                messages = emptyList(), tasks = emptyList(), summary = "", covered = 0,
+                conversations = listOf(PersonalConversation(id, createdAt = clock(), updatedAt = clock())),
+                activeConversationId = id,
+            )
+        }
+        return taskConversationIds
+    }
+
+    fun send(text: String, attachments: List<PersonalAttachment> = emptyList()) {
         val clean = text.trim()
-        if (clean.isEmpty()) return
+        if (clean.isEmpty() && attachments.isEmpty()) return
         if (clean.length > 30_000) throw PersonalSystemException("message_long", "这条消息太长，请分成几段发送。")
         val at = clock()
         store.update { s ->
             val thread = s.activeConversationId.takeIf { id -> s.conversations.any { it.id == id } } ?: "main"
             val current = s.conversations.firstOrNull { it.id == thread } ?: PersonalConversation(thread, createdAt = at)
-            val title = current.title.ifBlank { clean.replace(Regex("\\s+"), " ").take(54) }
+            val titleSeed = clean.ifBlank { attachments.firstOrNull()?.name.orEmpty() }
+            val title = current.title.ifBlank { titleSeed.replace(Regex("\\s+"), " ").take(54) }
             val updated = current.copy(title = title, createdAt = current.createdAt.takeIf { it > 0L } ?: at, updatedAt = at)
             s.copy(
-                messages = s.messages + entry("user", clean, handled = false, threadId = thread),
+                messages = s.messages + entry("user", clean, handled = false, threadId = thread, attachments = attachments),
                 conversations = if (s.conversations.any { it.id == thread }) s.conversations.map { if (it.id == thread) updated else it }
                     else s.conversations + updated,
                 activeConversationId = thread,
@@ -207,7 +265,8 @@ class PersonalAgent(
         role: String, text: String, task: String? = null, handled: Boolean = true,
         error: Boolean = false, systemType: String? = null,
         threadId: String = state.value.activeConversationId,
-    ) = PersonalMessage(ids(), role, text, clock(), task, handled, error, systemType, threadId)
+        attachments: List<PersonalAttachment> = emptyList(),
+    ) = PersonalMessage(ids(), role, text, clock(), task, handled, error, systemType, threadId, attachments)
 
     /** A task result and its delivery marker are committed together: no duplicate bubble on refresh/restart. */
     fun updateTask(id: String, status: String, detail: String = "", result: String? = null, detailSystemType: String? = null, resultSystemType: String? = null) {
@@ -266,7 +325,7 @@ class PersonalAgent(
                     return true
                 }
                 // Reserve space for the oldest pending messages first. The rest stay queued.
-                val batch = waiting.takeWhile { fits(it.text) }
+                val batch = waiting.takeWhile { fits(it.text + it.attachments.joinToString("") { a -> a.name }) }
                 attemptedIds = batch.ifEmpty { waiting.take(1) }.mapTo(mutableSetOf()) { it.id }
                 if (batch.isEmpty()) throw PersonalSystemException("context_long", "这条消息超出了当前模型的上下文，请分成几段发送。")
                 val threadMessages = snapshot.messages.filter { it.threadId == threadId }
@@ -278,7 +337,10 @@ class PersonalAgent(
                     .takeWhile { (_, text) -> fits(text) }
                     .map { (m, text) -> m.toModelMessage(text) }.toList().asReversed().toMutableList()
                 history += batch.map { it.toModelMessage(it.text) }
-                val source = batch.last().copy(text = batch.joinToString("\n") { it.text })
+                val source = batch.last().copy(
+                    text = batch.joinToString("\n") { it.text },
+                    attachments = batch.flatMap { it.attachments },
+                )
                 val receipts = mutableMapOf<String, String>()
                 var answered = false
                 var languageNudged = false
@@ -323,8 +385,16 @@ class PersonalAgent(
                         _liveReply.value = null
                         for (call in calls) {
                             val key = call.name + ":" + call.argsJson
-                            val result = receipts.getOrPut(key) {
-                                runCatching { execute(call, source) }.getOrElse { jsonResult("error", it.message ?: "操作未完成") }
+                            var result = receipts[key]
+                            if (result == null) {
+                                result = try {
+                                    execute(call, source)
+                                } catch (e: CancellationException) {
+                                    throw e
+                                } catch (e: Exception) {
+                                    jsonResult("error", e.message ?: "操作未完成")
+                                }
+                                receipts[key] = result
                             }
                             history += Message(Role.Tool, listOf(Part.ToolResult(call.id, result, false)), Author.Qusin)
                         }
@@ -346,7 +416,9 @@ class PersonalAgent(
     }
 
     private fun PersonalMessage.toModelMessage(text: String): Message = if (role == "user") {
-        Message(Role.User, listOf(Part.Text(text)), Author.User)
+        val attachmentNote = attachments.takeIf { it.isNotEmpty() }?.joinToString(", ") { it.name }
+            ?.let { "\n[Tệp đính kèm của người dùng: $it]" }.orEmpty()
+        Message(Role.User, listOf(Part.Text(text + attachmentNote)), Author.User)
     } else {
         Message(Role.Assistant, listOf(Part.Text(text)), Author.Qusin)
     }
@@ -413,13 +485,23 @@ class PersonalAgent(
         return summary
     }
 
-    private fun execute(call: Part.ToolCall, source: PersonalMessage): String {
+    private suspend fun execute(call: Part.ToolCall, source: PersonalMessage): String {
         val args = Json.parseToJsonElement(call.argsJson).jsonObject
         fun arg(name: String) = args[name]?.jsonPrimitive?.content?.trim().orEmpty()
         fun owned() = state.value.tasks.find { it.id == arg("task_id") } ?: error("找不到这项个人助手任务。")
         return when (call.name) {
+            "handoff_to_work" -> {
+                val instruction = arg("instruction").ifBlank { source.text }.take(12_000)
+                require(instruction.isNotBlank()) { "Thiếu yêu cầu cần chuyển sang Công việc" }
+                _workHandoff.value = instruction
+                jsonResult("result", "Đã chuyển yêu cầu điều khiển thiết bị sang mục Công việc")
+            }
             "delegate_task" -> {
                 val goal = arg("goal").also { require(it.isNotBlank() && it.length <= 12_000) { "任务目标不能为空或过长。" } }
+                if (isDeviceControlRequest(goal)) {
+                    _workHandoff.value = goal
+                    return jsonResult("handoff", "Yêu cầu này cần điều khiển thiết bị; hãy tiếp tục ở mục Công việc")
+                }
                 if (!fileCreationEnabled() && isFileOutputRequest(goal)) {
                     return jsonResult("error", "文件创建功能已在设置中关闭。请先启用“创建文件”，再委派生成或导出文件的任务。")
                 }
@@ -427,8 +509,14 @@ class PersonalAgent(
                 if (existing != null) return jsonResult("task_id", existing.id)
                 val task = PersonalTask(ids(), ids(), arg("title").ifBlank { goal.take(36) }.take(80), goal, source.id, clock(), personalThreadId = source.threadId)
                 store.update { it.copy(tasks = it.tasks + task, messages = it.messages + entry("task", task.title, task.id, threadId = source.threadId)) }
-                try { actions.start(task.conversationId, goal) }
-                catch (e: Exception) { updateTask(task.id, "failed", result = e.message ?: "任务启动失败", resultSystemType = if (e.message == null) "task_start_failed" else null); throw e }
+                try {
+                    actions.startWithAttachments(task.conversationId, goal, source.attachments)
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    updateTask(task.id, "failed", result = e.message ?: "任务启动失败", resultSystemType = if (e.message == null) "task_start_failed" else null)
+                    throw e
+                }
                 jsonResult("task_id", task.id)
             }
             "revise_task" -> {
@@ -459,7 +547,8 @@ class PersonalAgent(
     private fun system(s: PersonalState, conversation: PersonalConversation, memory: String, latestMessageAt: Long) = """
 你是 Qusin，是用户长期交流的个人助手。自然、简洁地接话，始终使用用户最近一条真实消息所使用的语言。不要默认中文，也不要因为本提示词、历史记录或工具回执使用中文就改用中文。用户用英语发消息就用英语回答；用户用越南语发消息就用越南语回答；其他语言也同样跟随用户。
 You must reply in the same natural language as the user's most recent message. Do not default to Chinese. Match the language of the latest user message, not the language of this instruction or older conversation history.
-用户可以连续发消息、换话题。讨论、倾诉和构思用聊天回应；明确交代需要上网、操作手机、文件、计算等行动时，调用 delegate_task 交给独立任务。用户要求创建、编辑、转换或导出文件时，只有在文件创建开关开启时才调用 delegate_task；如果开关关闭，说明需要在设置里开启“创建文件”。按实际进展接话，避免重复播报任务受理状态，不假装获得未返回的结果。
+用户可以连续发消息、换话题。普通聊天、讨论、解释、头脑风暴、学习问答、网络查询、资料整理、计算和所有不涉及实际控制设备的事情都留在“个人”里；不因为它们像工作任务就切换到“工作”。只有用户明确要求你实际操作这台设备或手机时，才调用 handoff_to_work 转到“工作”，例如打开/关闭应用、点击、滑动、输入、返回、修改系统设置、拨打电话或发送短信。严禁用 delegate_task 执行任何设备控制。若 delegate_task 的目标包含设备控制，工具会拦截并交给 handoff_to_work。
+创建、编辑、转换和导出文件只允许在“个人”里进行；文件创建开关开启时调用 delegate_task，关闭时说明需要在设置里开启“创建文件”。“工作”里不允许创建或导出文件。用户在消息中附加文件或图片时，文件会在创建的个人任务工作区 /workspace/inbox/ 中；需要查看或处理附件时调用 delegate_task，并明确引用这些路径，不要谎称已读取附件内容。按实际进展接话，避免重复播报任务受理状态，不假装获得未返回的结果。
 消息时间、任务状态、内部编号和工具回执仅用于理解上下文。直接回复用户，不在回复里加这些字段或回执。用户询问时间时用自然语言回答。
 任务在后台运行时，聊天仍然继续。明确补充某项任务才用 revise_task；新话题不要变成任务插话。任务编号以这里的真实编号为准。停止需 cancel_task。需要接管、批准或回答时，引导用户点任务卡进入处理。
 区分“想做”“决定做”“授权你做”。不把随口提到的想法变成任务或计划。不主动发送聊天消息，不擅自创建周期任务。
@@ -482,7 +571,8 @@ You must reply in the same natural language as the user's most recent message. D
                 putJsonArray("required") { fields.keys.forEach { add(it) } }; put("additionalProperties", false)
             }.toString())
         val TOOLS = listOf(
-            spec("delegate_task", "把用户明确交代的具体行动交给后台任务。普通聊天和讨论不需要此工具。", linkedMapOf("title" to "简短任务名", "goal" to "完整独立目标，带上用户明确给出的约束与必要背景")),
+            spec("delegate_task", "执行个人范围内的任务：研究、网页查询、计算、资料整理，以及在个人模式创建文件。绝不能控制手机或设备；设备控制必须使用 handoff_to_work。", linkedMapOf("title" to "简短任务名", "goal" to "完整独立目标，带上用户明确给出的约束与必要背景")),
+            spec("handoff_to_work", "仅当用户明确要求实际控制手机或设备时，将原始操作指令转交到工作模式。普通聊天、研究、计算和创建文件绝不能使用。", mapOf("instruction" to "完整的设备操作指令，保留用户给出的目标和约束")),
             spec("revise_task", "用户明确补充或更正某项进行中的任务。", linkedMapOf("task_id" to "真实任务编号", "instruction" to "用户补充的要求")),
             spec("cancel_task", "停止用户明确要停止的任务。", mapOf("task_id" to "真实任务编号")),
             spec("remember", "保存用户明确要求记住的事实或偏好。", mapOf("text" to "需记住的事实或偏好，不是系统指令")),

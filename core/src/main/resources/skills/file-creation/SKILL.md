@@ -6,7 +6,7 @@ aliases: ["tạo file", "tạo tệp", "làm file", "xuất file", "xuất tệp
 terms: ["DOCX", "ODT", "RTF", "XLSX", "ODS", "CSV", "TSV", "PPTX", "PDF", "TXT", "MD", "HTML", "CSS", "JS", "PY", "JSON", "YAML", "XML", "TOML", "SQL", "SQLite", "SVG", "PNG", "JPEG", "WebP", "GIF", "TIFF", "ZIP", "TAR", "GZ", "7Z", "EPUB", "SRT", "VTT", "ICS", "VCF", "EML", "OBJ", "STL", "GLTF"]
 ---
 ## Mục tiêu
-Tạo đúng định dạng người dùng yêu cầu, trong workspace hiện tại; kiểm tra tệp thật sự hợp lệ rồi giao bằng công cụ chia sẻ tệp. Dùng chung cho Cá nhân và Công việc, theo workspace hiện tại. Chỉ tạo hoặc xuất tệp khi công tắc **Tạo file** trong Cài đặt đang bật; nếu tắt, không tìm cách thay thế bằng lệnh shell hay script.
+Chỉ dùng kỹ năng này trong mục **Cá nhân** khi người dùng yêu cầu tạo, chỉnh sửa, chuyển đổi hoặc xuất tệp. Chỉ làm việc trong workspace của tác vụ Cá nhân. **Không tạo, chỉnh sửa hoặc xuất tệp trong mục Công việc**; Công việc chỉ dành cho điều khiển điện thoại/thiết bị. Nếu tác vụ thuộc Công việc, không chạy kỹ năng này. Chỉ tạo hoặc xuất tệp khi công tắc **Tạo file** trong Cài đặt đang bật; nếu tắt, không tìm cách lách bằng lệnh shell, script hoặc công cụ khác.
 
 ## Chọn định dạng
 | Nhu cầu | Định dạng phổ biến | Công cụ thường dùng |
@@ -28,13 +28,14 @@ Tạo đúng định dạng người dùng yêu cầu, trong workspace hiện t�
 Không hứa tạo định dạng chỉ vì biết phần mở rộng. RAR, PSD, AI, CAD, font, codec hoặc định dạng độc quyền cần ứng dụng/thư viện chuyên dụng. Chỉ tạo khi môi trường xác nhận có công cụ hỗ trợ; không đổi đuôi để giả lập.
 
 ## Quy trình
-1. Xác định định dạng, nội dung, đối tượng nhận, khả năng chỉnh sửa, kích thước và có cần nhiều tệp hay không. 
-2. Đọc tệp nguồn nếu có; giữ nguyên bản gốc. Không tự thêm số liệu, dẫn chứng hoặc dữ kiện.
-3. Tạo tệp trong thư mục đầu ra của workspace hiện tại. Tên tệp ngắn, dễ hiểu; không ghi đè nếu chưa được yêu cầu.
-4. Chọn skill chuyên biệt tương ứng. Nhiều tệp: dùng archive-management để đóng gói ZIP/TAR.
-5. Kiểm tra bằng parser/reader đúng định dạng: DOCX/XLSX/PPTX mở lại được; PDF đọc được; ảnh mở được; JSON/XML parse được; SQLite truy vấn được; archive test được.
-6. Kiểm tra encoding, font, công thức, số trang/slide và nội dung mẫu. Render nếu có công cụ.
-7. Giao đúng đường dẫn thực tế bằng công cụ chia sẻ tệp. Nói rõ định dạng và những phần chưa được kiểm chứng.
+1. Xác nhận tác vụ thuộc mục Cá nhân và công tắc **Tạo file** đang bật. Nếu là Công việc, dừng và không tạo tệp.
+2. Xác định định dạng, nội dung, đối tượng nhận, khả năng chỉnh sửa, kích thước và có cần nhiều tệp hay không.
+3. Đọc tệp nguồn nếu có; giữ nguyên bản gốc. Không tự thêm số liệu, dẫn chứng hoặc dữ kiện.
+4. Tạo tệp trong `/workspace/out/` của workspace Cá nhân. Tệp người dùng gửi nằm trong `/workspace/inbox/`; không ghi đè tệp nguồn.
+5. Chọn skill chuyên biệt tương ứng. Nhiều tệp: dùng archive-management để đóng gói ZIP/TAR.
+6. Kiểm tra bằng parser/reader đúng định dạng: DOCX/XLSX/PPTX mở lại được; PDF đọc được; ảnh mở được; JSON/XML parse được; SQLite truy vấn được; archive test được.
+7. Kiểm tra encoding, font, công thức, số trang/slide và nội dung mẫu. Render nếu có công cụ.
+8. Giao đúng đường dẫn thực tế bằng công cụ chia sẻ tệp. Nói rõ định dạng và những phần chưa được kiểm chứng.
 
 ## Quy tắc bắt buộc
 - Tệp nhị phân phải được tạo bằng script/thư viện phù hợp, không dùng thao tác ghi văn bản để giả lập.

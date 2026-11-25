@@ -153,7 +153,7 @@
     <string name="drawer_project_actions">프로젝트 작업</string>
     <string name="chat_project_shared">프로젝트</string>
     <string name="settings_create_files">파일 만들기</string>
-    <string name="settings_create_files_sub">개인 및 업무 채팅에서 Qusin이 파일을 만들고 내보내도록 허용합니다</string>
+    <string name="settings_create_files_sub">파일 생성 및 내보내기는 개인 채팅에서만 허용합니다. 업무 채팅은 기기 제어에 사용됩니다.</string>
     <string name="personal_history">채팅 기록</string>
     <string name="personal_new_chat">새 대화</string>
     <string name="personal_history_empty">아직 대화가 없습니다</string>

@@ -153,7 +153,7 @@
     <string name="drawer_project_actions">Действия с проектом</string>
     <string name="chat_project_shared">Проект</string>
     <string name="settings_create_files">Создание файлов</string>
-    <string name="settings_create_files_sub">Разрешить Qusin создавать и экспортировать файлы в личных и рабочих чатах</string>
+    <string name="settings_create_files_sub">Разрешить создание и экспорт файлов только в личных чатах. Рабочие чаты используются для управления устройством.</string>
     <string name="personal_history">История чатов</string>
     <string name="personal_new_chat">Новый диалог</string>
     <string name="personal_history_empty">Диалогов пока нет</string>

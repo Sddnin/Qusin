@@ -567,6 +567,8 @@ class TaskRun(
     }
 
     suspend fun execute(priorTurns: List<Turn>): TaskState {
+        val personalTask = conversationId.startsWith("personal-")
+        val workControlOnly = !personalTask && provenance.origin == RunOrigin.Ui && !conditionCheck
         noticeTainted = NoticeTurn.tainted(priorTurns)
         // 手机一侧(内置助手、无障碍、虚拟屏)第一次 launch_app 时才接上:只用网页、沙箱的任务不需要它们
         var connection: com.wangzan101.qusin.cap.phone.shell.ShellBinding? = null
@@ -828,7 +830,7 @@ class TaskRun(
                 resources.acquire(Dispatchers.IO, traces.store::finish) { traces.start(traceTicket, run.runId) }
             }
             // 装了哪些 App:每个任务读一次,读不到就当没有;参考资料用
-            val apps = try { phoneScreen.listApps() } catch (e: CancellationException) { throw e } catch (e: Exception) { emptyList() }
+            val apps = if (personalTask) emptyList() else try { phoneScreen.listApps() } catch (e: CancellationException) { throw e } catch (e: Exception) { emptyList() }
             val speed = FeatureFlags.get(service).speedFlags()
             // 记忆与个人技能:进程内同一份;总开关关着就不给记忆(不检索、不注入、不提取、没有记忆工具)
             val switches = memoryRuntime.settings().switches.value.let { sw ->
@@ -911,14 +913,28 @@ class TaskRun(
             val personaLayer = persona?.let { PersonaPrompt.layer(it.name, it.prompt) }
             val appLang = AppLanguage.current(service)
             val promptWithPersona = SystemPrompt.withPersona(SystemPrompt.identity(), personaLayer)
-            val basePrompt = SystemPrompt.withLanguage(promptWithPersona, appLang.tag)
+            val modePolicy = when {
+                personalTask -> """
+                    |PERSONAL MODE: This run belongs to the Personal chat. Handle research, calculations, writing, file creation, and ordinary requests here. Never control the user's phone or device. File creation and export are allowed only when the Personal file-creation setting is enabled.
+                """.trimMargin()
+                workControlOnly -> """
+                    |WORK MODE: This run belongs to Work and is exclusively for actions that actually control the user's phone/device. Do not create, edit, or export files. Do not perform general research, calculations, writing, or unrelated tasks. If the request does not require operating the device, explain that it belongs in Personal and stop without using tools.
+                """.trimMargin()
+                else -> ""
+            }
+            val basePrompt = SystemPrompt.withLanguage(promptWithPersona, appLang.tag) + modePolicy
             val personaLabel = if (personaLayer != null && persona != null) {
                 Redactor.text("${persona.name} · v${persona.revision}")
             } else null
             val stepLimit = if (conditionCheck) null else FeatureFlags.get(service).taskStepLimit()
             val runSpec = RunSpec(RunId(key), goal, conversationId,
                 priorTurns,
-                provenance, if (conditionCheck) setOf("web", "sandbox") else null, readOnly = conditionCheck,
+                provenance, when {
+                    conditionCheck -> setOf("web", "sandbox")
+                    personalTask -> setOf("web", "sandbox")
+                    workControlOnly -> setOf("phone", "calls")
+                    else -> null
+                }, readOnly = conditionCheck,
                 stepBudget = stepLimit, tokenBudget = tokenBudget)
             // 外部 MCP server 只在主任务接;子任务/条件检查/评测不接,避免绕过父任务审批、影响评测可复现
             if (!conditionCheck) {
@@ -959,7 +975,7 @@ class TaskRun(
                         sandbox = sandbox, workspace = { workspaceKey.wire }, runSpec = childSpec,
                         conversationId = conversationId, inlineScreen = speed.inlineScreen,
                         adaptiveVision = speed.adaptiveVision,
-                        fileCreationEnabled = FeatureFlags.get(service).createFiles())
+                        fileCreationEnabled = personalTask && FeatureFlags.get(service).createFiles())
                     AgentLoop(model, childTools, basePrompt, maxSteps = childSpec.stepBudget ?: AgentLoop.UNLIMITED_STEPS,
                         // 子任务跟着询问 / 自主;询问时它也过关卡,子任务里花钱的一步一律不做
                         confirmations = runApproval.gate(), approvals = runApproval, autonomous = runApproval.startedAutonomous,
@@ -971,7 +987,7 @@ class TaskRun(
             ).also { children = it } else null
             // 自身端口:只给手机上、有用户的 UI 主任务;子任务、条件检查、定时、渠道、MCP 都没有。
             // 状态只读工具一直给;操作类工具等用户打开「允许 Qusin 操作自己的界面」。
-            val selfPort = if (provenance.origin == RunOrigin.Ui && !conditionCheck) {
+            val selfPort = if (!personalTask && provenance.origin == RunOrigin.Ui && !conditionCheck) {
                 (service.application as? QusinApp)?.let { app -> com.wangzan101.qusin.self.AndroidSelfPort(app, conversationId, key) }
             } else null
             val tools = toolDispatcher(privatePhone, model.capabilities.vision, catalog, recordFrames = true,
@@ -980,20 +996,20 @@ class TaskRun(
                         sink.event(RunEvent.State(System.currentTimeMillis(), "vision_fallback", "${from.name} -> ${to.name}"))
                     })
                 },
-                smsLogin = if (provenance.origin == RunOrigin.Ui && !conditionCheck && !runSpec.readOnly) {
+                smsLogin = if (!personalTask && provenance.origin == RunOrigin.Ui && !conditionCheck && !runSpec.readOnly) {
                     com.wangzan101.qusin.cap.phone.sms.AndroidSmsLogin(service, phoneServices.smsLogin, appAccess,
                         accessedPhone, privatePhone) { phone?.screen }.also { smsLogin = it }
                 } else null,
                 phoneCalls = (service.application as QusinApp).callPort.takeIf {
-                    !conditionCheck && (service.application as QusinApp).calls.settings.state.value.enabled
+                    !personalTask && !conditionCheck && (service.application as QusinApp).calls.settings.state.value.enabled
                 },
                 // 设置里允许 Qusin 改自己时,才把 settings_list、settings_set 发给模型
-                selfConfig = if (FeatureFlags.get(service).selfConfig()) {
+                selfConfig = if (!personalTask && FeatureFlags.get(service).selfConfig()) {
                     com.wangzan101.qusin.settings.SelfConfigImpl(FeatureFlags.get(service))
                 } else null,
                 stableRefs = speed.inlineScreen, inlineScreen = speed.inlineScreen,
                 adaptiveVision = speed.adaptiveVision,
-                fileCreationEnabled = FeatureFlags.get(service).createFiles(),
+                fileCreationEnabled = personalTask && FeatureFlags.get(service).createFiles(),
                 deepLinks = speed.deepLinks, memory = memory, profile = if (memory != null) memoryRuntime.profile() else null,
                 taskMemory = taskMemory,
                 utterances = utterances, conversationId = conversationId,
@@ -1012,7 +1028,7 @@ class TaskRun(
                 workspacePath = web?.let { { p: String -> sandbox.uploadCheck(workspaceKey, p) } },
                 // 同项目对话共用 p:<projectId>,其余按对话隔离
                 sandbox = sandbox, workspace = { workspaceKey.wire },
-                deviceFiles = if (provenance.origin == RunOrigin.Ui && !conditionCheck && FeatureFlags.get(service).deviceFiles()) {
+                deviceFiles = if (!personalTask && provenance.origin == RunOrigin.Ui && !conditionCheck && FeatureFlags.get(service).deviceFiles()) {
                     AndroidDeviceFiles(phoneServices.hub, com.wangzan101.qusin.cap.sandbox.SandboxDirs(service), sandbox,
                         com.wangzan101.qusin.settings.DeviceDirectoryStore.get(service), DeviceImportStore.get(service),
                         resolveWorkspace = { workspaceKey }, conversationIdFor = { conversationId })

@@ -7,9 +7,9 @@ terms: ["DOCX", "ODT", "RTF", "XLSX", "ODS", "CSV", "TSV", "PPTX", "PDF", "TXT",
 ---
 ## Phạm vi
 
-Dùng kỹ năng này khi người dùng yêu cầu tạo, chỉnh sửa, chuyển đổi, đóng gói hoặc xuất một tệp có thể lưu, chia sẻ hay in. Áp dụng cho cả Personal và Work. Personal chỉ chuyển yêu cầu tạo tệp sang tác vụ Work khi công tắc **Tạo file** trong Cài đặt đang bật. Nếu công tắc tắt, không tạo hoặc xuất tệp; giải thích cách bật lại.
+Dùng kỹ năng này khi người dùng đang ở mục **Cá nhân** và yêu cầu tạo, chỉnh sửa, chuyển đổi, đóng gói hoặc xuất một tệp có thể lưu, chia sẻ hay in. Chỉ tạo tệp trong workspace của tác vụ thuộc Cá nhân. Tuyệt đối không tạo hoặc xuất tệp trong mục **Công việc**. Công việc dành cho các yêu cầu điều khiển thiết bị/điện thoại. Nếu công tắc **Tạo file** trong Cài đặt tắt, không tạo hoặc xuất tệp; giải thích cách bật lại. Các yêu cầu tạo tệp không được chuyển từ Cá nhân sang Công việc.
 
-Luôn dùng workspace của cuộc trò chuyện hiện tại. Đặt tệp hoàn chỉnh trong `/workspace/out/`; tệp nguồn tải lên nằm trong `/workspace/inbox/` và không được ghi đè.
+Luôn dùng workspace cá nhân của tác vụ hiện tại. Đặt tệp hoàn chỉnh trong `/workspace/out/`; tệp nguồn người dùng tải lên nằm trong `/workspace/inbox/` và không được ghi đè. Nếu tác vụ thuộc Công việc, không chạy kỹ năng này và không tạo tệp.
 
 ## Chọn định dạng
 

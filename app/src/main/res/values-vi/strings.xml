@@ -170,9 +170,16 @@
     <string name="drawer_project_actions">Thao tác dự án</string>
     <string name="chat_project_shared">Dự án</string>
     <string name="settings_create_files">Tạo file</string>
-    <string name="settings_create_files_sub">Cho phép Qusin tạo và xuất file trong cả trò chuyện Cá nhân và Công việc</string>
+    <string name="settings_create_files_sub">Chỉ cho phép Qusin tạo và xuất file trong mục Cá nhân. Mục Công việc dùng để điều khiển thiết bị</string>
     <string name="personal_history">Lịch sử trò chuyện</string>
     <string name="personal_new_chat">Tạo hội thoại mới</string>
     <string name="personal_history_empty">Chưa có hội thoại nào</string>
+    <string name="personal_delete_chat">Xoá cuộc trò chuyện</string>
+    <string name="personal_delete_history">Xoá lịch sử</string>
+    <string name="personal_delete_chat_title">Xoá cuộc trò chuyện này?</string>
+    <string name="personal_delete_chat_body">Tin nhắn và tác vụ cá nhân liên quan sẽ bị xoá. Lịch sử ở mục Công việc không bị ảnh hưởng</string>
+    <string name="personal_delete_history_title">Xoá toàn bộ lịch sử Cá nhân?</string>
+    <string name="personal_delete_history_body">Toàn bộ cuộc trò chuyện, tin nhắn và vùng làm việc của tác vụ trong mục Cá nhân sẽ bị xoá. Lịch sử Công việc được giữ nguyên</string>
+    <string name="personal_attachment_only_prompt">hãy xem các tệp và ảnh đính kèm, rồi hỗ trợ tui xử lý nội dung bên trong</string>
     <string name="personal_untitled_chat">Hội thoại mới</string>
 </resources>

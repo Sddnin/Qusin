@@ -170,7 +170,7 @@
     <string name="drawer_project_actions">Proje işlemleri</string>
     <string name="chat_project_shared">Proje</string>
     <string name="settings_create_files">Dosya oluştur</string>
-    <string name="settings_create_files_sub">Qusin’in Kişisel ve İş sohbetlerinde dosya oluşturmasına ve dışa aktarmasına izin ver</string>
+    <string name="settings_create_files_sub">Dosya oluşturma ve dışa aktarmaya yalnızca Kişisel sohbetlerde izin ver. İş sohbetleri cihazı kontrol etmek içindir.</string>
     <string name="personal_history">Sohbet geçmişi</string>
     <string name="personal_new_chat">Yeni konuşma</string>
     <string name="personal_history_empty">Henüz konuşma yok</string>

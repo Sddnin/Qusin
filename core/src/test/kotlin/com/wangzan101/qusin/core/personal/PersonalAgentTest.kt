@@ -18,8 +18,13 @@ class PersonalAgentTest {
     }
     private class Actions : PersonalActions {
         val started = mutableListOf<Pair<String, String>>()
+        val startedAttachments = mutableListOf<List<PersonalAttachment>>()
         val revised = mutableListOf<Pair<String, String>>()
         override fun start(conversationId: String, goal: String) { started += conversationId to goal }
+        override suspend fun startWithAttachments(conversationId: String, goal: String, attachments: List<PersonalAttachment>) {
+            started += conversationId to goal
+            startedAttachments += attachments
+        }
         override fun revise(conversationId: String, instruction: String): String { revised += conversationId to instruction; return "已补充" }
         override fun cancel(conversationId: String) = "已请求停止"
         override fun remember(text: String, quote: String) = "已记住"
@@ -96,6 +101,104 @@ class PersonalAgentTest {
         assertTrue(actions.started.isEmpty())
         assertTrue(store.state.value.tasks.isEmpty())
         assertTrue(store.state.value.messages.last().text.contains("关闭"))
+    }
+
+
+    @Test fun deviceControlIsHandedOffToWorkInsteadOfCreatingPersonalTask() = runTest {
+        val store = Store()
+        val actions = Actions()
+        var invocation = 0
+        val agent = PersonalAgent(store, backgroundScope, { Model {
+            if (invocation++ == 0) call("handoff", "handoff_to_work", """{"instruction":"Mở ứng dụng Cài đặt trên điện thoại"}""")
+            else text("Đã chuyển sang Công việc")
+        } }, actions)
+        agent.send("mở ứng dụng cài đặt trên điện thoại")
+        runCurrent()
+        assertEquals("Mở ứng dụng Cài đặt trên điện thoại", agent.workHandoff.value)
+        assertTrue(actions.started.isEmpty())
+        assertTrue(store.state.value.tasks.isEmpty())
+    }
+
+    @Test fun deviceControlGoalCannotBeLaunchedAsPersonalTaskEvenIfModelDelegatesIt() = runTest {
+        val store = Store()
+        val actions = Actions()
+        var invocation = 0
+        val agent = PersonalAgent(store, backgroundScope, { Model {
+            if (invocation++ == 0) call("wrong-route", "delegate_task", """{"title":"Open settings","goal":"Mở ứng dụng Cài đặt trên điện thoại"}""")
+            else text("Yêu cầu điều khiển đã được chuyển sang Công việc")
+        } }, actions)
+        agent.send("mở ứng dụng cài đặt trên điện thoại")
+        runCurrent()
+        assertEquals("Mở ứng dụng Cài đặt trên điện thoại", agent.workHandoff.value)
+        assertTrue(actions.started.isEmpty())
+        assertTrue(store.state.value.tasks.isEmpty())
+    }
+
+    @Test fun clearingHistoryRemovesAllPersonalThreadsAndReturnsTheirTaskRuns() {
+        var next = 0
+        val store = Store(PersonalState(
+            messages = listOf(PersonalMessage("m1", "user", "one", 1L, threadId = "main")),
+            tasks = listOf(PersonalTask("t1", "personal-run-1", "one", "goal", "m1", 1L)),
+            conversations = listOf(PersonalConversation("main")),
+            activeConversationId = "main",
+        ))
+        val agent = PersonalAgent(store, backgroundScope, { null }, Actions(), ids = { "personal-new-${++next}" })
+        assertEquals(listOf("personal-run-1"), agent.clearHistory())
+        assertTrue(store.state.value.messages.isEmpty())
+        assertTrue(store.state.value.tasks.isEmpty())
+        assertEquals(listOf("personal-new-1"), store.state.value.conversations.map { it.id })
+        assertEquals("personal-new-1", store.state.value.activeConversationId)
+    }
+
+    @Test fun attachmentMetadataIsPassedToPersonalTaskAndPersistedWithMessage() = runTest {
+        val store = Store()
+        val actions = Actions()
+        val attachment = PersonalAttachment("content://provider/file/1", "brief.pdf", 2048L, false)
+        var callMade = false
+        val agent = PersonalAgent(store, backgroundScope, { Model {
+            if (!callMade) {
+                callMade = true
+                call("attach-task", "delegate_task", """{"title":"Đọc tài liệu","goal":"Đọc brief.pdf và tóm tắt nội dung"}""")
+            } else text("Đã nhận tài liệu")
+        } }, actions)
+        agent.send("Tóm tắt tài liệu này", listOf(attachment))
+        runCurrent()
+        assertEquals(listOf(attachment), store.state.value.messages.first { it.role == "user" }.attachments)
+        assertEquals(listOf(attachment), actions.startedAttachments.single())
+        assertTrue(actions.started.single().second.contains("brief.pdf"))
+    }
+
+    @Test fun deletingPersonalConversationRemovesItsMessagesAndTasksOnly() {
+        var next = 0
+        val taskA = PersonalTask("task-a", "personal-a-run", "a", "goal", "m-a", 1L, personalThreadId = "a")
+        val taskB = PersonalTask("task-b", "personal-b-run", "b", "goal", "m-b", 2L, personalThreadId = "b")
+        val store = Store(PersonalState(
+            messages = listOf(PersonalMessage("m-a", "user", "a", 1L, threadId = "a"), PersonalMessage("m-b", "user", "b", 2L, threadId = "b")),
+            tasks = listOf(taskA, taskB),
+            conversations = listOf(PersonalConversation("a"), PersonalConversation("b")),
+            activeConversationId = "a",
+        ))
+        val agent = PersonalAgent(store, backgroundScope, { null }, Actions(), ids = { "new-${++next}" })
+        assertEquals(listOf("personal-a-run"), agent.deleteConversation("a"))
+        assertEquals("new-1", store.state.value.activeConversationId)
+        assertEquals(listOf("b"), store.state.value.conversations.map { it.id })
+        assertEquals(listOf("b"), store.state.value.messages.map { it.text })
+        assertEquals(listOf("task-b"), store.state.value.tasks.map { it.id })
+    }
+
+    @Test fun enabledPersonalFileCreationDelegatesInsidePersonalFlow() = runTest {
+        val store = Store()
+        val actions = Actions()
+        var invocation = 0
+        val agent = PersonalAgent(store, backgroundScope, { Model {
+            if (invocation++ == 0) call("file-task", "delegate_task", """{"title":"Tạo PDF","goal":"Create a PDF report and export the file"}""")
+            else text("Tôi đã bắt đầu tạo PDF trong mục Cá nhân")
+        } }, actions, fileCreationEnabled = { true })
+        agent.send("tạo file PDF báo cáo")
+        runCurrent()
+        assertEquals(1, actions.started.size)
+        assertTrue(actions.started.single().first.isNotBlank())
+        assertEquals(1, store.state.value.tasks.size)
     }
 
     @Test fun personalAssistantMatchesTheLatestUserLanguageInsteadOfDefaultingToChinese() = runTest {

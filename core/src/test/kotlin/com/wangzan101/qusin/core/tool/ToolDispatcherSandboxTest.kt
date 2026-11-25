@@ -27,6 +27,8 @@ import java.io.File
 import com.wangzan101.qusin.core.cap.sandbox.SandboxTools
 import com.wangzan101.qusin.core.cap.sandbox.SearchLimits
 import com.wangzan101.qusin.core.assembly.toolDispatcher
+import com.wangzan101.qusin.core.run.RunId
+import com.wangzan101.qusin.core.run.RunSpec
 import com.wangzan101.qusin.core.vision.JvmTestImageOps
 import com.wangzan101.qusin.core.vision.VisionService
 import com.wangzan101.qusin.core.vision.says
@@ -54,6 +56,35 @@ class ToolDispatcherSandboxTest {
             sb.status = s
             assertEquals("$s", SANDBOX_NAMES, dispatcher().definitions().map { it.name }.filter { it in SANDBOX_NAMES }.toSet())
         }
+    }
+
+    @Test fun personalCanCreateFilesButWorkCannotAccessSandboxOrFileTools() = runTest {
+        val personal = toolDispatcher(
+            FakeScreen(), false, sandbox = sb, workspace = { "personal-workspace" },
+            runSpec = RunSpec(RunId("personal-run"), "create a report", "personal-run", capabilities = setOf("web", "sandbox")),
+            fileCreationEnabled = true,
+        )
+        val personalNames = personal.definitions().map { it.name }.toSet()
+        assertTrue("Personal should expose file creation", "write_file" in personalNames)
+        assertTrue("Personal should expose file export", "share_file" in personalNames)
+        assertTrue("Personal should expose its sandbox", "run_command" in personalNames)
+        val created = personal.execute(call("write_file", buildJsonObject {
+            put("path", "out/personal-check.txt")
+            put("content", "personal file creation works")
+        })).content
+        assertEquals("true", created.s("ok"))
+        assertEquals("personal file creation works", File(sb.workspaceDir("personal-workspace"), "out/personal-check.txt").readText())
+
+        val work = toolDispatcher(
+            FakeScreen(), false, sandbox = sb, workspace = { "work-workspace" },
+            runSpec = RunSpec(RunId("work-run"), "open device settings", "work-run", capabilities = setOf("phone", "calls")),
+            fileCreationEnabled = false,
+        )
+        val workNames = work.definitions().map { it.name }.toSet()
+        assertFalse("Work must not expose file creation", "write_file" in workNames)
+        assertFalse("Work must not expose file export", "share_file" in workNames)
+        assertFalse("Work must not expose shell access to create files", "run_command" in workNames)
+        assertFalse("Work must not expose the sandbox reader", "read_file" in workNames)
     }
 
     @Test fun toolWaitsForPreparation() = runTest {
