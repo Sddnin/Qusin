@@ -157,5 +157,12 @@
     <string name="personal_history">聊天記錄</string>
     <string name="personal_new_chat">新增對話</string>
     <string name="personal_history_empty">尚無對話</string>
+    <string name="personal_attachment_only_prompt">請檢視附加的檔案和圖片，並協助我處理其中的內容。</string>
+    <string name="personal_delete_chat">刪除聊天</string>
+    <string name="personal_delete_chat_body">這會移除其中的訊息和個人任務記錄，不會影響工作聊天。</string>
+    <string name="personal_delete_chat_title">要刪除此對話嗎？</string>
+    <string name="personal_delete_history">清除記錄</string>
+    <string name="personal_delete_history_body">所有個人對話、訊息及相關任務工作區都會刪除，工作記錄會保留。</string>
+    <string name="personal_delete_history_title">要清除所有個人記錄嗎？</string>
     <string name="personal_untitled_chat">新對話</string>
 </resources>

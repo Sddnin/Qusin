@@ -157,5 +157,12 @@
     <string name="personal_history">チャット履歴</string>
     <string name="personal_new_chat">新しい会話</string>
     <string name="personal_history_empty">会話はまだありません</string>
+    <string name="personal_attachment_only_prompt">添付されたファイルや画像を確認し、その内容の処理を手伝ってください。</string>
+    <string name="personal_delete_chat">チャットを削除</string>
+    <string name="personal_delete_chat_body">この会話のメッセージと関連する個人タスクの記録を削除します。仕事のチャットには影響しません。</string>
+    <string name="personal_delete_chat_title">この会話を削除しますか？</string>
+    <string name="personal_delete_history">履歴を消去</string>
+    <string name="personal_delete_history_body">個人用のすべての会話、メッセージ、関連タスクの作業領域を削除します。仕事の履歴はそのまま残ります。</string>
+    <string name="personal_delete_history_title">個人用の履歴をすべて消去しますか？</string>
     <string name="personal_untitled_chat">新しい会話</string>
 </resources>

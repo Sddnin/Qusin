@@ -176,7 +176,11 @@ jobs:
           if ! keytool -list -keystore "$KEYSTORE_PATH" -storetype "$KEYSTORE_TYPE" \
               -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" \
               > "$RUNNER_TEMP/keystore-check.txt" 2>&1; then
-            echo "::error::Keystore validation failed. Check that ANDROID_KEYSTORE_BASE64 is the base64 of the original keystore, ANDROID_KEYSTORE_PASSWORD is its store password, and ANDROID_KEY_ALIAS exists."
+            if grep -Eqi 'EOFException|lengthTag.*too big|DerInputStream' "$RUNNER_TEMP/keystore-check.txt"; then
+              echo "::error::Decoded keystore is truncated or corrupt (keytool could not read its structure). Recreate ANDROID_KEYSTORE_BASE64 from the ORIGINAL release keystore; do not create a new signing key."
+            else
+              echo "::error::Keystore validation failed. Check the original ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, and ANDROID_KEY_ALIAS."
+            fi
             cat "$RUNNER_TEMP/keystore-check.txt"
             exit 1
           fi

@@ -234,8 +234,10 @@ fun toolDispatcher(
             override fun open(spec: RunSpec) = PluginCapability(pluginTools.map { PluginScriptTool(it, runner, pluginArgsDir) })
         }
     }) + mcpServers.map(::McpClientProvider)
-    return RunAssembler(providers).assemble(runSpec, config, stableRefs, FORMER_PREFIX, RENAMED, RETIRED, MOVED)
+    return RunAssembler(providers)
+        .assemble(runSpec, config, stableRefs, FORMER_PREFIX, RENAMED, RETIRED, MOVED)
 }
+
 
 /** 改名前各能力工具名的前缀:手机的没有前缀,网页的是 browser_。 */
 private val FORMER_PREFIX = mapOf(PHONE to "", WEB to "browser_")

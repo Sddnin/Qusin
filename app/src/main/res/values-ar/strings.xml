@@ -157,5 +157,12 @@
     <string name="personal_history">سجل المحادثات</string>
     <string name="personal_new_chat">محادثة جديدة</string>
     <string name="personal_history_empty">لا توجد محادثات بعد</string>
+    <string name="personal_attachment_only_prompt">يرجى مراجعة الملفات والصور المرفقة ثم مساعدتي في محتواها.</string>
+    <string name="personal_delete_chat">حذف المحادثة</string>
+    <string name="personal_delete_chat_body">سيؤدي ذلك إلى حذف رسائلها وسجلات المهام الشخصية المرتبطة بها. لن تتأثر محادثات العمل.</string>
+    <string name="personal_delete_chat_title">هل تريد حذف هذه المحادثة؟</string>
+    <string name="personal_delete_history">مسح السجل</string>
+    <string name="personal_delete_history_body">سيتم حذف جميع محادثات «شخصي» ورسائلها ومساحات عمل المهام المرتبطة بها. سيبقى سجل العمل دون تغيير.</string>
+    <string name="personal_delete_history_title">هل تريد مسح سجل «شخصي» بالكامل؟</string>
     <string name="personal_untitled_chat">محادثة جديدة</string>
 </resources>

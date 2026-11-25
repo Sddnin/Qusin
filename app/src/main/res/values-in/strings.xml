@@ -157,5 +157,12 @@
     <string name="personal_history">Riwayat chat</string>
     <string name="personal_new_chat">Percakapan baru</string>
     <string name="personal_history_empty">Belum ada percakapan</string>
+    <string name="personal_attachment_only_prompt">Tinjau file dan gambar terlampir, lalu bantu saya menangani isinya.</string>
+    <string name="personal_delete_chat">Hapus chat</string>
+    <string name="personal_delete_chat_body">Pesan dan catatan tugas pribadi dalam percakapan ini akan dihapus. Chat di bagian Kerja tidak akan terpengaruh.</string>
+    <string name="personal_delete_chat_title">Hapus percakapan ini?</string>
+    <string name="personal_delete_history">Bersihkan riwayat</string>
+    <string name="personal_delete_history_body">Semua percakapan Pribadi, pesan, dan ruang kerja tugas terkait akan dihapus. Riwayat Kerja akan tetap tersimpan.</string>
+    <string name="personal_delete_history_title">Hapus seluruh riwayat Pribadi?</string>
     <string name="personal_untitled_chat">Percakapan baru</string>
 </resources>

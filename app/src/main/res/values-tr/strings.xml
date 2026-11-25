@@ -174,5 +174,12 @@
     <string name="personal_history">Sohbet geçmişi</string>
     <string name="personal_new_chat">Yeni konuşma</string>
     <string name="personal_history_empty">Henüz konuşma yok</string>
+    <string name="personal_attachment_only_prompt">Lütfen ekli dosyaları ve görselleri inceleyip içerikleriyle ilgili bana yardımcı ol.</string>
+    <string name="personal_delete_chat">Sohbeti sil</string>
+    <string name="personal_delete_chat_body">Bu işlem, konuşmanın mesajlarını ve kişisel görev kayıtlarını siler. İş bölümündeki sohbetler etkilenmez.</string>
+    <string name="personal_delete_chat_title">Bu konuşma silinsin mi?</string>
+    <string name="personal_delete_history">Geçmişi temizle</string>
+    <string name="personal_delete_history_body">Tüm Kişisel konuşmalar, mesajlar ve bağlantılı görev çalışma alanları silinecek. İş geçmişi korunacak.</string>
+    <string name="personal_delete_history_title">Tüm Kişisel geçmiş temizlensin mi?</string>
     <string name="personal_untitled_chat">Yeni konuşma</string>
 </resources>

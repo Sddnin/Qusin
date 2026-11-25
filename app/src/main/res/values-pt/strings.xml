@@ -157,5 +157,12 @@
     <string name="personal_history">Histórico de conversas</string>
     <string name="personal_new_chat">Nova conversa</string>
     <string name="personal_history_empty">Ainda não há conversas</string>
+    <string name="personal_attachment_only_prompt">Analise os arquivos e as imagens anexados e ajude-me com o conteúdo deles.</string>
+    <string name="personal_delete_chat">Excluir conversa</string>
+    <string name="personal_delete_chat_body">Isso remove as mensagens e os registros de tarefas pessoais desta conversa. As conversas de Trabalho não serão afetadas.</string>
+    <string name="personal_delete_chat_title">Excluir esta conversa?</string>
+    <string name="personal_delete_history">Limpar histórico</string>
+    <string name="personal_delete_history_body">Todas as conversas Pessoais, mensagens e áreas de trabalho das tarefas vinculadas serão excluídas. O histórico de Trabalho será mantido.</string>
+    <string name="personal_delete_history_title">Limpar todo o histórico Pessoal?</string>
     <string name="personal_untitled_chat">Nova conversa</string>
 </resources>

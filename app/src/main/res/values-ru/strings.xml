@@ -157,5 +157,12 @@
     <string name="personal_history">История чатов</string>
     <string name="personal_new_chat">Новый диалог</string>
     <string name="personal_history_empty">Диалогов пока нет</string>
+    <string name="personal_attachment_only_prompt">Просмотри прикреплённые файлы и изображения и помоги мне с их содержимым.</string>
+    <string name="personal_delete_chat">Удалить чат</string>
+    <string name="personal_delete_chat_body">Сообщения и записи личных задач в этом чате будут удалены. Рабочие чаты не затрагиваются.</string>
+    <string name="personal_delete_chat_title">Удалить этот разговор?</string>
+    <string name="personal_delete_history">Очистить историю</string>
+    <string name="personal_delete_history_body">Все личные разговоры, сообщения и связанные рабочие области задач будут удалены. Рабочая история останется без изменений.</string>
+    <string name="personal_delete_history_title">Очистить всю личную историю?</string>
     <string name="personal_untitled_chat">Новый диалог</string>
 </resources>

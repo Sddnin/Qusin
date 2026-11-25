@@ -158,5 +158,12 @@
     <string name="personal_history">تاریخچه گفتگو</string>
     <string name="personal_new_chat">گفتگوی جدید</string>
     <string name="personal_history_empty">هنوز گفتگویی وجود ندارد</string>
+    <string name="personal_attachment_only_prompt">لطفاً فایل‌ها و تصاویر پیوست‌شده را بررسی کن و در پردازش محتوای آن‌ها کمکم کن.</string>
+    <string name="personal_delete_chat">حذف گفتگو</string>
+    <string name="personal_delete_chat_body">پیام‌ها و سوابق کارهای شخصی این گفتگو حذف می‌شوند. گفتگوهای بخش کار تحت تأثیر قرار نمی‌گیرند.</string>
+    <string name="personal_delete_chat_title">این گفتگو حذف شود؟</string>
+    <string name="personal_delete_history">پاک کردن سابقه</string>
+    <string name="personal_delete_history_body">همه گفتگوهای شخصی، پیام‌ها و فضاهای کاریِ کارهای مرتبط حذف می‌شوند. سابقه بخش کار دست‌نخورده می‌ماند.</string>
+    <string name="personal_delete_history_title">همه سابقه شخصی پاک شود؟</string>
     <string name="personal_untitled_chat">گفتگوی جدید</string>
 </resources>

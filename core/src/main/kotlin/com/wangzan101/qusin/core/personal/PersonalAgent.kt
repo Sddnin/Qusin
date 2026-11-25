@@ -209,9 +209,11 @@ class PersonalAgent(
             if (s.conversations.none { it.id == id }) return@update s
             taskConversationIds = s.tasks.filter { it.personalThreadId == id }.map { it.conversationId }
             val remaining = s.conversations.filterNot { it.id == id }
-            val nextId = if (s.activeConversationId == id) ids() else s.activeConversationId
-            val conversations = if (s.activeConversationId == id && remaining.none { it.id == nextId }) {
-                remaining + PersonalConversation(nextId, createdAt = clock(), updatedAt = clock())
+            val deletingActive = s.activeConversationId == id
+            val nextId = if (!deletingActive) s.activeConversationId
+                else remaining.maxByOrNull { it.updatedAt }?.id ?: ids()
+            val conversations = if (deletingActive && remaining.isEmpty()) {
+                listOf(PersonalConversation(nextId, createdAt = clock(), updatedAt = clock()))
             } else remaining
             s.copy(
                 conversations = conversations,

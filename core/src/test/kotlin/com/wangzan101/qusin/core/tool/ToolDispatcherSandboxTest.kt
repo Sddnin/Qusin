@@ -65,6 +65,8 @@ class ToolDispatcherSandboxTest {
             fileCreationEnabled = true,
         )
         val personalNames = personal.definitions().map { it.name }.toSet()
+        assertEquals("internal", personal.surface)
+        assertFalse("Personal must not expose phone controls", personalNames.any { it.startsWith("phone_") })
         assertTrue("Personal should expose file creation", "write_file" in personalNames)
         assertTrue("Personal should expose file export", "share_file" in personalNames)
         assertTrue("Personal should expose its sandbox", "run_command" in personalNames)

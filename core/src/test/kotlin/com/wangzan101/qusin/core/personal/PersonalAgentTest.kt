@@ -180,7 +180,7 @@ class PersonalAgentTest {
         ))
         val agent = PersonalAgent(store, backgroundScope, { null }, Actions(), ids = { "new-${++next}" })
         assertEquals(listOf("personal-a-run"), agent.deleteConversation("a"))
-        assertEquals("new-1", store.state.value.activeConversationId)
+        assertEquals("b", store.state.value.activeConversationId)
         assertEquals(listOf("b"), store.state.value.conversations.map { it.id })
         assertEquals(listOf("b"), store.state.value.messages.map { it.text })
         assertEquals(listOf("task-b"), store.state.value.tasks.map { it.id })
