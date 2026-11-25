@@ -134,7 +134,7 @@ class PersonalAgentTest {
         assertTrue(store.state.value.tasks.isEmpty())
     }
 
-    @Test fun clearingHistoryRemovesAllPersonalThreadsAndReturnsTheirTaskRuns() {
+    @Test fun clearingHistoryRemovesAllPersonalThreadsAndReturnsTheirTaskRuns() = runTest {
         var next = 0
         val store = Store(PersonalState(
             messages = listOf(PersonalMessage("m1", "user", "one", 1L, threadId = "main")),
@@ -168,7 +168,7 @@ class PersonalAgentTest {
         assertTrue(actions.started.single().second.contains("brief.pdf"))
     }
 
-    @Test fun deletingPersonalConversationRemovesItsMessagesAndTasksOnly() {
+    @Test fun deletingPersonalConversationRemovesItsMessagesAndTasksOnly() = runTest {
         var next = 0
         val taskA = PersonalTask("task-a", "personal-a-run", "a", "goal", "m-a", 1L, personalThreadId = "a")
         val taskB = PersonalTask("task-b", "personal-b-run", "b", "goal", "m-b", 2L, personalThreadId = "b")

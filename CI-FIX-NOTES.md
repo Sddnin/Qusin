@@ -59,3 +59,19 @@ If that size is still 133, the filter comes from `.git/info/attributes`, which b
 - `ci.yml` has a step that, when the commit holds a pointer, asks GitHub's LFS batch API for the object, checks its sha256 and replaces the pointer (the first attempt, `git lfs pull`, downloaded nothing in run `b731682`). If GitHub has no such object the job log prints the server's answer: then the object was never uploaded and the real file must be committed. GitHub LFS free bandwidth is about 1 GB/month, so each CI run costs about 58 MB; recommitting the real file is still the lasting fix.
 - New workflow `.github/workflows/update-snapshots.yml` (Actions → Update snapshots → Run workflow) regenerates the core snapshots in CI and pushes them to a branch `ci/update-snapshots-<run_id>`, not to main. Review Files changed there before merging.
 - The `core` job now has a step `Show failed test diffs` (runs on failure) that writes each failed test's expected/actual message to the run's Summary page, so the snapshot differences can be read on a phone without downloading `core-test-results`.
+
+## Round 3 — PersonalAgentTest scope and Android signing validation
+
+Root causes and changes:
+
+- `core/build.gradle.kts` already declares `testImplementation(libs.kotlinx.coroutines.test)`, and `gradle/libs.versions.toml` pins it to `1.10.2` (above the `1.7.0` minimum for `TestScope.backgroundScope`). No dependency bump is needed. The two affected JUnit tests in `PersonalAgentTest` were ordinary test functions, not `runTest` scopes; both now use `= runTest { ... }` so `backgroundScope` resolves on the `TestScope` receiver.
+- The Android workflow previously checked only that the decoded keystore was non-empty. It now strips pasted whitespace from the Base64 secret, decodes it, identifies JKS vs PKCS12 from the file header, and validates the store password, alias, and private-key password with `keytool` before Gradle runs. It exports both the path and detected type to the Gradle process.
+- `app/build.gradle.kts` now sets the signing config's `storeType` from `ANDROID_KEYSTORE_TYPE`, so a valid JKS or PKCS12 file is opened using its actual format.
+
+Verification:
+
+- Parsed `.github/workflows/ci.yml` as YAML.
+- Executed the actual decode/validation script extracted from that workflow against generated JKS and PKCS12 test keystores: both passed. A deliberately double-Base64-encoded keystore was rejected before packaging.
+- `./gradlew :core:test --stacktrace` was attempted, but Gradle 8.11.1 could not be downloaded because this environment cannot resolve `services.gradle.org` (`UnknownHostException`). The Kotlin test suite and Android Gradle build therefore remain unexecuted here.
+
+Important for the repository owner: the workflow can diagnose a corrupt or incorrectly configured GitHub Secret, but it cannot reconstruct the original signing identity. Set `ANDROID_KEYSTORE_BASE64` from the **existing original release keystore** (Linux: `base64 -w0 release.jks`), and set its matching `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, and `ANDROID_KEY_PASSWORD`. Do not generate a new keystore if existing installed APKs must remain update-compatible.

@@ -22,6 +22,8 @@ android {
         if (!ciKeystorePath.isNullOrBlank()) {
             create("ciRelease") {
                 storeFile = file(ciKeystorePath)
+                // CI detects the actual keystore container (JKS or PKCS12) before Gradle starts.
+                storeType = System.getenv("ANDROID_KEYSTORE_TYPE") ?: "JKS"
                 storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("ANDROID_KEY_ALIAS")
                 keyPassword = System.getenv("ANDROID_KEY_PASSWORD")

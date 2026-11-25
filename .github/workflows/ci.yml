@@ -139,18 +139,63 @@ jobs:
         with:
           cache-provider: basic
       # PR 不暴露签名密钥；push/main 和手动运行才从 Actions Secrets 解码持久化 keystore。
-      - name: Decode release keystore
+      - name: Decode and validate release keystore
         if: github.event_name != 'pull_request'
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         shell: bash
         run: |
           set -euo pipefail
           test -n "$ANDROID_KEYSTORE_BASE64" || { echo "::error::Missing ANDROID_KEYSTORE_BASE64 secret"; exit 1; }
-          KEYSTORE_PATH="$RUNNER_TEMP/qusin-release.jks"
-          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_PATH"
-          test -s "$KEYSTORE_PATH"
-          echo "ANDROID_KEYSTORE_PATH=$KEYSTORE_PATH" >> "$GITHUB_ENV"
+          test -n "$ANDROID_KEYSTORE_PASSWORD" || { echo "::error::Missing ANDROID_KEYSTORE_PASSWORD secret"; exit 1; }
+          test -n "$ANDROID_KEY_ALIAS" || { echo "::error::Missing ANDROID_KEY_ALIAS secret"; exit 1; }
+          test -n "$ANDROID_KEY_PASSWORD" || { echo "::error::Missing ANDROID_KEY_PASSWORD secret"; exit 1; }
+
+          KEYSTORE_PATH="$RUNNER_TEMP/qusin-release.keystore"
+          # Accept a one-line secret or a pasted value containing line breaks/spaces.
+          if ! printf '%s' "$ANDROID_KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > "$KEYSTORE_PATH"; then
+            echo "::error::ANDROID_KEYSTORE_BASE64 is not valid base64. Recreate it from the original release keystore (Linux: base64 -w0 release.jks)."
+            exit 1
+          fi
+          test -s "$KEYSTORE_PATH" || { echo "::error::Decoded keystore is empty"; exit 1; }
+
+          # JKS starts with FEEDFEED; PKCS12 is an ASN.1 SEQUENCE (30...).
+          magic=$(od -An -tx1 -N4 "$KEYSTORE_PATH" | tr -d '[:space:]')
+          case "$magic" in
+            feedfeed) KEYSTORE_TYPE=JKS ;;
+            30*) KEYSTORE_TYPE=PKCS12 ;;
+            *)
+              echo "::error::Decoded keystore has an unknown file signature ($magic). The secret may be truncated, double-base64-encoded, or from the wrong file."
+              exit 1
+              ;;
+          esac
+
+          if ! keytool -list -keystore "$KEYSTORE_PATH" -storetype "$KEYSTORE_TYPE" \
+              -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" \
+              > "$RUNNER_TEMP/keystore-check.txt" 2>&1; then
+            echo "::error::Keystore validation failed. Check that ANDROID_KEYSTORE_BASE64 is the base64 of the original keystore, ANDROID_KEYSTORE_PASSWORD is its store password, and ANDROID_KEY_ALIAS exists."
+            cat "$RUNNER_TEMP/keystore-check.txt"
+            exit 1
+          fi
+
+          # Read the private key too, so a wrong key password fails before Gradle packaging.
+          if ! keytool -certreq -keystore "$KEYSTORE_PATH" -storetype "$KEYSTORE_TYPE" \
+              -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" \
+              -keypass "$ANDROID_KEY_PASSWORD" -file "$RUNNER_TEMP/keystore-check.csr" \
+              > "$RUNNER_TEMP/key-check.txt" 2>&1; then
+            echo "::error::Private-key validation failed. Check ANDROID_KEY_PASSWORD for the selected alias."
+            cat "$RUNNER_TEMP/key-check.txt"
+            exit 1
+          fi
+          rm -f "$RUNNER_TEMP/keystore-check.csr"
+          echo "Validated $KEYSTORE_TYPE keystore, alias, and private-key password (details withheld)."
+          {
+            echo "ANDROID_KEYSTORE_PATH=$KEYSTORE_PATH"
+            echo "ANDROID_KEYSTORE_TYPE=$KEYSTORE_TYPE"
+          } >> "$GITHUB_ENV"
       # assembleDebug 验证单测碰不到的打包路径：31MB 的 rootfs、jniLibs 旧式解压、AIDL、Compose。
       # 编译设备测试以检查设置交互等回归用例；这里没有连接设备，不执行 instrumentation。
       # BundledRuntimeTest 读的是检出后的 rootfs.tar.xz；先把它的大小、哈希、文件头和代码里的常量并排打出来，
