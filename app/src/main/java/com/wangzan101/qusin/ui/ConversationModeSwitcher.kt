@@ -4,9 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -20,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wangzan101.qusin.R
 import com.wangzan101.qusin.ui.theme.QusinTheme
@@ -38,7 +36,7 @@ internal fun ConversationModeSwitcher(
     val selected = if (personal) 0 else 1
     Row(
         modifier.fillMaxWidth()
-            .height(36.dp)
+            .heightIn(min = 42.dp)
             .clip(CircleShape)
             .background(Color(0xFF171719))
             .border(1.dp, QusinTheme.colors.edge.copy(alpha = 0.82f), CircleShape)
@@ -49,7 +47,7 @@ internal fun ConversationModeSwitcher(
         options.forEachIndexed { index, label ->
             val active = index == selected
             Box(
-                Modifier.weight(1f).fillMaxHeight()
+                Modifier.weight(1f).heightIn(min = 36.dp)
                     .clip(CircleShape)
                     .background(if (active) Color(0xFFEAEAEA) else Color.Transparent)
                     .selectable(active, role = Role.Tab) { if (index == 0) onPersonal() else onWork() }
@@ -60,8 +58,8 @@ internal fun ConversationModeSwitcher(
                     label,
                     style = QusinType.Caption.copy(fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold),
                     color = if (active) Color(0xFF171717) else Color(0xFF96969A),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    softWrap = true,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 )
             }
         }

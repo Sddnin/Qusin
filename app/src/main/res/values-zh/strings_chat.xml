@@ -9,7 +9,7 @@
     <string name="chat_greeting_night">夜深了</string>
     <string name="chat_empty_prompt">想让 Qusin 做什么？</string>
     <string name="chat_example_github_star">打开项目的 GitHub 代码库并为项目点星。</string>
-    <string name="chat_example_follow">打开小红书，搜索博主“王赞不赞”，点击关注，然后加入群聊</string>
+    <string name="chat_example_follow">打开小红书，搜索 Qusin 项目并关注项目账号</string>
     <string name="chat_example_group_summary">帮我总结微信群聊，Qusin内测体验群今天都聊了些啥</string>
     <string name="chat_example_alarms">帮我订明天早上9:40、9:50、10:00 的闹钟</string>
     <string name="chat_example_replace_title">替换当前草稿？</string>
@@ -298,4 +298,6 @@
     <string name="chat_audio">音频</string>
     <string name="chat_audio_play">播放</string>
     <string name="chat_audio_stop">停止</string>
+    <string name="chat_empty_ideas_title">从一个想法开始</string>
+    <string name="chat_empty_ideas_hint">点按后添加到草稿</string>
 </resources>

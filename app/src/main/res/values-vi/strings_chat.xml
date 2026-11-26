@@ -9,7 +9,7 @@
     <string name="chat_greeting_night">Muộn rồi nhỉ</string>
     <string name="chat_empty_prompt">Bạn muốn Qusin làm gì?</string>
     <string name="chat_example_github_star">Mở kho mã GitHub của dự án và đánh dấu sao cho dự án.</string>
-    <string name="chat_example_follow">Mở X, tìm Wang Zan (@wangzan101) và theo dõi tài khoản.</string>
+    <string name="chat_example_follow">Mở X, tìm Qusin và theo dõi tài khoản của dự án.</string>
     <string name="chat_example_group_summary">Mở WhatsApp và tóm tắt các tin nhắn nhóm chưa đọc hôm nay, làm nổi bật những tin cần tôi trả lời.</string>
     <string name="chat_example_alarms">Đặt báo thức lúc 9:40, 9:50 và 10:00 sáng mai.</string>
     <string name="chat_example_replace_title">Thay thế bản nháp hiện tại?</string>
@@ -279,7 +279,7 @@ Nhấn một tùy chọn hoặc nhập nội dung bên dưới. %2$s</string>
         <item quantity="other">Không lưu trữ được %1$d cuộc trò chuyện</item>
     </plurals>
     <string name="chat_example_github_star_title">Đánh dấu sao dự án GitHub</string>
-    <string name="chat_example_follow_title">Theo dõi một nhà sáng tạo nội dung</string>
+    <string name="chat_example_follow_title">Theo dõi cập nhật Qusin</string>
     <string name="chat_example_group_summary_title">Tóm tắt cuộc trò chuyện nhóm</string>
     <string name="chat_example_alarms_title">Đặt một số báo thức</string>
     <string name="chat_example_pdf_title">Tóm tắt tệp PDF</string>
@@ -299,4 +299,6 @@ Nhấn một tùy chọn hoặc nhập nội dung bên dưới. %2$s</string>
     <string name="chat_audio">Âm thanh</string>
     <string name="chat_audio_play">Phát</string>
     <string name="chat_audio_stop">Dừng</string>
+    <string name="chat_empty_ideas_title">Bắt đầu với một ý tưởng</string>
+    <string name="chat_empty_ideas_hint">Chạm để thêm vào bản nháp</string>
 </resources>

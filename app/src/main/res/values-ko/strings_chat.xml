@@ -9,7 +9,7 @@
     <string name="chat_greeting_night">늦은 시간이네요</string>
     <string name="chat_empty_prompt">Qusin가 무엇을 할까요?</string>
     <string name="chat_example_github_star">프로젝트의 GitHub 저장소를 열고 별표를 눌러 줘</string>
-    <string name="chat_example_follow">X를 열어 Wang Zan(@wangzan101)을 검색하고 계정을 팔로우해 줘</string>
+    <string name="chat_example_follow">X를 열어 Qusin을 검색하고 프로젝트 계정을 팔로우해 줘</string>
     <string name="chat_example_group_summary">WhatsApp에서 오늘 읽지 않은 메시지를 요약하고 답장이 필요한 내용을 표시해 줘</string>
     <string name="chat_example_alarms">내일 아침 9시 40분, 9시 50분, 10시에 알람을 맞춰 줘</string>
     <string name="chat_example_replace_title">현재 초안을 바꿀까요?</string>
@@ -278,7 +278,7 @@
         <item quantity="other">%1$d개는 보관하지 않음</item>
     </plurals>
     <string name="chat_example_github_star_title">GitHub 프로젝트에 스타 주기</string>
-    <string name="chat_example_follow_title">크리에이터 팔로우</string>
+    <string name="chat_example_follow_title">Qusin 업데이트 팔로우</string>
     <string name="chat_example_group_summary_title">단체 채팅 요약</string>
     <string name="chat_example_alarms_title">알람 몇 개 설정</string>
     <string name="chat_example_pdf_title">PDF 요약</string>
@@ -298,4 +298,6 @@
     <string name="chat_audio">Audio</string>
     <string name="chat_audio_play">Play</string>
     <string name="chat_audio_stop">Stop</string>
+    <string name="chat_empty_ideas_title">아이디어로 시작하기</string>
+    <string name="chat_empty_ideas_hint">눌러서 초안에 추가</string>
 </resources>

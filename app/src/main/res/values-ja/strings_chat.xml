@@ -9,7 +9,7 @@
     <string name="chat_greeting_night">夜更かしですね</string>
     <string name="chat_empty_prompt">Qusin に何をお願いしますか？</string>
     <string name="chat_example_github_star">このプロジェクトの GitHub リポジトリを開いて、スターを付けて</string>
-    <string name="chat_example_follow">X を開いて Wang Zan（@wangzan101）を検索し、アカウントをフォローして</string>
+    <string name="chat_example_follow">X を開いて Qusin を検索し、プロジェクトのアカウントをフォローして</string>
     <string name="chat_example_group_summary">WhatsApp を開いて今日の未読メッセージをまとめ、返信が必要なものを拾って</string>
     <string name="chat_example_alarms">明日の朝 9:40、9:50、10:00 にアラームをセットして</string>
     <string name="chat_example_replace_title">現在の下書きを置き換えますか？</string>
@@ -278,7 +278,7 @@
         <item quantity="other">%1$d 件は未アーカイブ</item>
     </plurals>
     <string name="chat_example_github_star_title">GitHub プロジェクトにスターを付ける</string>
-    <string name="chat_example_follow_title">クリエイターをフォローする</string>
+    <string name="chat_example_follow_title">Qusin の更新をフォローする</string>
     <string name="chat_example_group_summary_title">グループチャットを要約</string>
     <string name="chat_example_alarms_title">アラームをいくつか設定</string>
     <string name="chat_example_pdf_title">PDF を要約</string>
@@ -298,4 +298,6 @@
     <string name="chat_audio">Audio</string>
     <string name="chat_audio_play">Play</string>
     <string name="chat_audio_stop">Stop</string>
+    <string name="chat_empty_ideas_title">アイデアから始める</string>
+    <string name="chat_empty_ideas_hint">タップして下書きに追加</string>
 </resources>

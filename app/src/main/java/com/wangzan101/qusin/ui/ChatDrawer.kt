@@ -660,10 +660,10 @@ private fun ArchiveHeader(count: Int, onBack: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Icon(QusinIcons.Back, null, Modifier.size(16.dp), tint = c.ink2)
+        DirectionalIcon(QusinIcons.Back, null, Modifier.size(16.dp), tint = c.ink2)
         Text(stringResource(R.string.drawer_archived), Modifier.weight(1f), style = SectionText, color = c.ink3)
         if (count > 0) {
-            Text(stringResource(R.string.drawer_archived_count, count), style = QusinType.Hint, color = c.ink3, maxLines = 1, softWrap = false)
+            Text(stringResource(R.string.drawer_archived_count, count), style = QusinType.Hint, color = c.ink3, maxLines = 2, softWrap = true, textAlign = TextAlign.End)
         }
     }
 }
@@ -691,8 +691,8 @@ private fun ArchiveEntry(count: Int, onClick: () -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Icon(QusinIcons.Archive, null, Modifier.size(16.dp), tint = c.ink3)
-        Text(stringResource(R.string.drawer_archived), Modifier.weight(1f), style = QusinType.Body, color = c.ink2, maxLines = 1)
-        Text("$count", Modifier.testTag("drawer-archive-count"), style = QusinType.Hint, color = c.ink3, maxLines = 1, softWrap = false)
+        Text(stringResource(R.string.drawer_archived), Modifier.weight(1f), style = QusinType.Body, color = c.ink2, softWrap = true)
+        Text("$count", Modifier.testTag("drawer-archive-count"), style = QusinType.Hint, color = c.ink3, softWrap = true)
         DirectionalIcon(QusinIcons.Chevron, null, Modifier.size(10.dp), tint = c.ink3)
     }
 }
@@ -704,30 +704,47 @@ private fun SelectBar(
     archived: Boolean, onArchive: () -> Unit, onUnarchive: () -> Unit, onDelete: () -> Unit,
 ) {
     val c = QusinTheme.colors
-    Row(
+    Column(
         Modifier.fillMaxWidth().drawBehind { drawLine(c.hair, Offset(0f, 0f), Offset(size.width, 0f), 0.5.dp.toPx()) }
-            .padding(start = 20.dp, end = 8.dp, top = 2.dp, bottom = 2.dp).testTag("drawer-select-bar"),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp),
+            .padding(horizontal = 12.dp, vertical = 6.dp).testTag("drawer-select-bar"),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        Text(
-            tr(R.string.drawer_selected_count, selectedCount), Modifier.weight(1f),
-            style = QusinType.Label, color = c.ink2, maxLines = 1, softWrap = false,
-        )
-        TextButton(onClick = onSelectAll, modifier = Modifier.testTag("drawer-select-all")) {
-            Text(stringResource(if (allSelected) R.string.drawer_select_none else R.string.drawer_select_all), style = QusinType.Label, color = c.accent)
-        }
-        if (archived) {
-            TextButton(onClick = onUnarchive, enabled = selectedCount > 0, modifier = Modifier.testTag("drawer-unarchive-selected")) {
-                Text(stringResource(R.string.drawer_unarchive), style = QusinType.Label, color = if (selectedCount > 0) c.accent else c.ink3)
+        Text(tr(R.string.drawer_selected_count, selectedCount), style = QusinType.Label, color = c.ink2)
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+            TextButton(
+                onClick = onSelectAll,
+                modifier = Modifier.weight(1f).testTag("drawer-select-all"),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+            ) {
+                Text(stringResource(if (allSelected) R.string.drawer_select_none else R.string.drawer_select_all), style = QusinType.Label, color = c.accent, textAlign = TextAlign.Center, softWrap = true)
             }
-        } else {
-            TextButton(onClick = onArchive, enabled = selectedCount > 0, modifier = Modifier.testTag("drawer-archive-selected")) {
-                Text(stringResource(R.string.drawer_archive), style = QusinType.Label, color = if (selectedCount > 0) c.accent else c.ink3)
+            if (archived) {
+                TextButton(
+                    onClick = onUnarchive,
+                    enabled = selectedCount > 0,
+                    modifier = Modifier.weight(1f).testTag("drawer-unarchive-selected"),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+                ) {
+                    Text(stringResource(R.string.drawer_unarchive), style = QusinType.Label, color = if (selectedCount > 0) c.accent else c.ink3, textAlign = TextAlign.Center, softWrap = true)
+                }
+            } else {
+                TextButton(
+                    onClick = onArchive,
+                    enabled = selectedCount > 0,
+                    modifier = Modifier.weight(1f).testTag("drawer-archive-selected"),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+                ) {
+                    Text(stringResource(R.string.drawer_archive), style = QusinType.Label, color = if (selectedCount > 0) c.accent else c.ink3, textAlign = TextAlign.Center, softWrap = true)
+                }
             }
-        }
-        TextButton(onClick = onDelete, enabled = selectedCount > 0, modifier = Modifier.testTag("drawer-delete-selected")) {
-            Text(stringResource(R.string.confirm_delete), style = QusinType.Label, color = if (selectedCount > 0) c.bad else c.ink3)
+            TextButton(
+                onClick = onDelete,
+                enabled = selectedCount > 0,
+                modifier = Modifier.weight(1f).testTag("drawer-delete-selected"),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+            ) {
+                Text(stringResource(R.string.confirm_delete), style = QusinType.Label, color = if (selectedCount > 0) c.bad else c.ink3, textAlign = TextAlign.Center, softWrap = true)
+            }
         }
     }
 }
@@ -807,16 +824,20 @@ private fun NavEntry(
 ) {
     val c = QusinTheme.colors
     Row(
-        modifier.height(46.dp).clip(NavShape)
+        modifier.heightIn(min = 46.dp).clip(NavShape)
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .alpha(if (enabled) 1f else 0.4f)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 12.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         Icon(icon, null, Modifier.size(QusinSize.Icon), tint = c.ink2)
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(text, style = QusinType.Body, color = c.ink, maxLines = 1, softWrap = false)
+        Row(
+            Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Text(text, Modifier.weight(1f), style = QusinType.Body, color = c.ink, softWrap = true)
             if (dot) UpdateDot()
         }
     }

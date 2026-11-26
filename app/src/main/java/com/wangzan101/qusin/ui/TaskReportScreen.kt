@@ -40,14 +40,14 @@ internal fun TaskReportEntries(onReport: () -> Unit, onReplay: () -> Unit) {
                 Text(stringResource(R.string.report_title), style = QusinType.BodyStrong, color = c.ink)
                 Text(stringResource(R.string.report_entry_hint), style = QusinType.Hint, color = c.ink2)
             }
-            Icon(QusinIcons.Chevron, null, Modifier.size(16.dp), tint = c.ink3)
+            DirectionalIcon(QusinIcons.Chevron, null, Modifier.size(16.dp), tint = c.ink3)
         }
         Row(Modifier.fillMaxWidth().clip(QusinShapes.Card).clickable(onClick = onReplay)
             .heightIn(min = 48.dp).padding(horizontal = 14.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Icon(QusinIcons.Route, null, Modifier.size(18.dp), tint = c.accent)
             Text(stringResource(R.string.playback_title), Modifier.weight(1f), style = QusinType.Caption, color = c.accent)
-            Icon(QusinIcons.Chevron, null, Modifier.size(16.dp), tint = c.ink3)
+            DirectionalIcon(QusinIcons.Chevron, null, Modifier.size(16.dp), tint = c.ink3)
         }
     }
 }
@@ -100,7 +100,7 @@ fun TaskReportScreen(vm: TaskReportViewModel, onBack: () -> Unit, onReplay: (Int
                                 Text(page.title, style = QusinType.BodyStrong, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis)
                                 Text(stringResource(R.string.report_view_step, page.stepIndex + 1), style = QusinType.Hint, color = c.ink2)
                             }
-                            Icon(QusinIcons.Chevron, null, Modifier.size(14.dp), tint = c.ink3)
+                            DirectionalIcon(QusinIcons.Chevron, null, Modifier.size(14.dp), tint = c.ink3)
                         }
                     }
                 }

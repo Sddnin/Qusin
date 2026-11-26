@@ -9,7 +9,7 @@
     <string name="chat_greeting_night">Despierto hasta tarde</string>
     <string name="chat_empty_prompt">¿Qué debería hacer Qusin?</string>
     <string name="chat_example_github_star">Abre el repositorio del proyecto en GitHub y dale una estrella.</string>
-    <string name="chat_example_follow">Abre X, busca a Wang Zan (@wangzan101) y sigue la cuenta.</string>
+    <string name="chat_example_follow">Abre X, busca Qusin y sigue la cuenta del proyecto.</string>
     <string name="chat_example_group_summary">Abre WhatsApp y resume los mensajes no leídos de hoy, destacando todo lo que necesite mi respuesta.</string>
     <string name="chat_example_alarms">Pon alarmas mañana por la mañana a las 9:40, 9:50 y 10:00.</string>
     <string name="chat_example_replace_title">¿Reemplazar el borrador actual?</string>
@@ -326,4 +326,6 @@
     <string name="chat_audio">Audio</string>
     <string name="chat_audio_play">Play</string>
     <string name="chat_audio_stop">Stop</string>
+    <string name="chat_empty_ideas_title">Empieza con una idea</string>
+    <string name="chat_empty_ideas_hint">Toca para añadir al borrador</string>
 </resources>

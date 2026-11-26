@@ -9,7 +9,7 @@
     <string name="chat_greeting_night">Geç saatlere kadar ayaktasınız</string>
     <string name="chat_empty_prompt">Qusin ne yapsın?</string>
     <string name="chat_example_github_star">Projenin GitHub deposunu aç ve projeye yıldız ver.</string>
-    <string name="chat_example_follow">X\'i aç, Wang Zan (@wangzan101) için ara ve hesabı takip et.</string>
+    <string name="chat_example_follow">X\'i aç, Qusin için ara ve proje hesabını takip et.</string>
     <string name="chat_example_group_summary">WhatsApp\'ı aç ve bugünkü okunmamış mesajları özetle; yanıt vermem gerekenleri vurgula.</string>
     <string name="chat_example_alarms">Yarın sabah 9:40, 9:50 ve 10:00 için alarm kur.</string>
     <string name="chat_example_replace_title">Mevcut taslak değiştirilsin mi?</string>
@@ -298,4 +298,6 @@
     <string name="chat_audio">Ses</string>
     <string name="chat_audio_play">Oynat</string>
     <string name="chat_audio_stop">Durdur</string>
+    <string name="chat_empty_ideas_title">Bir fikirle başlayın</string>
+    <string name="chat_empty_ideas_hint">Taslağa eklemek için dokunun</string>
 </resources>

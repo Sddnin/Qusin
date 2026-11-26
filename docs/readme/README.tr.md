@@ -161,7 +161,7 @@ Daha fazla cevap [SSS](../faq.en.md) sayfasında.
 
 - **Belgeler**: tüm belgeler ve önerilen okuma sırası [belge dizininde](../README.en.md)
 - **Topluluk**: [X grup sohbetine](https://x.com/i/chat/group_join/g2116926829198246025/48B52j5svL) katıl; yazara WeChat'ten ulaşmak için uygulamada About › Contact the author (Hakkında › Yazarla iletişim) altındaki QR kodu okut (isteğinde Qusin'dan bahset)
-- **Yazarı takip et**: X [@wangzan101](https://x.com/wangzan101)
+- **Projeyi takip et**: [Qusin GitHub deposu](https://github.com/Sddnin/Qusin)
 - **Sorun bildir**: [bir issue aç](https://github.com/Sddnin/Qusin/issues/new/choose); uygulamadaki About › Send feedback (Hakkında › Geri bildirim gönder) tanılama bilgisi ekleyebilir
 - **Katkıda bulun**: bir uygulama ya da web sitesi için kullanım bilgisi ekle (düz metin, kod gerekmez) ya da kod katkısı yap; bkz. [katkı rehberi](../../.github/CONTRIBUTING.md)
 

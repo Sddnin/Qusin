@@ -9,7 +9,7 @@
     <string name="chat_greeting_night">Не спится?</string>
     <string name="chat_empty_prompt">Что поручить Qusin?</string>
     <string name="chat_example_github_star">Открой репозиторий проекта на GitHub и поставь ему звезду.</string>
-    <string name="chat_example_follow">Открой X, найди Wang Zan (@wangzan101) и подпишись на этот аккаунт.</string>
+    <string name="chat_example_follow">Открой X, найди Qusin и подпишись на аккаунт проекта.</string>
     <string name="chat_example_group_summary">Открой WhatsApp и кратко перескажи сегодняшние непрочитанные сообщения, отметив те, на которые нужно ответить.</string>
     <string name="chat_example_alarms">Поставь будильники на завтра на 9:40, 9:50 и 10:00 утра.</string>
     <string name="chat_example_replace_title">Заменить текущий черновик?</string>
@@ -340,4 +340,6 @@
     <string name="chat_audio">Audio</string>
     <string name="chat_audio_play">Play</string>
     <string name="chat_audio_stop">Stop</string>
+    <string name="chat_empty_ideas_title">Начните с идеи</string>
+    <string name="chat_empty_ideas_hint">Нажмите, чтобы добавить в черновик</string>
 </resources>

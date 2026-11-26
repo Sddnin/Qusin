@@ -111,8 +111,8 @@ fun StatusPill(text: String, tone: PillTone = PillTone.Neutral, modifier: Modifi
         PillTone.Neutral -> c.greySoft to c.ink2
     }
     Text(
-        text, modifier.background(bg, QusinShapes.Pill).padding(horizontal = 9.dp, vertical = 3.dp),
-        style = PillText, color = fg, maxLines = 1,
+        text, modifier.background(bg, QusinShapes.Pill).padding(horizontal = 9.dp, vertical = 4.dp),
+        style = PillText, color = fg, softWrap = true,
     )
 }
 
@@ -154,11 +154,17 @@ fun QusinButton(
             .clip(shape)
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .alpha(if (enabled) 1f else 0.45f)
-            .height(size.height)
-            .padding(horizontal = size.padding),
+            .heightIn(min = size.height)
+            .padding(horizontal = size.padding, vertical = 6.dp),
         contentAlignment = Alignment.Center,
     ) {
-        Text(text, style = size.text, color = fg, textAlign = TextAlign.Center, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(
+            text,
+            style = size.text,
+            color = fg,
+            textAlign = TextAlign.Center,
+            softWrap = true,
+        )
     }
 }
 
@@ -178,7 +184,7 @@ fun SegmentedControl(
         options.forEachIndexed { i, label ->
             val on = i == selected
             Box(
-                Modifier.weight(1f).height(32.dp)
+                Modifier.weight(1f).heightIn(min = 42.dp)
                     .then(
                         if (on) Modifier.shadow(1.dp, SegmentInner, clip = false, ambientColor = c.cardShadow, spotColor = c.cardShadow)
                             .background(c.surface, SegmentInner)
@@ -186,10 +192,11 @@ fun SegmentedControl(
                     )
                     .clip(SegmentInner)
                     .selectable(on, role = Role.Tab) { onSelect(i) }
+                    .padding(horizontal = 4.dp, vertical = 4.dp)
                     .then(if (tags != null) Modifier.testTag(tags[i]) else Modifier),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(label, style = SegmentText, color = if (on) c.ink else c.ink2, maxLines = 1)
+                Text(label, style = SegmentText, color = if (on) c.ink else c.ink2, softWrap = true, textAlign = TextAlign.Center)
             }
         }
     }
@@ -260,17 +267,17 @@ fun TopBar(
     val c = QusinTheme.colors
     Box(Modifier.fillMaxWidth().pageBackground(background).windowInsetsPadding(WindowInsets.statusBars)) {
         Row(
-            Modifier.fillMaxWidth().height(QusinSize.TopBar).padding(horizontal = 8.dp),
+            Modifier.fillMaxWidth().heightIn(min = QusinSize.TopBar).padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             if (left != null) BarIconButton(left, leftLabel, onLeft, badge = leftBadge) else Spacer(Modifier.size(QusinSize.IconButton))
             Column(Modifier.weight(1f).padding(horizontal = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(title, style = QusinType.Title, color = c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(title, style = QusinType.Title, color = c.ink, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
                 if (!subtitle.isNullOrEmpty()) {
                     Text(
                         subtitle, style = QusinType.Hint, fontWeight = FontWeight.Medium,
-                        color = if (subtitleColor == Color.Unspecified) c.ink3 else subtitleColor, maxLines = 1,
+                        color = if (subtitleColor == Color.Unspecified) c.ink3 else subtitleColor, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center,
                     )
                 }
             }
@@ -306,12 +313,12 @@ fun SelectChip(
             )
             .clip(shape)
             .selectable(selected, enabled = enabled, role = Role.RadioButton, onClick = onClick)
-            .height(if (small) 28.dp else 34.dp)
-            .padding(horizontal = if (small) 10.dp else 14.dp),
+            .heightIn(min = if (small) 30.dp else 36.dp)
+            .padding(horizontal = if (small) 10.dp else 14.dp, vertical = 4.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text, style = if (small) SmallChipText else ChipText, maxLines = 1, softWrap = false,
+            text, style = if (small) SmallChipText else ChipText, softWrap = true,
             color = when {
                 selected -> c.bg
                 !enabled -> c.ink.copy(alpha = 0.38f)

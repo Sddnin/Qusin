@@ -54,6 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wangzan101.qusin.ui.components.EmptyNote
+import com.wangzan101.qusin.ui.components.DirectionalIcon
 import com.wangzan101.qusin.ui.components.GroupCard
 import com.wangzan101.qusin.ui.components.GroupLabel
 import com.wangzan101.qusin.ui.components.ListRow
@@ -292,7 +293,7 @@ private fun TimelineRow(s: TimelineStep, first: Boolean, last: Boolean, vm: RunT
                         style = QusinType.Hint, fontWeight = FontWeight.SemiBold, color = fg, maxLines = 1,
                     )
                 }
-                if (hasMore) Icon(QusinIcons.Chevron, null, Modifier.size(16.dp).padding(start = 2.dp), tint = c.ink3)
+                if (hasMore) DirectionalIcon(QusinIcons.Chevron, null, Modifier.size(16.dp).padding(start = 2.dp), tint = c.ink3)
             }
             Text(RunTimelineViewModel.timingLabel(s.timing), Modifier.padding(top = 2.dp), style = QusinType.Hint, color = c.ink3)
             if (open && hasMore) {

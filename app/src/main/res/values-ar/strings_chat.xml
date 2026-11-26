@@ -9,7 +9,7 @@
     <string name="chat_greeting_night">ما زلت مستيقظًا؟</string>
     <string name="chat_empty_prompt">ما الذي تريد من Qusin أن تفعله؟</string>
     <string name="chat_example_github_star">افتح مستودع المشروع على GitHub وأضف إليه نجمة.</string>
-    <string name="chat_example_follow">افتح X وابحث عن Wang Zan (@wangzan101)، ثم تابع الحساب.</string>
+    <string name="chat_example_follow">افتح X وابحث عن Qusin، ثم تابع حساب المشروع.</string>
     <string name="chat_example_group_summary">افتح WhatsApp ولخّص رسائل اليوم غير المقروءة، مع إبراز كل ما يحتاج إلى ردي.</string>
     <string name="chat_example_alarms">اضبط المنبهات للساعة 9:40 و9:50 و10:00 صباح الغد.</string>
     <string name="chat_example_replace_title">استبدال المسودة الحالية؟</string>
@@ -368,4 +368,6 @@
     <string name="chat_audio">Audio</string>
     <string name="chat_audio_play">Play</string>
     <string name="chat_audio_stop">Stop</string>
+    <string name="chat_empty_ideas_title">ابدأ بفكرة</string>
+    <string name="chat_empty_ideas_hint">اضغط لإضافتها إلى المسودة</string>
 </resources>

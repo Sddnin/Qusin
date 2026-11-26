@@ -64,6 +64,7 @@ import com.wangzan101.qusin.memory.MemoryRuntime
 import com.wangzan101.qusin.personal.PersonalPhonePreview
 import com.wangzan101.qusin.personal.PersonalRuntime
 import com.wangzan101.qusin.ui.components.ActivitySizedDialog
+import com.wangzan101.qusin.ui.components.DirectionalIcon
 import com.wangzan101.qusin.ui.components.BarIconButton
 import com.wangzan101.qusin.ui.components.QusinButton
 import com.wangzan101.qusin.ui.components.QusinLogo
@@ -592,7 +593,7 @@ internal fun PersonalProfileTabs(selected: PersonalProfileTab, showIcons: Boolea
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (showIcons) Icon(tab.icon, null, Modifier.size(16.dp), tint = ink)
-                Text(label, style = QusinType.Label, color = ink, maxLines = 1)
+                Text(label, style = QusinType.Label, color = ink, softWrap = true, textAlign = TextAlign.Center)
             }
         }
         if (stacked) {
@@ -762,7 +763,7 @@ internal fun PersonalHeader(
                         Modifier.weight(1f, fill = false), style = QusinType.Hint, color = tone.ink,
                         maxLines = 1, overflow = TextOverflow.Ellipsis,
                     )
-                    Icon(QusinIcons.Chevron, null, Modifier.size(12.dp), tint = tone.ink)
+                    DirectionalIcon(QusinIcons.Chevron, null, Modifier.size(12.dp), tint = tone.ink)
                 }
             }
         }
@@ -815,7 +816,7 @@ private fun PersonalTaskCard(task: PersonalTask, onClick: () -> Unit) {
             }
             if (!task.iconOnlyStatus) Text(personalStatus(task), style = QusinType.Label, color = tone.ink)
         }
-        Icon(QusinIcons.Chevron, null, Modifier.size(16.dp), tint = c.ink3)
+        DirectionalIcon(QusinIcons.Chevron, null, Modifier.size(16.dp), tint = c.ink3)
     }
 }
 

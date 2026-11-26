@@ -36,8 +36,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -512,17 +510,26 @@ fun ChatScreen(
                     }
                     GlassSurface(backdrop = backdrop) {
                         Column(
-                            Modifier.width(184.dp).padding(horizontal = 4.dp, vertical = 4.dp),
+                            Modifier.width(198.dp).padding(horizontal = 8.dp, vertical = 6.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalArrangement = Arrangement.spacedBy(5.dp),
                         ) {
-                            Text(
-                                ChatCopy.APP_TITLE,
+                            Row(
                                 Modifier.clickable(role = Role.Button, onClickLabel = stringResource(R.string.chat_usage_title)) { showUsage = true },
-                                style = QusinType.Caption,
-                                color = c.ink2,
-                                maxLines = 1,
-                            )
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(7.dp),
+                            ) {
+                                Box(
+                                    Modifier.size(21.dp).background(
+                                        Brush.linearGradient(listOf(c.accent, c.accent.copy(alpha = 0.78f), Color(0xFF20A99A))),
+                                        QusinShapes.Tile,
+                                    ),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Icon(QusinIcons.Spark, contentDescription = null, modifier = Modifier.size(13.dp), tint = Color.White)
+                                }
+                                Text(ChatCopy.APP_TITLE, style = QusinType.BodyStrong, color = c.ink, maxLines = 1)
+                            }
                             ConversationModeSwitcher(
                                 personal = false,
                                 onWork = {},
@@ -899,44 +906,104 @@ private fun LazyListState.nearTail(thresholdPx: Int): Boolean {
 
 // ---------- 空对话 ----------
 
-/** 空对话:居中问候 + 一句价值主张 + 自动换行的建议胶囊。点一条把完整提示词填进输入框,改好了再发;一条都没有时不显示。 */
-@OptIn(ExperimentalLayoutApi::class)
+/** 空对话:Qusin 品牌入口 + 分组灵感卡片。点击卡片只填入草稿,用户仍可检查和修改后再发送。 */
 @Composable
 private fun EmptyState(conversation: String?, tasks: List<RecommendedTask>, modifier: Modifier = Modifier, onPick: (RecommendedTask) -> Unit) {
     val c = QusinTheme.colors
     val hour = remember(conversation) { LocalTime.now().hour }
+    val brandBrush = remember(c.accent) {
+        Brush.linearGradient(listOf(c.accent, c.accent.copy(alpha = 0.82f), Color(0xFF20A99A)))
+    }
     Column(
-        modifier.fillMaxWidth().padding(horizontal = 28.dp),
+        modifier.fillMaxWidth().padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(ChatCopy.greeting(hour), style = QusinType.LargeTitle, color = c.ink, textAlign = TextAlign.Center)
-        Text(ChatCopy.EMPTY_VALUE, Modifier.padding(top = 11.dp), style = EmptyLead, color = c.ink2, textAlign = TextAlign.Center)
+        Box(
+            Modifier.size(54.dp).background(brandBrush, QusinShapes.Sheet)
+                .border(0.7.dp, Color.White.copy(alpha = 0.28f), QusinShapes.Sheet),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(QusinIcons.Spark, contentDescription = stringResource(R.string.app_name), modifier = Modifier.size(27.dp), tint = Color.White)
+        }
+        Text(
+            ChatCopy.greeting(hour),
+            Modifier.padding(top = 18.dp),
+            style = QusinType.LargeTitle,
+            color = c.ink,
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            ChatCopy.EMPTY_VALUE,
+            Modifier.padding(top = 8.dp).widthIn(max = 340.dp),
+            style = EmptyLead,
+            color = c.ink2,
+            textAlign = TextAlign.Center,
+        )
         if (tasks.isNotEmpty()) {
-            Spacer(Modifier.height(28.dp))
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+            Column(
+                Modifier.fillMaxWidth().padding(top = 30.dp, bottom = 11.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                tasks.forEach { task -> SuggestionChip(task.title) { onPick(task) } }
+                Text(stringResource(R.string.chat_empty_ideas_title), style = QusinType.Label, color = c.ink2)
+                Text(stringResource(R.string.chat_empty_ideas_hint), style = QusinType.Hint, color = c.ink3)
+            }
+            BoxWithConstraints(Modifier.fillMaxWidth()) {
+                // Two columns are used only when each card can retain a readable text measure.
+                // Narrow phones and large system fonts naturally fall back to a single column.
+                val fontScale = LocalDensity.current.fontScale.coerceAtLeast(1f)
+                val columns = if (maxWidth < 344.dp * fontScale) 1 else 2
+                if (columns == 1) {
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        tasks.take(4).forEach { task ->
+                            EmptyIdeaCard(task, Modifier.fillMaxWidth()) { onPick(task) }
+                        }
+                    }
+                } else {
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        tasks.take(4).chunked(2).forEach { pair ->
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                pair.forEach { task ->
+                                    EmptyIdeaCard(task, Modifier.weight(1f)) { onPick(task) }
+                                }
+                                if (pair.size == 1) Spacer(Modifier.weight(1f))
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
-/** 建议胶囊:白底 + 细描边 + 短标题,点它把完整提示词填进输入框。 */
+/** Thẻ gợi ý ngắn gọn, vùng chạm đủ lớn và không tự gửi prompt. */
 @Composable
-private fun SuggestionChip(text: String, onClick: () -> Unit) {
+private fun EmptyIdeaCard(task: RecommendedTask, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val c = QusinTheme.colors
-    Text(
-        text,
-        Modifier.clip(QusinShapes.Pill).background(c.surface, QusinShapes.Pill).border(0.5.dp, c.edge, QusinShapes.Pill)
+    Column(
+        modifier.heightIn(min = 96.dp)
+            .clip(QusinShapes.Card)
+            .background(c.surface, QusinShapes.Card)
+            .border(0.7.dp, c.edge, QusinShapes.Card)
             .clickable(role = Role.Button, onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
-        style = SuggestionText,
-        color = c.ink2,
-        maxLines = 1,
-    )
+            .padding(horizontal = 14.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.size(32.dp).background(c.accentSoft, QusinShapes.Tile), contentAlignment = Alignment.Center) {
+                Icon(QusinIcons.Spark, contentDescription = null, modifier = Modifier.size(17.dp), tint = c.accent)
+            }
+            Spacer(Modifier.weight(1f))
+            DirectionalIcon(QusinIcons.Chevron, contentDescription = null, modifier = Modifier.size(16.dp), tint = c.ink3)
+        }
+        Text(
+            task.title,
+            Modifier.fillMaxWidth(),
+            style = QusinType.Label,
+            color = c.ink,
+            softWrap = true,
+        )
+    }
 }
 
 // ---------- 一问一答 ----------
@@ -1948,7 +2015,7 @@ internal fun Composer(
                     val converting = vState is HoldToTalk.State.Converting
                     if (text.isEmpty() && !converting) {
                         if (vh != null) VoicePlaceholder(mode)
-                        else Text(ChatCopy.placeholder(mode, hasHistory), style = QusinType.Body, color = c.ink3, maxLines = 1)
+                        else Text(ChatCopy.placeholder(mode, hasHistory), style = QusinType.Body, color = c.ink3, maxLines = 2, overflow = TextOverflow.Ellipsis)
                     }
                     BasicTextField(
                         shownValue,
@@ -2053,7 +2120,6 @@ private val StepRail = 8.dp
 private val FileTileShape = QusinShapes.Tile
 private val EmptyLead = QusinType.Value
 private val ExampleText = QusinType.Value
-private val SuggestionText = QusinType.Body.copy(fontWeight = FontWeight.Medium)
 private val BubbleText = QusinType.Body
 /** 回答:正文字号,行距放宽到 1.7。 */
 private val AnswerText = QusinType.Body

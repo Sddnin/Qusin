@@ -204,8 +204,7 @@ fun RowValue(text: String, tone: ValueTone = ValueTone.Plain) {
             ValueTone.Link -> c.accent
         },
         textAlign = TextAlign.End,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
+        softWrap = true,
     )
 }
 
@@ -288,9 +287,15 @@ fun InputRow(
             .heightIn(min = QusinSize.RowMin).padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, Modifier.width(labelWidth + 8.dp).padding(end = 8.dp), style = QusinType.Body, color = c.ink)
+        Text(
+            label,
+            Modifier.width(labelWidth + 8.dp).padding(end = 8.dp),
+            style = QusinType.Body,
+            color = c.ink,
+            softWrap = true,
+        )
         Box(Modifier.weight(1f)) {
-            if (value.isEmpty()) Text(placeholder, style = QusinType.Body, color = c.ink3, maxLines = 1)
+            if (value.isEmpty()) Text(placeholder, style = QusinType.Body, color = c.ink3, maxLines = 1, overflow = TextOverflow.Ellipsis)
             BasicTextField(
                 value, onChange, modifier.fillMaxWidth(), singleLine = true,
                 textStyle = QusinType.Body.copy(color = c.ink, textDirection = androidx.compose.ui.text.style.TextDirection.Content),
