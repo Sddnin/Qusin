@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="mcp_title">パソコンと接続</string>
     <string name="mcp_starting">起動中…</string>
@@ -71,4 +71,9 @@
     <string name="mcp_cli_connection_check">connect で接続を確認できます。リクエストが成功すると、上の時刻が更新されます。</string>
     <string name="mcp_history_title">コンピューターに履歴の閲覧を許可</string>
     <string name="mcp_history_detail">接続したコンピューターは、すべての会話、実行記録、記録済みの Trace 本文を読み取れます。機密情報を伏せたモデルへのリクエストと応答も含みます。USB とプライベートネットワーク接続に適用されます。</string>
+    <string name="progress_calling_mcp">Calling %1$s</string>
+    <string name="progress_called_mcp">Used %1$s</string>
+
+    <string name="mcp_connect_canva_setup">Canva Developer Portal でアプリを作成して Canva MCP を有効にし、Outside Canva → Redirect URLs に次の URL をそのまま追加してください: %1$s。下に Client ID と Client secret を入力します。Canva の各ユーザーは個別にログインします。</string>
+    <string name="mcp_connect_canva_docs">Canva の設定ガイド</string>
 </resources>

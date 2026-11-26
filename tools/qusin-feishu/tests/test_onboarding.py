@@ -85,8 +85,8 @@ class OnboardingTests(unittest.TestCase):
                          "allowed_open_ids": ["ou_owner"]}, path)
             # Simulate a config written by the previous connector version.
             value = json.loads(path.read_text(encoding="utf-8"))
-            value["mika_url"] = value.pop("qusin_url")
-            value["mika_token"] = value.pop("qusin_token")
+            value["qusin_url"] = value.pop("qusin_url")
+            value["qusin_token"] = value.pop("qusin_token")
             path.write_text(json.dumps(value), encoding="utf-8")
             path.chmod(0o600)
             with patch("builtins.input", side_effect=["", ""]), patch("getpass.getpass", return_value=""):
@@ -94,8 +94,8 @@ class OnboardingTests(unittest.TestCase):
             migrated = json.loads(path.read_text(encoding="utf-8"))
             self.assertEqual(migrated["qusin_url"], "http://127.0.0.1:8765")
             self.assertEqual(migrated["qusin_token"], "fake-token")
-            self.assertNotIn("mika_url", migrated)
-            self.assertNotIn("mika_token", migrated)
+            self.assertNotIn("qusin_url", migrated)
+            self.assertNotIn("qusin_token", migrated)
 
     def test_switching_apps_does_not_reuse_fixed_owner(self):
         with tempfile.TemporaryDirectory() as directory:

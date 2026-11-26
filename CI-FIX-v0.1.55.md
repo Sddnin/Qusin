@@ -9,8 +9,8 @@ This patch keeps the existing release identity unchanged:
 
 The Android CI log reported unresolved `heightIn` references in:
 
-- `app/src/main/java/com/wangzan101/qusin/ui/ChatDrawer.kt`
-- `app/src/main/java/com/wangzan101/qusin/ui/components/Controls.kt`
+- `app/src/main/java/com/qusin/qusin/ui/ChatDrawer.kt`
+- `app/src/main/java/com/qusin/qusin/ui/components/Controls.kt`
 
 Both files now import `androidx.compose.foundation.layout.heightIn`.
 The type-inference and `clip` diagnostics in `Controls.kt` were downstream compiler errors from the unresolved modifier extension; no unrelated UI logic was changed.

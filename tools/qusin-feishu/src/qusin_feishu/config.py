@@ -51,7 +51,7 @@ def load_config(path):
         if not isinstance(config.get(key), str) or not config[key].strip():
             raise ValueError("Missing " + key + "; run qusin-feishu setup")
     # Keep reading existing installations while all newly written settings use Qusin names.
-    for new_key, legacy_key in (("qusin_url", "mika_url"), ("qusin_token", "mika_token")):
+    for new_key, legacy_key in (("qusin_url", "qusin_url"), ("qusin_token", "qusin_token")):
         value = config.get(new_key, config.get(legacy_key))
         if not isinstance(value, str) or not value.strip():
             raise ValueError("Missing " + new_key + "; run qusin-feishu setup")

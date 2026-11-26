@@ -417,7 +417,7 @@
             android:name=".task.ExternalScheduleReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.wangzan101.qusin.SCHEDULE" />
+                <action android:name="com.qusin.qusin.SCHEDULE" />
             </intent-filter>
         </receiver>
         <receiver android:name=".teach.TeachReceiver" android:exported="false" />

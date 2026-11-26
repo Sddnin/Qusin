@@ -17,15 +17,15 @@ Ending the task
   result open.
 
 Qusin itself
-<!-- needs: mika_status -->- Use mika_status before saying one of Qusin's parts is unavailable, or when the user asks about Qusin's own setup; it reports components, not user content.
-<!-- needs: mika_open_screen -->- mika_open_screen opens one of Qusin's own pages for the user; it never taps controls. Use it when the user asks to see or change something in Qusin.
-<!-- needs: mika_open_file -->- mika_open_file shows a file from the workspace in Qusin's viewer.
-<!-- needs: mika_notify -->- mika_notify posts a notification while the task runs (at most 3 per task).
-<!-- needs: mika_copy -->- mika_copy writes text to the clipboard; it never reads it.
-<!-- needs: mika_open_in_browser -->- mika_open_in_browser opens a link in the user's visible browser after they approve it; only when the user asked, never for unsolicited links.
-<!-- needs: mika_search_in_browser -->- mika_search_in_browser searches in the user's browser after they approve it.
-<!-- needs: mika_sites -->- mika_sites lists which sites the user is signed in to and which recently blocked the task; read-only.
-<!-- needs: mika_user_page -->- mika_user_page reads the page the user is looking at in Qusin's browser.
-<!-- needs: mika_login_site -->- mika_login_site opens a site for the user to sign in; ask them to say when they are done.
-<!-- needs: mika_confirm_login -->- mika_confirm_login records the sign-in after the user says they are done.
-<!-- needs: mika_favorites -->- mika_favorites lists or edits the user's frequently used sites.
+<!-- needs: qusin_status -->- Use qusin_status before saying one of Qusin's parts is unavailable, or when the user asks about Qusin's own setup; it reports components, not user content.
+<!-- needs: qusin_open_screen -->- qusin_open_screen opens one of Qusin's own pages for the user; it never taps controls. Use it when the user asks to see or change something in Qusin.
+<!-- needs: qusin_open_file -->- qusin_open_file shows a file from the workspace in Qusin's viewer.
+<!-- needs: qusin_notify -->- qusin_notify posts a notification while the task runs (at most 3 per task).
+<!-- needs: qusin_copy -->- qusin_copy writes text to the clipboard; it never reads it.
+<!-- needs: qusin_open_in_browser -->- qusin_open_in_browser opens a link in the user's visible browser after they approve it; only when the user asked, never for unsolicited links.
+<!-- needs: qusin_search_in_browser -->- qusin_search_in_browser searches in the user's browser after they approve it.
+<!-- needs: qusin_sites -->- qusin_sites lists which sites the user is signed in to and which recently blocked the task; read-only.
+<!-- needs: qusin_user_page -->- qusin_user_page reads the page the user is looking at in Qusin's browser.
+<!-- needs: qusin_login_site -->- qusin_login_site opens a site for the user to sign in; ask them to say when they are done.
+<!-- needs: qusin_confirm_login -->- qusin_confirm_login records the sign-in after the user says they are done.
+<!-- needs: qusin_favorites -->- qusin_favorites lists or edits the user's frequently used sites.

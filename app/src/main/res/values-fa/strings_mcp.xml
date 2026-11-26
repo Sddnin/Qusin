@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="mcp_title">اتصال رایانه</string>
     <string name="mcp_starting">در حال شروع…</string>
@@ -71,4 +71,9 @@
     <string name="mcp_port_dialog_sub">وقتی پورت پیش‌فرض توسط سرویس دیگری در این گوشی اشغال شده است، آن را تغییر دهید. بلافاصله اعمال می‌شود و رایانه روی پورت جدید دوباره متصل می‌شود.</string>
     <string name="mcp_port_invalid">یک عدد صحیح از ۱۰۲۴ تا ۶۵۵۳۵ وارد کنید.</string>
     <string name="mcp_port_title">پورت شنود</string>
+    <string name="progress_calling_mcp">Calling %1$s</string>
+    <string name="progress_called_mcp">Used %1$s</string>
+
+    <string name="mcp_connect_canva_setup">در Canva Developer Portal یک برنامه بسازید، Canva MCP را فعال کنید و این نشانی بازگشت را دقیقاً در Outside Canva → Redirect URLs اضافه کنید: %1$s. سپس Client ID و Client secret را در پایین وارد کنید. هر کاربر Canva باید جداگانه وارد حساب شود.</string>
+    <string name="mcp_connect_canva_docs">راهنمای راه‌اندازی Canva</string>
 </resources>

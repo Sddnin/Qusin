@@ -79,8 +79,8 @@ def register(mode, app_id=None, open_browser=True, register_app=None):
 def setup(path, mode=None, open_browser=True):
     previous = read_config(path)
     # Migrate private config keys on the next successful setup without losing credentials.
-    previous.setdefault("qusin_url", previous.get("mika_url", ""))
-    previous.setdefault("qusin_token", previous.get("mika_token", ""))
+    previous.setdefault("qusin_url", previous.get("qusin_url", ""))
+    previous.setdefault("qusin_token", previous.get("qusin_token", ""))
     print("Credentials stay in your local config; secret inputs are not echoed.")
     if mode is None:
         print("1. Scan to create a new bot / 扫码新建\n2. Link an existing app / 关联已有应用\n3. Enter credentials / 手动填写")

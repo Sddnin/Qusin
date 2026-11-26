@@ -71,4 +71,8 @@
     <string name="mcp_cli_connection_check">connect xác minh kết nối. Một yêu cầu thành công sẽ cập nhật thời gian ở trên.</string>
     <string name="mcp_history_title">Cho phép máy tính xem lịch sử</string>
     <string name="mcp_history_detail">Máy tính đã kết nối có thể đọc tất cả cuộc trò chuyện, bản ghi thực thi và nội dung Trace đã ghi, bao gồm cả yêu cầu và câu trả lời mô hình đã được lược bỏ thông tin nhạy cảm. Áp dụng cho kết nối USB và mạng riêng.</string>
+    <string name="progress_calling_mcp">Calling %1$s</string>
+    <string name="progress_called_mcp">Used %1$s</string>
+    <string name="mcp_connect_canva_setup">tạo ứng dụng trong Canva Developer Portal, bật Canva MCP, sau đó thêm chính xác redirect URL này tại Outside Canva → Redirect URLs: %1$s. nhập Client ID và Client secret bên dưới. mỗi người dùng Canva sẽ đăng nhập riêng</string>
+    <string name="mcp_connect_canva_docs">hướng dẫn kết nối Canva</string>
 </resources>

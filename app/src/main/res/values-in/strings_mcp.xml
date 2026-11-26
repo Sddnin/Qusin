@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="mcp_title">Hubungkan komputer</string>
     <string name="mcp_starting">Memulai…</string>
@@ -71,4 +71,9 @@
     <string name="mcp_cli_connection_check">connect memverifikasi koneksi. Permintaan yang berhasil akan memperbarui waktu di atas.</string>
     <string name="mcp_history_title">Izinkan komputer melihat riwayat</string>
     <string name="mcp_history_detail">Komputer yang terhubung dapat membaca semua percakapan, catatan proses, dan isi Trace yang direkam, termasuk permintaan serta jawaban model dengan data sensitif disamarkan. Berlaku untuk koneksi USB dan jaringan pribadi.</string>
+    <string name="progress_calling_mcp">Calling %1$s</string>
+    <string name="progress_called_mcp">Used %1$s</string>
+
+    <string name="mcp_connect_canva_setup">Buat aplikasi di Canva Developer Portal, aktifkan Canva MCP, lalu tambahkan URL pengalihan ini persis di Outside Canva → Redirect URLs: %1$s. Masukkan Client ID dan Client secret di bawah. Setiap pengguna Canva harus masuk secara terpisah.</string>
+    <string name="mcp_connect_canva_docs">Panduan penyiapan Canva</string>
 </resources>

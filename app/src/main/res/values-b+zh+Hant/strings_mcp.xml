@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="mcp_title">連接電腦</string>
     <string name="mcp_starting">正在開啟…</string>
@@ -71,4 +71,9 @@
     <string name="mcp_cli_connection_check">connect 會驗證連線，成功後頂部顯示最近請求。</string>
     <string name="mcp_history_title">允許電腦查看歷史記錄</string>
     <string name="mcp_history_detail">連線的電腦可讀取所有對話、執行記錄及已錄製的 Trace 正文，包括已遮蔽敏感資訊的模型請求與回覆。適用於 USB 和私人網路連線。</string>
+    <string name="progress_calling_mcp">Calling %1$s</string>
+    <string name="progress_called_mcp">Used %1$s</string>
+
+    <string name="mcp_connect_canva_setup">請在 Canva Developer Portal 建立應用程式並啟用 Canva MCP，接著在 Outside Canva → Redirect URLs 中原樣新增此重新導向網址：%1$s。請在下方輸入 Client ID 和 Client secret。每位 Canva 使用者都必須各自登入。</string>
+    <string name="mcp_connect_canva_docs">Canva 設定指南</string>
 </resources>

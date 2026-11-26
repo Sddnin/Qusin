@@ -6,13 +6,13 @@
 - License: Apache-2.0
 - Usage: 通话功能（拨号、接听、挂断、AI 接听、人工接管、PCM 音频桥、实时语音客户端）按上游
   Apache-2.0 许可并入,涉及:
-  - `app/src/main/java/com/wangzan101/mika/calls/`
-  - `app/src/main/java/com/wangzan101/mika/cap/phone/shell/ShellCallAudio.kt`
-  - `core/src/main/kotlin/com/wangzan101/mika/core/calls/`
-  - `app/src/test/java/com/wangzan101/mika/calls/`
-  - `app/src/test/java/com/wangzan101/mika/cap/phone/shell/ShellCallAudioTest.kt`
-  - `app/src/test/java/com/wangzan101/mika/ui/CallDeviceReadinessTest.kt`
-  - `core/src/test/kotlin/com/wangzan101/mika/core/mcp/McpCallToolsTest.kt`
+  - `app/src/main/java/com/qusin/qusin/calls/`
+  - `app/src/main/java/com/qusin/qusin/cap/phone/shell/ShellCallAudio.kt`
+  - `core/src/main/kotlin/com/qusin/qusin/core/calls/`
+  - `app/src/test/java/com/qusin/qusin/calls/`
+  - `app/src/test/java/com/qusin/qusin/cap/phone/shell/ShellCallAudioTest.kt`
+  - `app/src/test/java/com/qusin/qusin/ui/CallDeviceReadinessTest.kt`
+  - `core/src/test/kotlin/com/qusin/qusin/core/mcp/McpCallToolsTest.kt`
 - Modifications: 默认问候语等产品文案按 Qusin 调整为「Qusin AI 电话助手」,相关测试断言随之同步。
 - Additional port: FlashPhone v1.1.6–v1.1.12 (through `8bcd8d89a20141f47d4d24c61debc42dabaa2676`):
   foreground voice briefing (`calls/briefing/`, `ui/CallVoiceBriefingHost.kt`), call-bound DTMF
@@ -30,7 +30,7 @@
 - License: Apache-2.0
 - Usage: 以 shell 身份取得系统上下文(ActivityThread / 伪装包名的 Context)的做法仿照 scrcpy。
   源文件头部保留出处:
-  - `app/src/main/java/com/wangzan101/mika/shell/ShellContext.kt`
+  - `app/src/main/java/com/qusin/qusin/shell/ShellContext.kt`
 
 ## Apache Commons Compress
 
@@ -38,7 +38,7 @@
 - Artifact: `org.apache.commons:commons-compress:1.28.0`
 - License: Apache-2.0
 - Usage: 以库的形式依赖,用于流式解包沙箱根文件系统的 tar.gz
-  (`core/src/main/kotlin/com/wangzan101/mika/core/cap/sandbox/RootfsExtractor.kt`)。
+  (`core/src/main/kotlin/com/qusin/qusin/core/cap/sandbox/RootfsExtractor.kt`)。
 - NOTICE:
 
 ```
@@ -240,7 +240,7 @@ The Apache Software Foundation (https://www.apache.org/).
 - Artifacts: `org.commonmark:commonmark:0.30.1`、`commonmark-ext-gfm-tables:0.30.1`、`commonmark-ext-gfm-strikethrough:0.30.1`
 - License: BSD-2-Clause
 - Usage: 以库的形式依赖,未修改其代码;把对话里回答的 Markdown 解析成语法树,再由 Qusin 自己的界面代码显示
-  (`app/src/main/java/com/wangzan101/mika/ui/MarkdownModel.kt`)。
+  (`app/src/main/java/com/qusin/qusin/ui/MarkdownModel.kt`)。
 - License text:
 
 ```

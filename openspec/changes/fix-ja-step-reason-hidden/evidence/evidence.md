@@ -21,7 +21,7 @@
 
 ## 测试验证
 
-新增/修改：`app/src/test/java/com/wangzan101/qusin/ui/StepRowLanguageTest.kt`
+新增/修改：`app/src/test/java/com/qusin/qusin/ui/StepRowLanguageTest.kt`
 - `testShouldKeepJapaneseReasonInNonChineseLocale`：非中文界面「検索ボタンをタップして連絡先を探す」「「微信」アプリを開く」不隐藏；中文界面日语照常显示。
 - `testShouldHideKanjiOnlyReasonInNonChineseLocale`：「設定確認」仍隐藏（残余局限）。
 - `testStepRowTextShowsJapaneseReasonUnderJapaneseUi`：ui_locale=ja 时 `StepRow.text` 直接返回日语用意（端到端断言）。

@@ -20,7 +20,7 @@ Wi-Fi/private VPN: use `--url http://PHONE:8765 --token-file /path/to/token-file
 
 Notes:
 - ADB mode needs Android platform-tools; the APK must include task API v1 (an older MCP-only APK is insufficient). Humans can run `qusin ui` for a local task desk; agents should use the commands below.
-- If the user selects a parallel Qusin build, add `--package APPLICATION_ID` to `connect`, `doctor` and each `task` command. The default ADB package is `com.wangzan101.qusin`.
+- If the user selects a parallel Qusin build, add `--package APPLICATION_ID` to `connect`, `doctor` and each `task` command. The default ADB package is `com.qusin.qusin`.
 
 ## Common failures
 

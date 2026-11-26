@@ -1,10 +1,10 @@
 # 预先编译清单:安装后系统按它把这些代码提前编译成机器码,第一次进各个页面就不用边解释边跑。
 # 界面库自带清单,这里只补 Qusin 自己的代码:启动和各个页面(Application、界面、设置、对话存储)。
-HSPLcom/wangzan101/qusin/QusinApp;->**(**)**
-HSPLcom/wangzan101/qusin/ui/**;->**(**)**
-HSPLcom/wangzan101/qusin/settings/**;->**(**)**
-HSPLcom/wangzan101/qusin/chat/**;->**(**)**
-Lcom/wangzan101/qusin/QusinApp;
-Lcom/wangzan101/qusin/ui/**;
-Lcom/wangzan101/qusin/settings/**;
-Lcom/wangzan101/qusin/chat/**;
+HSPLcom/qusin/qusin/QusinApp;->**(**)**
+HSPLcom/qusin/qusin/ui/**;->**(**)**
+HSPLcom/qusin/qusin/settings/**;->**(**)**
+HSPLcom/qusin/qusin/chat/**;->**(**)**
+Lcom/qusin/qusin/QusinApp;
+Lcom/qusin/qusin/ui/**;
+Lcom/qusin/qusin/settings/**;
+Lcom/qusin/qusin/chat/**;

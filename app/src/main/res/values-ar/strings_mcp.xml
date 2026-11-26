@@ -71,4 +71,9 @@
     <string name="mcp_cli_connection_check">يتحقق connect من الاتصال. يؤدي نجاح الطلب إلى تحديث الوقت أعلاه.</string>
     <string name="mcp_history_title">السماح بعرض السجل</string>
     <string name="mcp_history_detail">السماح لأجهزة الكمبيوتر الموثقة عبر USB والشبكة الخاصة بقراءة المحادثات والتتبع التفصيلي. الإعداد متوقف افتراضيًا.</string>
+    <string name="progress_calling_mcp">Calling %1$s</string>
+    <string name="progress_called_mcp">Used %1$s</string>
+
+    <string name="mcp_connect_canva_setup">أنشئ تطبيقًا في Canva Developer Portal، وفعّل Canva MCP، ثم أضف عنوان إعادة التوجيه هذا كما هو في Outside Canva → Redirect URLs: %1$s. أدخل Client ID وClient secret أدناه. يسجّل كل مستخدم في Canva الدخول بشكل منفصل.</string>
+    <string name="mcp_connect_canva_docs">دليل إعداد Canva</string>
 </resources>

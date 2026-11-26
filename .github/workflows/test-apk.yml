@@ -47,7 +47,7 @@ jobs:
           {
             printf '%s\n' '## Qusin Dev test APK'
             printf '%s\n' 'Download the Qusin-Dev artifact below, unzip it, and install the APK.'
-            printf '%s\n' 'Package: com.wangzan101.qusin.dev. It installs alongside Qusin; configure its model and phone permissions separately.'
+            printf '%s\n' 'Package: com.qusin.qusin.dev. It installs alongside Qusin; configure its model and phone permissions separately.'
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload test APK
         uses: actions/upload-artifact@v7

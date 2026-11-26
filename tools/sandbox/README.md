@@ -7,7 +7,7 @@ Qusin 只以子进程方式运行它们,不链接它们。
 |---|---|---|---|---|
 | `libproot.so` | PRoot 本体,静态链接 talloc | PRoot:`sources.lock` 里的 `proot` 源码包,加 `patches/proot-*.patch`;talloc:`sources.lock` 里的 `talloc` 源码包,只编 `talloc.c`,未修改 | PRoot 5.4.0、talloc 2.4.3 | GPL-2.0-or-later(PRoot)、LGPL-3.0-or-later(talloc) |
 | `libproot_loader.so` | PRoot 的载入器(静态、`-nostdlib`) | 同一个 PRoot 源码包 | 5.4.0 | GPL-2.0-or-later |
-| `libmikarun.so` | Qusin 的沙箱启动器(超时、断网、清场、伪终端) | `app/src/main/cpp/mikarun/mikarun.c` | 随 Qusin | MIT |
+| `libqusinrun.so` | Qusin 的沙箱启动器(超时、断网、清场、伪终端) | `app/src/main/cpp/qusinrun/qusinrun.c` | 随 Qusin | MIT |
 
 许可证全文和版权声明(`licenses/THIRD_PARTY_NOTICES.md`)都在仓库根目录的 `licenses/`。
 
@@ -22,7 +22,7 @@ Qusin 只以子进程方式运行它们,不链接它们。
   每个 `.apk` 都要核对:锁文件里的 SHA-256、它自己的 RSA 签名(公钥取自钉住的最小根文件系统)、控制段校验值与 APKINDEX 一致、
   数据段与签过名的 `.PKGINFO` 里的 `datahash` 一致。会在手机上执行的安装脚本与触发器必须逐个列进 `SCRIPTS_NOT_RUN`
   (按内容的 SHA-256 钉住,并写明为什么不跑也正确),否则构建失败。
-  同时生成 `app/src/main/java/com/wangzan101/qusin/cap/sandbox/BundledRuntime.kt`(版本、SHA-256、大小)与
+  同时生成 `app/src/main/java/com/qusin/qusin/cap/sandbox/BundledRuntime.kt`(版本、SHA-256、大小)与
   `app/src/main/assets/runtime/packages.json`(所有软件包、版本、许可证;「开源许可」页从它生成)。
 - 产物逐字节可重现:
 

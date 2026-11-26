@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="mcp_title">Bilgisayara bağlan</string>
     <string name="mcp_starting">Başlatılıyor…</string>
@@ -71,4 +71,9 @@
     <string name="mcp_cli_connection_check">connect, bağlantıyı doğrular. Başarılı bir istek yukarıdaki saati günceller.</string>
     <string name="mcp_history_title">Bilgisayarların geçmişi görüntülemesine izin ver</string>
     <string name="mcp_history_detail">Bağlı bilgisayarlar, redakte edilmiş model istekleri ve yanıtları dahil tüm konuşmaları, çalıştırma kayıtlarını ve kaydedilen Trace gövdelerini okuyabilir. USB ve özel ağ bağlantıları için geçerlidir.</string>
+    <string name="progress_calling_mcp">Calling %1$s</string>
+    <string name="progress_called_mcp">Used %1$s</string>
+
+    <string name="mcp_connect_canva_setup">Canva Developer Portal içinde bir uygulama oluşturup Canva MCP’yi etkinleştirin. Ardından Outside Canva → Redirect URLs bölümüne şu yönlendirme URL’sini aynen ekleyin: %1$s. Aşağıya Client ID ve Client secret bilgilerini girin. Her Canva kullanıcısı ayrı ayrı oturum açar.</string>
+    <string name="mcp_connect_canva_docs">Canva kurulum kılavuzu</string>
 </resources>

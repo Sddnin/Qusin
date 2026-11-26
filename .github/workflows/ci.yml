@@ -246,7 +246,7 @@ jobs:
         run: |
           set -euo pipefail
           f=app/src/main/assets/runtime/rootfs.tar.xz
-          c=app/src/main/java/com/wangzan101/qusin/cap/sandbox/BundledRuntime.kt
+          c=app/src/main/java/com/qusin/qusin/cap/sandbox/BundledRuntime.kt
           want_bytes=$(sed -n 's/.*const val BYTES = \([0-9]*\)L.*/\1/p' "$c")
           want_sha=$(sed -n 's/.*const val SHA256 = "\([0-9a-f]*\)".*/\1/p' "$c")
           got_bytes=$(stat -c %s "$f")

@@ -1,0 +1,41 @@
+Qusin v0.1.56 source migration checkpoint
+
+VersionName: 0.1.56
+VersionCode: 57
+ApplicationId: com.qusin.qusin
+Namespace: com.qusin.qusin
+
+Completed in this checkpoint:
+- Android namespace and applicationId aligned to com.qusin.qusin
+- Kotlin, Java, AIDL, test, manifest, tooling and source paths migrated to com.qusin.qusin
+- Internal tool prompt identifiers and relay protocol labels rebranded to Qusin
+- Sandbox launcher source and asset filenames rebranded to qusinrun
+- Old product-name strings removed from text sources; original copyright ownership notices retained
+- Runtime self-test parsing made compatible with the currently bundled ARM64 launcher while the NDK rebuild is unavailable
+
+Static checks:
+- Package declarations checked: 2,217; path mismatches: 0
+- Resource XML parsed: 895; malformed XML: 0
+- Duplicate named resource declarations: 0
+- MCP catalog JSON parsed: 74 entries
+- MCP locale files: 13; string-key parity mismatches: 0
+- ADB log-export Python tests: 7/7 passed
+- Native launcher host compile: passed with clang -Wall -Wextra -Werror
+- Native launcher host self-test: qusinrun ok; pty ok; seccomp probe unavailable in this host environment (signal 31)
+
+Not verified:
+- Android Gradle compilation, unit tests, lint, APK assembly or device installation
+- Go relay tests
+- Android NDK rebuild of libqusinrun.so
+- Live MCP provider OAuth and server connectivity
+- Full source/feature parity and full UI redesign against the reference source
+
+Environment blockers:
+- Gradle wrapper could not download Gradle 8.11.1 because DNS lookup for services.gradle.org failed
+- Go relay dependency download failed because DNS lookup for proxy.golang.org failed
+- Android NDK r28c (28.2.13676358) is not installed in this environment
+
+Important migration notes:
+- The existing ARM64 launcher binary was renamed to libqusinrun.so, but its embedded diagnostic text remains from the prior prebuilt artifact. App-side parsing no longer depends on the launcher brand string. Rebuild it with tools/sandbox/build-native.sh in an environment with the pinned Android NDK before release.
+- The original copyright-owner lines in NOTICE and tools/relay/NOTICE are retained unchanged for attribution accuracy.
+- See MIGRATION-AUDIT-v0.1.56.md for the remaining source-level parity work. This checkpoint is not a claim that every reference-source feature or screen has been ported.

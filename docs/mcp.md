@@ -18,7 +18,7 @@
 1. 在电脑上运行：
 
    ```
-   adb shell sh /sdcard/Android/data/com.wangzan101.qusin/files/connect-computer.sh
+   adb shell sh /sdcard/Android/data/com.qusin.qusin/files/connect-computer.sh
    ```
 
    它先启动 Qusin 的手机助手（和「用电脑启动」一样，已经在运行就跳过），再打开 USB 方式，最后打印连接信息，形如：
@@ -48,7 +48,7 @@
 之后想再看连接信息：
 
 ```
-adb shell cat /sdcard/Android/data/com.wangzan101.qusin/files/mcp-usb.json
+adb shell cat /sdcard/Android/data/com.qusin.qusin/files/mcp-usb.json
 ```
 
 打开以后：
@@ -61,7 +61,7 @@ adb shell cat /sdcard/Android/data/com.wangzan101.qusin/files/mcp-usb.json
 关掉（任一种都行，关掉后旧令牌立即作废，连接信息文件也删掉；下次打开换一个新令牌）：
 
 ```
-adb shell sh /sdcard/Android/data/com.wangzan101.qusin/files/connect-computer.sh off
+adb shell sh /sdcard/Android/data/com.qusin.qusin/files/connect-computer.sh off
 ```
 
 或者在手机的 设置 › 连接电脑 › 高级设置 里关掉「经 USB 连接」，或者点通知上的「关闭」（Wi-Fi 那种开着的话也一起关）。
@@ -69,9 +69,9 @@ adb shell sh /sdcard/Android/data/com.wangzan101.qusin/files/connect-computer.sh
 脚本做的事也可以直接用命令做（打开后等一两秒连接信息文件才写好）：
 
 ```
-adb shell am start-foreground-service -n com.wangzan101.qusin/.mcp.McpService -a com.wangzan101.qusin.mcp.USB_ON
-adb shell cat /sdcard/Android/data/com.wangzan101.qusin/files/mcp-usb.json
-adb shell am start-foreground-service -n com.wangzan101.qusin/.mcp.McpService -a com.wangzan101.qusin.mcp.USB_OFF
+adb shell am start-foreground-service -n com.qusin.qusin/.mcp.McpService -a com.qusin.qusin.mcp.USB_ON
+adb shell cat /sdcard/Android/data/com.qusin.qusin/files/mcp-usb.json
+adb shell am start-foreground-service -n com.qusin.qusin/.mcp.McpService -a com.qusin.qusin.mcp.USB_OFF
 ```
 
 ## 经 Wi-Fi 或私有网络连接
@@ -125,13 +125,13 @@ curl -s http://192.168.1.23:8765/mcp \
 
 | 工具 | 参数 | 做什么 |
 | --- | --- | --- |
-| `mika_run_task` | `goal`（必填）、`conversation`、`"request_id"`（可选） | 把一件事交给 Qusin，马上返回任务编号 `task_id`。任务记在一个对话里，手机上的对话列表看得到。想接着上一件事说，就把上一个任务返回的 `conversation` 带上。 |
-| `mika_task_status` | `task_id` | 任务此刻的状态、最近的进度、在等什么、做完时的回答。 |
-| `mika_wait_task` | `task_id`、`timeout_s`（可选，默认 30，最多 50） | 等到状态变了（比如开始等你回答、做完了）或者到时间，再返回状态。进度说明变了不算，不会一步一返回。 |
-| `mika_answer` | `task_id`、`text` | 回答 Qusin 在这个任务里问的问题。 |
-| `mika_steer_task` | `task_id`、`text` | 向 running 任务追加要求（最多 4000 字符），保留任务 ID 和上下文。返回 accepted 与 message_id，不代表已经执行。 |
-| `mika_cancel_task` | `task_id` | 停下这个任务。 |
-| `mika_list_tasks` | `limit`（可选，默认 10） | 电脑交来的最近几个任务，新的在前。 |
+| `qusin_run_task` | `goal`（必填）、`conversation`、`"request_id"`（可选） | 把一件事交给 Qusin，马上返回任务编号 `task_id`。任务记在一个对话里，手机上的对话列表看得到。想接着上一件事说，就把上一个任务返回的 `conversation` 带上。 |
+| `qusin_task_status` | `task_id` | 任务此刻的状态、最近的进度、在等什么、做完时的回答。 |
+| `qusin_wait_task` | `task_id`、`timeout_s`（可选，默认 30，最多 50） | 等到状态变了（比如开始等你回答、做完了）或者到时间，再返回状态。进度说明变了不算，不会一步一返回。 |
+| `qusin_answer` | `task_id`、`text` | 回答 Qusin 在这个任务里问的问题。 |
+| `qusin_steer_task` | `task_id`、`text` | 向 running 任务追加要求（最多 4000 字符），保留任务 ID 和上下文。返回 accepted 与 message_id，不代表已经执行。 |
+| `qusin_cancel_task` | `task_id` | 停下这个任务。 |
+| `qusin_list_tasks` | `limit`（可选，默认 10） | 电脑交来的最近几个任务，新的在前。 |
 
 状态有这几种：
 
@@ -139,17 +139,17 @@ curl -s http://192.168.1.23:8765/mcp \
 - `running`：正在做，带着最近的进度说明。
 - `queued`：还没开始，排在前面的任务后面（同时进行的任务已满，或这个对话里已有任务在做），轮到时自动开始；只能等或者停掉。
 - `paused`：在等一个条件，比如手机锁屏了，解锁后自动接着做。
-- `waiting_for_answer`：Qusin 问了一个问题，用 `mika_answer` 回答（在手机上回答也行）。等太久没人回答，Qusin 会当作没有回答接着做。
+- `waiting_for_answer`：Qusin 问了一个问题，用 `qusin_answer` 回答（在手机上回答也行）。等太久没人回答，Qusin 会当作没有回答接着做。
 - `waiting_on_phone`：这一步只能由人在手机上处理，比如交给你亲手操作的一步。电脑这边没法代答，只能等或者停掉任务；手机上会照常弹出通知。
 - `done`：做完了，带着回答；`verified` 表示回答核对过。
 - `failed`：没做成，带着原因。
 - `cancelled`：停掉了。
 
-支持任务恢复的手机会在 `mika_run_task` 的输入结构里列出 `"request_id"`。调用方可先生成并保存一个小写 UUID，丢回执后用它调用 `mika_task_status`。同一编号、目标和对话参数只启动一次，换目标或换对话需要新编号。进程重启后仍能读终态，未完成的任务会报告 `failed` 和 `failure_kind=interrupted`。已收尾的记录保留 30 天、至多最近 1000 条。
+支持任务恢复的手机会在 `qusin_run_task` 的输入结构里列出 `"request_id"`。调用方可先生成并保存一个小写 UUID，丢回执后用它调用 `qusin_task_status`。同一编号、目标和对话参数只启动一次，换目标或换对话需要新编号。进程重启后仍能读终态，未完成的任务会报告 `failed` 和 `failure_kind=interrupted`。已收尾的记录保留 30 天、至多最近 1000 条。
 
-建议的用法：`mika_run_task` → 反复 `mika_wait_task` → 遇到 `waiting_for_answer` 用 `mika_answer` → 直到 `done` / `failed` / `cancelled`。
+建议的用法：`qusin_run_task` → 反复 `qusin_wait_task` → 遇到 `waiting_for_answer` 用 `qusin_answer` → 直到 `done` / `failed` / `cancelled`。
 
-追加要求后，用 `mika_task_status` 查看 `steers` 中对应 `message_id` 的去向：`received` 已收到、`joined` 已加入上下文、`not_applied` 结束或取消前未用上。正在执行的动作会先做完，追加不会撤销已做的事。排队/暂停、等待回答/审批/接管和终态均拒绝追加；收尾时未消费的远程插话不另开任务。响应丢失不要自动重发。旧 APK 的工具列表没有 `mika_steer_task`，需要升级手机 App。
+追加要求后，用 `qusin_task_status` 查看 `steers` 中对应 `message_id` 的去向：`received` 已收到、`joined` 已加入上下文、`not_applied` 结束或取消前未用上。正在执行的动作会先做完，追加不会撤销已做的事。排队/暂停、等待回答/审批/接管和终态均拒绝追加；收尾时未消费的远程插话不另开任务。响应丢失不要自动重发。旧 APK 的工具列表没有 `qusin_steer_task`，需要升级手机 App。
 
 ## 远程亮屏与解锁
 
@@ -157,11 +157,11 @@ curl -s http://192.168.1.23:8765/mcp \
 
 | 工具 | 参数 | 做什么 |
 | --- | --- | --- |
-| `mika_device_state` | 无 | 读取亮屏、锁屏、手机助手状态，以及是否允许远程解锁。 |
-| `mika_wake_device` | 无 | 只唤醒主屏，不自动认证。 |
-| `mika_unlock_device` | 无 | 唤醒并解除滑动锁屏，或使用手机上保存的正确 PIN/密码认证。 |
+| `qusin_device_state` | 无 | 读取亮屏、锁屏、手机助手状态，以及是否允许远程解锁。 |
+| `qusin_wake_device` | 无 | 只唤醒主屏，不自动认证。 |
+| `qusin_unlock_device` | 无 | 唤醒并解除滑动锁屏，或使用手机上保存的正确 PIN/密码认证。 |
 
-先调用 `mika_unlock_device`，返回 `status: unlocked` 且 `device.ready: true` 后再派任务；因锁屏而 `paused` 的任务在系统确认解锁后自动继续。`mika_wake_device` 的 `awake` 仅表示已经亮屏，不代表已经解锁。
+先调用 `qusin_unlock_device`，返回 `status: unlocked` 且 `device.ready: true` 后再派任务；因锁屏而 `paused` 的任务在系统确认解锁后自动继续。`qusin_wake_device` 的 `awake` 仅表示已经亮屏，不代表已经解锁。
 
 - PIN 支持 4–16 位数字；密码支持 4–64 位英文字母、数字、空格和常见 ASCII 符号。图案锁屏、SIM PIN、无法识别的厂商凭据页不输入，返回 `unsupported_keyguard`。
 - 输入 PIN/密码需要安卓 13 及以上：按键只投给系统锁屏界面，锁屏上方另有窗口（锁屏时显示的 App、来电等）时系统拒绝，凭据不会输进别的 App。安卓 12 只能解除滑动或无密码锁屏。
@@ -175,11 +175,11 @@ curl -s http://192.168.1.23:8765/mcp \
 
 - **默认关闭**，打开后才监听；关掉立即停止。
 - **USB 方式只在本机（127.0.0.1）上监听**，Wi-Fi 和别的网络上连不到，电脑经 adb 的端口转发进来。手机上别的 App 也能连本机端口，所以照样要令牌，而且 USB 的令牌只认本机来的连接。
-- **只有电脑能打开 USB 方式、拿到它的令牌**：Qusin 的这个服务只接受持有 `INTERACT_ACROSS_USERS_FULL` 权限的调用方，adb shell 有，普通 App 拿不到（这个权限也没法用 adb 授给别的 App）。令牌写在 Qusin 的外部文件目录里（`/sdcard/Android/data/com.wangzan101.qusin/files/mcp-usb.json`），安卓 11 起别的 App 读不到这个目录，只有 Qusin 和 adb shell 读得到。
+- **只有电脑能打开 USB 方式、拿到它的令牌**：Qusin 的这个服务只接受持有 `INTERACT_ACROSS_USERS_FULL` 权限的调用方，adb shell 有，普通 App 拿不到（这个权限也没法用 adb 授给别的 App）。令牌写在 Qusin 的外部文件目录里（`/sdcard/Android/data/com.qusin.qusin/files/mcp-usb.json`），安卓 11 起别的 App 读不到这个目录，只有 Qusin 和 adb shell 读得到。
 - **每个请求都要带令牌**。令牌是 32 字节的随机数，按常量时间比较；同一个地址一分钟内错 5 次，就先封一分钟。
 - **不接受浏览器的请求**：带 `Origin` 请求头的一律拒绝，网页没法借你的浏览器碰到这个端口。
 - **只接受私有网络**：两端都必须是局域网、私有 VPN 网络或本机的地址，公网地址来的连接当场断开。
-- **花钱和确认只能在手机上**：电脑交来的任务里，付款、需要你同意的操作永远不会执行，不管「自主模式」开没开；交给你亲手处理的那一步也只能在手机上处理。`mika_answer` 只能回答问题，回答不了这些。
+- **花钱和确认只能在手机上**：电脑交来的任务里，付款、需要你同意的操作永远不会执行，不管「自主模式」开没开；交给你亲手处理的那一步也只能在手机上处理。`qusin_answer` 只能回答问题，回答不了这些。
 - **只碰电脑自己交来的任务**：电脑看不到、也停不了你在手机上发起的任务；电脑开的对话编号带固定前缀，接不上你手机上的对话。
 - 每次运行的记录里写明是电脑（MCP）发起的。
 - 传输是明文 HTTP，只适合在自己信任的网络里用；令牌别发给别人，怀疑泄露就「换一个」。
@@ -194,4 +194,4 @@ curl -s http://192.168.1.23:8765/mcp \
 - **返回 429**：同一个地址错的令牌试了太多次，等一分钟再试。经 USB 时手机上所有连本机端口的都算同一个地址。
 - **电脑连不上**：确认两边在同一个网络；有的 Wi-Fi（比如访客网络）不让设备之间互相访问。
 - **任务没开始**（交任务时就报错，或者过两分钟变成 `failed`）：打开一下手机上的 Qusin 再试。安卓有时不让后台的 App 自己开始干活，打开过 Qusin 之后就好了。
-- **任务一直是 `paused`**：多半是手机锁屏了。先在手机上解锁，或在手机已允许远程解锁时调用 `mika_unlock_device`；仅调用亮屏不一定能解除锁屏。
+- **任务一直是 `paused`**：多半是手机锁屏了。先在手机上解锁，或在手机已允许远程解锁时调用 `qusin_unlock_device`；仅调用亮屏不一定能解除锁屏。

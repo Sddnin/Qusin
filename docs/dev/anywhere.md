@@ -96,8 +96,8 @@
 
 ```sh
 # Kotlin 只读 API 与 App 读取
-./gradlew :core:test --tests "com.wangzan101.qusin.core.remote.CompanionApiTest" \
-  :app:testDebugUnitTest --tests "com.wangzan101.qusin.chat.RemoteConversationReaderTest"
+./gradlew :core:test --tests "com.qusin.qusin.core.remote.CompanionApiTest" \
+  :app:testDebugUnitTest --tests "com.qusin.qusin.chat.RemoteConversationReaderTest"
 
 # 编译
 ./gradlew :app:compileDebugKotlin

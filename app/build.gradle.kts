@@ -15,7 +15,7 @@ val gitHash: String = runCatching {
 val ciKeystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
 
 android {
-    namespace = "com.wangzan101.qusin"
+    namespace = "com.qusin.qusin"
     compileSdk = 36
 
     signingConfigs {
@@ -32,11 +32,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.wangzan101.qusin"
+        applicationId = "com.qusin.qusin"
         minSdk = 29
         targetSdk = 35
-        versionCode = 56
-        versionName = "0.1.55"
+        versionCode = 57
+        versionName = "0.1.56"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "GIT_HASH", "\"$gitHash\"")
         // 关于页版本号后的 Beta 标记;出正式版时改成 false
@@ -127,6 +127,7 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.window)
     implementation(libs.androidx.webkit)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.okhttp)

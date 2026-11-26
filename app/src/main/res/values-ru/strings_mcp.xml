@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="mcp_title">Подключить компьютер</string>
     <string name="mcp_starting">Запуск…</string>
@@ -71,4 +71,9 @@
     <string name="mcp_cli_connection_check">Команда connect проверяет подключение. После успешного запроса время выше обновится.</string>
     <string name="mcp_history_title">Разрешить компьютерам просмотр истории</string>
     <string name="mcp_history_detail">Подключённые компьютеры смогут читать все диалоги, записи запусков и сохранённые Trace, включая запросы и ответы модели со скрытыми конфиденциальными данными. Действует для USB и подключений через частные сети.</string>
+    <string name="progress_calling_mcp">Calling %1$s</string>
+    <string name="progress_called_mcp">Used %1$s</string>
+
+    <string name="mcp_connect_canva_setup">Создайте приложение на Canva Developer Portal, включите Canva MCP и добавьте этот точный URL перенаправления в Outside Canva → Redirect URLs: %1$s. Ниже укажите Client ID и Client secret. Каждый пользователь Canva входит отдельно.</string>
+    <string name="mcp_connect_canva_docs">Инструкция по настройке Canva</string>
 </resources>
