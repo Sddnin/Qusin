@@ -318,11 +318,11 @@ class BridgeTests(unittest.TestCase):
             self.assertEqual(path.parent.stat().st_mode & 0o777, 0o700)
         self.assertEqual(load_config(path)["qusin_token"], "not-real")
 
-    def test_legacy_qusin_config_is_read_as_qusin_config(self):
+    def test_legacy_mika_config_is_read_as_qusin_config(self):
         from qusin_feishu.config import load_config, save_config
         path = Path(self.tmp.name) / "legacy.json"
         save_config({"feishu_app_id": "cli_fake", "feishu_app_secret": "not-real",
-                     "qusin_url": "http://127.0.0.1:8765", "qusin_token": "legacy-token"}, path)
+                     "mika_url": "http://127.0.0.1:8765", "mika_token": "legacy-token"}, path)
         config = load_config(path)
         self.assertEqual(config["qusin_url"], "http://127.0.0.1:8765")
         self.assertEqual(config["qusin_token"], "legacy-token")

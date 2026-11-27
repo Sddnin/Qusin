@@ -5,6 +5,7 @@ import com.qusin.qusin.core.cap.mcp.HttpMcpEndpoint
 import com.qusin.qusin.core.cap.mcp.LegacySseMcpEndpoint
 import com.qusin.qusin.core.cap.mcp.McpCatalog
 import com.qusin.qusin.core.cap.mcp.McpOAuth
+import com.qusin.qusin.core.cap.mcp.McpOAuthRegistration
 import com.qusin.qusin.core.cap.mcp.McpOAuthException
 import com.qusin.qusin.core.cap.mcp.McpOAuthTokens
 import com.qusin.qusin.core.cap.mcp.McpPackageSpec
