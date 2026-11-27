@@ -1,7 +1,7 @@
 outcome: Failed(reason=下单需要用户确认,脚本没有执行, kind=GaveUp, code=null)
 
 ## main #1
-system: len=20277 #49a7e653 | You are Qusin, the user's personal assistant on their phone. Your job is to get ⏎…
+system: len=20301 #c6916995 | You are Qusin, the user's personal assistant on their phone. Your job is to get ⏎…
 tools: #2432bc9e [wait, ask_user, request_confirmation, end_not_done, phone_list_apps, phone_launch_app, phone_set_alarm, phone_set_timer, phone_add_calendar_event, phone_calendar_bulk_insert, web_navigate, web_read_page]
 user:
   text #607a43dc | 搜一下再下单
